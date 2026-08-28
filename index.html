@@ -3,188 +3,264 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyBox Sifir</title>
+  <title>Mega EduBox: Bundle Tahun 1-3</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body class="bg-[#FFFDF9]">
+<body class="bg-[#F8F9FA]">
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    const SYLLABUS = [
-      { id: 't1', name: 'Tahun 1', label: 'Asas & Konsep', tables: [2, 5, 10], color: 'from-amber-400 to-orange-400' },
-      { id: 't2', name: 'Tahun 2', label: 'Pertengahan', tables: [2, 3, 4, 5, 10], color: 'from-emerald-400 to-teal-500' },
-      { id: 't3', name: 'Tahun 3', label: 'Lanjutan', tables: [6, 7, 8, 9], color: 'from-blue-400 to-indigo-500' },
-    ];
+    // Pangkalan Data Soalan Mengikut Subjek & Tahun
+    const DATABASE = {
+      math: {
+        title: "Matematik",
+        icon: "🔢",
+        color: "from-amber-400 to-orange-500",
+        type: "numpad",
+        generate: (year) => {
+          let n1, n2;
+          if (year === 1) {
+            const tables = [2, 5, 10];
+            n1 = tables[Math.floor(Math.random() * tables.length)];
+            n2 = Math.floor(Math.random() * 9) + 1;
+          } else if (year === 2) {
+            const tables = [2, 3, 4, 5, 10];
+            n1 = tables[Math.floor(Math.random() * tables.length)];
+            n2 = Math.floor(Math.random() * 9) + 1;
+          } else {
+            const tables = [6, 7, 8, 9];
+            n1 = tables[Math.floor(Math.random() * tables.length)];
+            n2 = Math.floor(Math.random() * 9) + 1;
+          }
+          return {
+            question: `${n1} × ${n2} = ?`,
+            correctAnswer: (n1 * n2).toString()
+          };
+        }
+      },
+      bm: {
+        title: "Bahasa Melayu",
+        icon: "📖",
+        color: "from-red-400 to-rose-500",
+        type: "mcq",
+        questions: {
+          1: [
+            { q: "Pilih kata nama am yang betul:", options: ["Kucing", "Ali", "Proton", "Malaysia"], a: "Kucing" },
+            { q: "Lengkapkan ayat: Sang Kancil seekor haiwan yang ____.", options: ["cerdik", "bulat", "tinggi", "luas"], a: "cerdik" }
+          ],
+          2: [
+            { q: "Ayah sedang _____ surat khabar di ruang tamu.", options: ["membaca", "memasak", "menendang", "menjahit"], a: "membaca" },
+            { q: "Pilih kata ganti nama diri pertama:", options: ["Saya", "Mereka", "Beliau", "Dia"], a: "Saya" }
+          ],
+          3: [
+            { q: "Bangunan itu sangat ____ mencecah awan.", options: ["tinggi", "panjang", "tebal", "lebar"], a: "tinggi" },
+            { q: "Lengkapkan penjodoh bilangan: Se_____ payung.", options: ["kaki", "bilah", "buah", "batang"], a: "kaki" }
+          ]
+        }
+      },
+      bi: {
+        title: "English",
+        icon: "🔤",
+        color: "from-blue-400 to-indigo-500",
+        type: "mcq",
+        questions: {
+          1: [
+            { q: "Choose the correct plural form of 'Cat':", options: ["Cats", "Cates", "Caties", "Cat"], a: "Cats" },
+            { q: "The apple is ____ color.", options: ["red", "walk", "loud", "jump"], a: "red" }
+          ],
+          2: [
+            { q: "She ____ to school every morning.", options: ["walks", "walk", "walking", "walked"], a: "walks" },
+            { q: "Which one is an animal?", options: ["Elephant", "Chair", "Table", "Pencil"], a: "Elephant" }
+          ],
+          3: [
+            { q: "They ____ playing football at the field.", options: ["are", "is", "am", "was"], a: "are" },
+            { q: "Opposite word for 'Heavy':", options: ["Light", "Big", "Strong", "Dark"], a: "Light" }
+          ]
+        }
+      },
+      science: {
+        title: "Sains",
+        icon: "🔬",
+        color: "from-emerald-400 to-teal-500",
+        type: "mcq",
+        questions: {
+          1: [
+            { q: "Manakah antara berikut adalah benda hidup?", options: ["Pokok", "Batu", "Kereta", "Kerusi"], a: "Pokok" },
+            { q: "Kita menggunakan organ ____ untuk melihat.", options: ["mata", "telinga", "hidung", "lidah"], a: "mata" }
+          ],
+          2: [
+            { q: "Haiwan yang memakan tumbuhan sahaja dipanggil:", options: ["Herbivor", "Karnivor", "Omnivor", "Pengurai"], a: "Herbivor" },
+            { q: "Tumbuhan memerlukan ____ untuk membuat makanan.", options: ["Cahaya matahari", "Susu", "Minyak", "Gula"], a: "Cahaya matahari" }
+          ],
+          3: [
+            { q: "Gigi ____ digunakan untuk memotong makanan.", options: ["kacip", "taring", "geraham", "susu"], a: "kacip" },
+            { q: "Magnet akan menarik objek yang diperbuat daripada:", options: ["Besi", "Plastik", "Kayu", "Kain"], a: "Besi" }
+          ]
+        }
+      }
+    };
 
-    const TOTAL_QUESTIONS = 12;
-
-    function StudyBoxSifir() {
-      const [selectedYear, setSelectedYear] = useState(null);
-      const [selectedTable, setSelectedTable] = useState(null);
-      const [quizState, setQuizState] = useState('menu');
-      const [currentStep, setCurrentStep] = useState(1);
-      const [num1, setNum1] = useState(2);
-      const [num2, setNum2] = useState(1);
+    function App() {
+      const [screen, setScreen] = useState('hub'); // 'hub' | 'quiz' | 'result'
+      const [activeSubject, setActiveSubject] = useState('math');
+      const [activeYear, setActiveYear] = useState(1);
+      
+      const [questionIndex, setQuestionIndex] = useState(0);
+      const [currentQ, setCurrentQ] = useState(null);
       const [inputVal, setInputVal] = useState('');
       const [score, setScore] = useState(0);
-      const [streak, setStreak] = useState(0);
       const [feedback, setFeedback] = useState(null);
 
-      const generateQuestion = (tableChoice, yearChoice) => {
-        let baseNum;
-        if (tableChoice === 'mix') {
-          const availableTables = yearChoice.tables;
-          baseNum = availableTables[Math.floor(Math.random() * availableTables.length)];
+      const startSubjectQuiz = (subjKey, year) => {
+        setActiveSubject(subjKey);
+        setActiveYear(year);
+        setScore(0);
+        setQuestionIndex(0);
+        setInputVal('');
+        setFeedback(null);
+        
+        loadQuestion(subjKey, year, 0);
+        setScreen('quiz');
+      };
+
+      const loadQuestion = (subjKey, year, idx) => {
+        const subj = DATABASE[subjKey];
+        if (subj.type === 'numpad') {
+          setCurrentQ(subj.generate(year));
         } else {
-          baseNum = tableChoice;
+          const list = subj.questions[year] || subj.questions[1];
+          const qObj = list[idx % list.length];
+          setCurrentQ({
+            question: qObj.q,
+            options: qObj.options,
+            correctAnswer: qObj.a
+          });
         }
-        const multiplier = Math.floor(Math.random() * 10) + 1;
-        setNum1(baseNum);
-        setNum2(multiplier);
         setInputVal('');
         setFeedback(null);
       };
 
-      const startQuiz = (table, year) => {
-        setSelectedTable(table);
-        setSelectedYear(year);
-        setScore(0);
-        setStreak(0);
-        setCurrentStep(1);
-        setQuizState('playing');
-        generateQuestion(table, year);
-      };
-
-      const handleKeyPress = (val) => {
+      const handleNumpad = (val) => {
         if (feedback) return;
-        if (val === 'backspace') {
-          setInputVal((prev) => prev.slice(0, -1));
-        } else if (val === 'submit') {
-          validateAnswer();
+        if (val === 'del') setInputVal(p => p.slice(0, -1));
+        else if (val === 'enter') checkAnswer(inputVal);
+        else if (inputVal.length < 4) setInputVal(p => p + val);
+      };
+
+      const checkAnswer = (selectedAns) => {
+        if (!selectedAns) return;
+        const isRight = selectedAns.toString().trim().toLowerCase() === currentQ.correctAnswer.toString().trim().toLowerCase();
+        
+        if (isRight) {
+          setScore(s => s + 20);
+          setFeedback('Jawapan Tepat! 🎉');
         } else {
-          if (inputVal.length < 3) {
-            setInputVal((prev) => prev + val);
+          setFeedback(`Kurang tepat! (Jawapan: ${currentQ.correctAnswer}) ❌`);
+        }
+
+        setTimeout(() => {
+          if (questionIndex + 1 >= 5) { // 5 soalan setiap sesi
+            setScreen('result');
+          } else {
+            setQuestionIndex(i => i + 1);
+            loadQuestion(activeSubject, activeYear, questionIndex + 1);
           }
-        }
+        }, 1000);
       };
 
-      const validateAnswer = () => {
-        if (!inputVal) return;
-        const isCorrect = parseInt(inputVal, 10) === num1 * num2;
-
-        if (isCorrect) {
-          const addedPoints = 20 + streak * 2;
-          setScore((prev) => prev + addedPoints);
-          setStreak((prev) => prev + 1);
-          setFeedback('Betul! Cemerlang ⚡');
-
-          setTimeout(() => {
-            if (currentStep >= TOTAL_QUESTIONS) {
-              setQuizState('completed');
-            } else {
-              setCurrentStep((prev) => prev + 1);
-              generateQuestion(selectedTable, selectedYear);
-            }
-          }, 600);
-        } else {
-          setStreak(0);
-          setFeedback('Cuba lagi! ❌');
-          setTimeout(() => {
-            setInputVal('');
-            setFeedback(null);
-          }, 700);
-        }
-      };
-
-      if (quizState === 'menu') {
+      // ===================================
+      // 1. HUB UTAMA (PILIHAN SUBJEK & TAHUN)
+      // ===================================
+      if (screen === 'hub') {
         return (
-          <div className="min-h-screen bg-[#FFFDF9] flex flex-col items-center p-6 text-slate-800 font-sans">
-            <header className="text-center my-6">
-              <div className="inline-block bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full uppercase mb-2">
-                Matematik Rendah
+          <div className="min-h-screen max-w-md mx-auto p-5 flex flex-col justify-between">
+            <div>
+              {/* Header */}
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-5 text-white shadow-lg mb-6">
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                  Mega Bundle Access
+                </span>
+                <h1 className="text-2xl font-black mt-2">StudyBox Pintar 🌟</h1>
+                <p className="text-xs text-indigo-100 mt-1">Latihan Interaktif Silibus Tahun 1, 2 & 3</p>
               </div>
-              <h1 className="text-3xl font-black tracking-tight text-slate-900">StudyBox Sifir 📚</h1>
-              <p className="text-sm text-slate-500 mt-1">Pilih tahun pembelajaran untuk mulakan latihan</p>
-            </header>
 
-            <main className="w-full max-w-sm flex flex-col gap-5 pb-8">
-              {SYLLABUS.map((lvl) => (
-                <div key={lvl.id} className="bg-white rounded-3xl p-5 border-2 border-slate-100 shadow-sm">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h2 className="text-xl font-black text-slate-800">{lvl.name}</h2>
-                      <span className="text-xs text-slate-400 font-semibold">{lvl.label}</span>
-                    </div>
+              {/* Pemilihan Tahun */}
+              <div className="flex bg-slate-200 p-1 rounded-2xl mb-6 font-bold text-xs">
+                {[1, 2, 3].map(yr => (
+                  <button
+                    key={yr}
+                    onClick={() => setActiveYear(yr)}
+                    className={`flex-1 py-2.5 rounded-xl transition ${activeYear === yr ? 'bg-white shadow text-indigo-600' : 'text-slate-500'}`}
+                  >
+                    Tahun {yr}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid Subjek */}
+              <h2 className="text-xs font-black uppercase text-slate-400 mb-3 tracking-wider">Pilih Subjek Pembelajaran</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {Object.keys(DATABASE).map(key => {
+                  const s = DATABASE[key];
+                  return (
                     <button
-                      onClick={() => startQuiz('mix', lvl)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-black text-white bg-gradient-to-r ${lvl.color} shadow-sm active:scale-95 transition`}
+                      key={key}
+                      onClick={() => startSubjectQuiz(key, activeYear)}
+                      className="bg-white p-4 rounded-3xl border-2 border-slate-100 shadow-sm text-left hover:border-indigo-400 active:scale-95 transition flex flex-col justify-between h-36"
                     >
-                      Mod Campur ⚡
+                      <span className="text-3xl">{s.icon}</span>
+                      <div>
+                        <h3 className="font-black text-slate-800 text-sm">{s.title}</h3>
+                        <p className="text-[11px] font-semibold text-slate-400">Tahun {activeYear}</p>
+                      </div>
                     </button>
-                  </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                  <div className="grid grid-cols-4 gap-2">
-                    {lvl.tables.map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => startQuiz(t, lvl)}
-                        className="py-2.5 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded-2xl font-black text-slate-700 hover:text-amber-600 transition active:scale-95 text-center"
-                      >
-                        Sifir {t}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </main>
+            <div className="text-center text-xs text-slate-400 font-semibold mt-6">
+              Mega EduBox Bundle • Lengkap 4 Subjek
+            </div>
           </div>
         );
       }
 
-      if (quizState === 'completed') {
+      // ===================================
+      // 2. SKRIN KEPUTUSAN
+      // ===================================
+      if (screen === 'result') {
         return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFFDF9] p-4 font-sans">
-            <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-amber-200 w-full max-w-sm text-center">
-              <span className="text-xs font-black tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full uppercase">
-                ✦ Tahniah Selesai! ✦
-              </span>
-              <h2 className="text-2xl font-black text-slate-800 mt-4">Hebat & Cemerlang!</h2>
-              <p className="text-slate-500 text-xs mt-1">
-                {selectedYear?.name} • {selectedTable === 'mix' ? 'Mod Campur' : `Sifir ${selectedTable}`}
+          <div className="min-h-screen max-w-md mx-auto p-6 flex flex-col justify-center items-center">
+            <div className="bg-white border-2 border-indigo-100 rounded-3xl p-6 w-full text-center shadow-md">
+              <span className="text-4xl block mb-2">🏆</span>
+              <h2 className="text-xl font-black text-slate-800">Modul Selesai!</h2>
+              <p className="text-xs text-slate-400 font-bold mt-1">
+                {DATABASE[activeSubject].title} • Tahun {activeYear}
               </p>
 
-              <div className="grid grid-cols-3 gap-2 my-6">
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Betul</span>
-                  <span className="text-lg font-black text-slate-700">{TOTAL_QUESTIONS}/{TOTAL_QUESTIONS}</span>
-                </div>
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Streak</span>
-                  <span className="text-lg font-black text-slate-700">{streak}</span>
-                </div>
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Markah</span>
-                  <span className="text-lg font-black text-amber-500">{score}</span>
-                </div>
+              <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 my-6">
+                <span className="text-xs uppercase font-bold text-indigo-400 block">Jumlah Markah</span>
+                <span className="text-3xl font-black text-indigo-600">{score} / 100</span>
               </div>
 
               <div className="flex flex-col gap-2">
                 <button
-                  onClick={() => startQuiz(selectedTable, selectedYear)}
-                  className="w-full py-3 bg-red-400 hover:bg-red-500 text-white font-bold rounded-2xl shadow-sm transition active:scale-95"
+                  onClick={() => startSubjectQuiz(activeSubject, activeYear)}
+                  className="w-full py-3 bg-indigo-600 text-white rounded-2xl font-bold active:scale-95 transition"
                 >
-                  Latihan Semula ↺
+                  Cuba Sekali Lagi ↺
                 </button>
                 <button
-                  onClick={() => setQuizState('menu')}
-                  className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition active:scale-95"
+                  onClick={() => setScreen('hub')}
+                  className="w-full py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold active:scale-95 transition"
                 >
-                  Kembali ke Menu Utama
+                  Pilih Subjek Lain
                 </button>
               </div>
             </div>
@@ -192,93 +268,109 @@
         );
       }
 
+      // ===================================
+      // 3. SKRIN KUIZ AKTIF
+      // ===================================
+      const isNumpad = DATABASE[activeSubject].type === 'numpad';
+
       return (
-        <div className="flex flex-col items-center justify-between min-h-screen bg-[#FFFDF9] p-4 select-none font-sans">
-          <div className="w-full max-w-sm flex items-center justify-between py-2">
+        <div className="min-h-screen max-w-md mx-auto p-4 flex flex-col justify-between font-sans select-none">
+          {/* Top Bar */}
+          <div className="flex items-center justify-between">
             <button
-              onClick={() => setQuizState('menu')}
-              className="w-8 h-8 rounded-full bg-red-50 text-red-500 font-black flex items-center justify-center border border-red-100 hover:bg-red-100"
+              onClick={() => setScreen('hub')}
+              className="w-8 h-8 rounded-full bg-slate-100 font-bold text-slate-500 flex items-center justify-center"
             >
               ✕
             </button>
-            <span className="font-bold text-slate-700 text-sm">
-              {selectedYear?.name} ({selectedTable === 'mix' ? 'Campur' : `Sifir ${selectedTable}`})
+            <span className="font-black text-slate-700 text-sm">
+              {DATABASE[activeSubject].title} (Tahun {activeYear})
             </span>
-            <div className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-full text-amber-700 font-bold text-xs">
+            <div className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">
               ⭐ {score}
             </div>
           </div>
 
-          <div className="w-full max-w-sm mt-1">
-            <div className="flex justify-between text-xs text-slate-400 font-bold mb-1">
-              <span>{currentStep} / {TOTAL_QUESTIONS}</span>
-              <span>⚡ {streak}</span>
-            </div>
-            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-              <div
-                className="bg-amber-400 h-full transition-all duration-300"
-                style={{ width: `${(currentStep / TOTAL_QUESTIONS) * 100}%` }}
-              />
-            </div>
+          {/* Progress Tracker */}
+          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mt-3">
+            <div
+              className="bg-indigo-600 h-full transition-all duration-300"
+              style={{ width: `${((questionIndex + 1) / 5) * 100}%` }}
+            />
           </div>
 
-          <div className="relative w-full max-w-sm my-auto">
+          {/* Question Card */}
+          <div className="my-auto py-4">
             {feedback && (
-              <div className="absolute -top-10 left-0 right-0 mx-auto text-center text-xs font-bold text-emerald-700 bg-emerald-100 py-1.5 px-3 rounded-full w-max shadow-sm animate-bounce">
+              <div className="text-center text-xs font-bold text-indigo-700 bg-indigo-100 py-1.5 px-3 rounded-full mb-3 w-max mx-auto animate-bounce">
                 {feedback}
               </div>
             )}
-
-            <div className="bg-white border-2 border-dashed border-amber-300 rounded-3xl p-8 text-center shadow-sm">
-              <span className="text-[11px] font-bold text-teal-600 tracking-wider uppercase block mb-3">
-                KAD KIRAAN PANTAS
+            <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 text-center shadow-sm">
+              <span className="text-[10px] font-black uppercase text-indigo-500 block mb-2">
+                Soalan {questionIndex + 1} daripada 5
               </span>
-              <div className="text-4xl font-black text-slate-800 flex items-center justify-center gap-3">
-                <span>{num1}</span>
-                <span>×</span>
-                <span>{num2}</span>
-                <span>=</span>
-                <span className="inline-flex items-center justify-center min-w-[55px] px-2 border-b-4 border-amber-400 text-amber-500">
+              <h2 className="text-xl font-black text-slate-800">
+                {currentQ?.question}
+              </h2>
+
+              {isNumpad && (
+                <div className="mt-4 text-3xl font-black text-indigo-600 border-b-4 border-indigo-400 inline-block px-4 min-w-[70px]">
                   {inputVal || '?'}
-                </span>
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="w-full max-w-sm grid grid-cols-3 gap-2 mb-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((digit) => (
+          {/* Controls: MCQ vs Numpad */}
+          {!isNumpad ? (
+            <div className="flex flex-col gap-2 mb-4">
+              {currentQ?.options.map((opt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => checkAnswer(opt)}
+                  className="w-full py-3.5 bg-white border border-slate-200 hover:border-indigo-400 rounded-2xl text-sm font-bold text-slate-700 active:bg-indigo-50 transition text-left px-5"
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
+                <button
+                  key={n}
+                  onClick={() => handleNumpad(n.toString())}
+                  className="h-12 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 active:bg-slate-100"
+                >
+                  {n}
+                </button>
+              ))}
               <button
-                key={digit}
-                onClick={() => handleKeyPress(digit.toString())}
-                className="h-14 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl text-xl font-bold text-slate-700 shadow-sm active:bg-slate-100 transition"
+                onClick={() => handleNumpad('del')}
+                className="h-12 bg-slate-100 rounded-2xl font-black text-slate-500 active:scale-95"
               >
-                {digit}
+                ⌫
               </button>
-            ))}
-            <button
-              onClick={() => handleKeyPress('backspace')}
-              className="h-14 bg-slate-100 hover:bg-slate-200 rounded-2xl font-bold text-slate-500 shadow-sm active:scale-95 transition flex items-center justify-center"
-            >
-              ⌫
-            </button>
-            <button
-              onClick={() => handleKeyPress('0')}
-              className="h-14 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl text-xl font-bold text-slate-700 shadow-sm active:bg-slate-100 transition"
-            >
-              0
-            </button>
-            <button
-              onClick={() => handleKeyPress('submit')}
-              className="h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-sm active:scale-95 transition flex items-center justify-center text-lg"
-            >
-              ✓
-            </button>
-          </div>
+              <button
+                onClick={() => handleNumpad('0')}
+                className="h-12 bg-white border border-slate-200 rounded-2xl font-black text-slate-700"
+              >
+                0
+              </button>
+              <button
+                onClick={() => handleNumpad('enter')}
+                className="h-12 bg-indigo-600 text-white rounded-2xl font-black active:scale-95"
+              >
+                ✓
+              </button>
+            </div>
+          )}
         </div>
       );
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<StudyBoxSifir />);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
