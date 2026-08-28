@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBox Sifir</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-[#FFFDF9]">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const SYLLABUS = [
+      { id: 't1', name: 'Tahun 1', label: 'Asas & Konsep', tables: [2, 5, 10], color: 'from-amber-400 to-orange-400' },
+      { id: 't2', name: 'Tahun 2', label: 'Pertengahan', tables: [2, 3, 4, 5, 10], color: 'from-emerald-400 to-teal-500' },
+      { id: 't3', name: 'Tahun 3', label: 'Lanjutan', tables: [6, 7, 8, 9], color: 'from-blue-400 to-indigo-500' },
+    ];
+
+    const TOTAL_QUESTIONS = 12;
+
+    function StudyBoxSifir() {
+      const [selectedYear, setSelectedYear] = useState(null);
+      const [selectedTable, setSelectedTable] = useState(null);
+      const [quizState, setQuizState] = useState('menu');
+      const [currentStep, setCurrentStep] = useState(1);
+      const [num1, setNum1] = useState(2);
+      const [num2, setNum2] = useState(1);
+      const [inputVal, setInputVal] = useState('');
+      const [score, setScore] = useState(0);
+      const [streak, setStreak] = useState(0);
+      const [feedback, setFeedback] = useState(null);
+
+      const generateQuestion = (tableChoice, yearChoice) => {
+        let baseNum;
+        if (tableChoice === 'mix') {
+          const availableTables = yearChoice.tables;
+          baseNum = availableTables[Math.floor(Math.random() * availableTables.length)];
+        } else {
+          baseNum = tableChoice;
+        }
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        setNum1(baseNum);
+        setNum2(multiplier);
+        setInputVal('');
+        setFeedback(null);
+      };
+
+      const startQuiz = (table, year) => {
+        setSelectedTable(table);
+        setSelectedYear(year);
+        setScore(0);
+        setStreak(0);
+        setCurrentStep(1);
+        setQuizState('playing');
+        generateQuestion(table, year);
+      };
+
+      const handleKeyPress = (val) => {
+        if (feedback) return;
+        if (val === 'backspace') {
+          setInputVal((prev) => prev.slice(0, -1));
+        } else if (val === 'submit') {
+          validateAnswer();
+        } else {
+          if (inputVal.length < 3) {
+            setInputVal((prev) => prev + val);
+          }
+        }
+      };
+
+      const validateAnswer = () => {
+        if (!inputVal) return;
+        const isCorrect = parseInt(inputVal, 10) === num1 * num2;
+
+        if (isCorrect) {
+          const addedPoints = 20 + streak * 2;
+          setScore((prev) => prev + addedPoints);
+          setStreak((prev) => prev + 1);
+          setFeedback('Betul! Cemerlang ⚡');
+
+          setTimeout(() => {
+            if (currentStep >= TOTAL_QUESTIONS) {
+              setQuizState('completed');
+            } else {
+              setCurrentStep((prev) => prev + 1);
+              generateQuestion(selectedTable, selectedYear);
+            }
+          }, 600);
+        } else {
+          setStreak(0);
+          setFeedback('Cuba lagi! ❌');
+          setTimeout(() => {
+            setInputVal('');
+            setFeedback(null);
+          }, 700);
+        }
+      };
+
+      if (quizState === 'menu') {
+        return (
+          <div className="min-h-screen bg-[#FFFDF9] flex flex-col items-center p-6 text-slate-800 font-sans">
+            <header className="text-center my-6">
+              <div className="inline-block bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full uppercase mb-2">
+                Matematik Rendah
+              </div>
+              <h1 className="text-3xl font-black tracking-tight text-slate-900">StudyBox Sifir 📚</h1>
+              <p className="text-sm text-slate-500 mt-1">Pilih tahun pembelajaran untuk mulakan latihan</p>
+            </header>
+
+            <main className="w-full max-w-sm flex flex-col gap-5 pb-8">
+              {SYLLABUS.map((lvl) => (
+                <div key={lvl.id} className="bg-white rounded-3xl p-5 border-2 border-slate-100 shadow-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h2 className="text-xl font-black text-slate-800">{lvl.name}</h2>
+                      <span className="text-xs text-slate-400 font-semibold">{lvl.label}</span>
+                    </div>
+                    <button
+                      onClick={() => startQuiz('mix', lvl)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-black text-white bg-gradient-to-r ${lvl.color} shadow-sm active:scale-95 transition`}
+                    >
+                      Mod Campur ⚡
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2">
+                    {lvl.tables.map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => startQuiz(t, lvl)}
+                        className="py-2.5 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded-2xl font-black text-slate-700 hover:text-amber-600 transition active:scale-95 text-center"
+                      >
+                        Sifir {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </main>
+          </div>
+        );
+      }
+
+      if (quizState === 'completed') {
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFFDF9] p-4 font-sans">
+            <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-amber-200 w-full max-w-sm text-center">
+              <span className="text-xs font-black tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full uppercase">
+                ✦ Tahniah Selesai! ✦
+              </span>
+              <h2 className="text-2xl font-black text-slate-800 mt-4">Hebat & Cemerlang!</h2>
+              <p className="text-slate-500 text-xs mt-1">
+                {selectedYear?.name} • {selectedTable === 'mix' ? 'Mod Campur' : `Sifir ${selectedTable}`}
+              </p>
+
+              <div className="grid grid-cols-3 gap-2 my-6">
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Betul</span>
+                  <span className="text-lg font-black text-slate-700">{TOTAL_QUESTIONS}/{TOTAL_QUESTIONS}</span>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Streak</span>
+                  <span className="text-lg font-black text-slate-700">{streak}</span>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Markah</span>
+                  <span className="text-lg font-black text-amber-500">{score}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => startQuiz(selectedTable, selectedYear)}
+                  className="w-full py-3 bg-red-400 hover:bg-red-500 text-white font-bold rounded-2xl shadow-sm transition active:scale-95"
+                >
+                  Latihan Semula ↺
+                </button>
+                <button
+                  onClick={() => setQuizState('menu')}
+                  className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition active:scale-95"
+                >
+                  Kembali ke Menu Utama
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="flex flex-col items-center justify-between min-h-screen bg-[#FFFDF9] p-4 select-none font-sans">
+          <div className="w-full max-w-sm flex items-center justify-between py-2">
+            <button
+              onClick={() => setQuizState('menu')}
+              className="w-8 h-8 rounded-full bg-red-50 text-red-500 font-black flex items-center justify-center border border-red-100 hover:bg-red-100"
+            >
+              ✕
+            </button>
+            <span className="font-bold text-slate-700 text-sm">
+              {selectedYear?.name} ({selectedTable === 'mix' ? 'Campur' : `Sifir ${selectedTable}`})
+            </span>
+            <div className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-full text-amber-700 font-bold text-xs">
+              ⭐ {score}
+            </div>
+          </div>
+
+          <div className="w-full max-w-sm mt-1">
+            <div className="flex justify-between text-xs text-slate-400 font-bold mb-1">
+              <span>{currentStep} / {TOTAL_QUESTIONS}</span>
+              <span>⚡ {streak}</span>
+            </div>
+            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div
+                className="bg-amber-400 h-full transition-all duration-300"
+                style={{ width: `${(currentStep / TOTAL_QUESTIONS) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="relative w-full max-w-sm my-auto">
+            {feedback && (
+              <div className="absolute -top-10 left-0 right-0 mx-auto text-center text-xs font-bold text-emerald-700 bg-emerald-100 py-1.5 px-3 rounded-full w-max shadow-sm animate-bounce">
+                {feedback}
+              </div>
+            )}
+
+            <div className="bg-white border-2 border-dashed border-amber-300 rounded-3xl p-8 text-center shadow-sm">
+              <span className="text-[11px] font-bold text-teal-600 tracking-wider uppercase block mb-3">
+                KAD KIRAAN PANTAS
+              </span>
+              <div className="text-4xl font-black text-slate-800 flex items-center justify-center gap-3">
+                <span>{num1}</span>
+                <span>×</span>
+                <span>{num2}</span>
+                <span>=</span>
+                <span className="inline-flex items-center justify-center min-w-[55px] px-2 border-b-4 border-amber-400 text-amber-500">
+                  {inputVal || '?'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full max-w-sm grid grid-cols-3 gap-2 mb-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((digit) => (
+              <button
+                key={digit}
+                onClick={() => handleKeyPress(digit.toString())}
+                className="h-14 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl text-xl font-bold text-slate-700 shadow-sm active:bg-slate-100 transition"
+              >
+                {digit}
+              </button>
+            ))}
+            <button
+              onClick={() => handleKeyPress('backspace')}
+              className="h-14 bg-slate-100 hover:bg-slate-200 rounded-2xl font-bold text-slate-500 shadow-sm active:scale-95 transition flex items-center justify-center"
+            >
+              ⌫
+            </button>
+            <button
+              onClick={() => handleKeyPress('0')}
+              className="h-14 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl text-xl font-bold text-slate-700 shadow-sm active:bg-slate-100 transition"
+            >
+              0
+            </button>
+            <button
+              onClick={() => handleKeyPress('submit')}
+              className="h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-sm active:scale-95 transition flex items-center justify-center text-lg"
+            >
+              ✓
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<StudyBoxSifir />);
+  </script>
+</body>
+</html>
