@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>EduBox Pro — Platform Pembelajaran Pintar Tahun 1-3</title>
+  
+  <!-- CDN Scripts & Styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .animate-shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-800 min-h-screen flex items-center justify-center p-0 sm:p-4">
+
+  <!-- Mount Root -->
+  <div id="root" class="w-full max-w-md bg-[#F8FAFC] min-h-screen sm:min-h-[860px] sm:max-h-[900px] sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col justify-between border border-slate-800/20 relative"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // ==========================================
+    // AUDIO ENGINE (Web Audio API)
+    // ==========================================
+    const playSound = (type) => {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+          osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.4);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, ctx.currentTime);
+          osc.frequency.setValueAtTime(160, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.4);
+        } else if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, ctx.currentTime);
+          gain.gain.setValueAtTime(0.05, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.05);
+        } else if (type === 'complete') {
+          osc.type = 'triangle';
+          [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.1);
+          });
+          gain.gain.setValueAtTime(0.25, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.5);
+        }
+      } catch (e) {
+        console.warn('Audio Context:', e);
+      }
+    };
+
+    // Helper Rawak Array
+    const shuffleArray = (arr) => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+
+    // ==========================================
+    // DATA SILIBUS KSSR & MODUL PEMBELAJARAN
+    // ==========================================
+    const SYLLABUS_DATA = {
+      1: {
+        math: [
+          {
+            id: 'm1_1',
+            title: 'Nombor Hingga 100',
+            desc: 'Kenal nilai digit, puluh & sa',
+            icon: '🔢',
+            note: {
+              heading: 'Konsep Puluh & Sa',
+              body: 'Setiap nombor dua digit terdiri daripada Rumah Puluh dan Rumah Sa. Contohnya nombor 47: Digit 4 bernilai 40 (Puluh) manakala digit 7 bernilai 7 (Sa).'
+            },
+            example: {
+              q: 'Berapakah nilai tempat bagi digit 5 dalam nombor 58?',
+              explanation: 'Digit 5 berada di sebelah kiri (rumah hadapan), maka nilainya ialah Puluh (50).'
+            },
+            practice: {
+              q: 'Cerakinkan 73 mengikut nilai tempat:',
+              options: ['7 puluh + 3 sa', '7 sa + 3 puluh', '70 puluh + 3 sa', '7 + 3'],
+              a: '7 puluh + 3 sa'
+            },
+            quiz: [
+              { q: 'Apakah nombor selepas 89?', options: ['90', '88', '91', '100'], a: '90' },
+              { q: 'Digit 6 dalam nombor 26 berada pada nilai tempat:', options: ['Sa', 'Puluh', 'Ratus', 'Ribu'], a: 'Sa' },
+              { q: 'Pilih nombor yang paling besar nilainya:', options: ['92', '29', '89', '78'], a: '92' }
+            ]
+          },
+          {
+            id: 'm1_2',
+            title: 'Operasi Tambah Mudah',
+            desc: 'Gabungan dua kumpulan objek',
+            icon: '➕',
+            note: {
+              heading: 'Tambah Ialah Penyatuan',
+              body: 'Bila kita menambah, jumlah kuantiti akan menjadi lebih banyak. Mulakan penambahan dari rumah Sa terlebih dahulu, kemudian barulah rumah Puluh.'
+            },
+            example: {
+              q: '12 + 5 = ?',
+              explanation: 'Simpan 12 di dalam kepala, buka 5 jari dan kira ke hadapan: 13, 14, 15, 16, 17. Jawapannya ialah 17.'
+            },
+            practice: {
+              q: 'Kira hasil tambah: 14 + 4 = ?',
+              options: ['18', '17', '19', '20'],
+              a: '18'
+            },
+            quiz: [
+              { q: '23 + 6 = ?', options: ['29', '28', '30', '26'], a: '29' },
+              { q: 'Ali ada 8 biji guli. Ayah beri lagi 7 biji. Berapa jumlah guli Ali?', options: ['15', '14', '16', '13'], a: '15' },
+              { q: '40 + 30 = ?', options: ['70', '60', '80', '50'], a: '70' }
+            ]
+          },
+          {
+            id: 'm1_3',
+            title: 'Operasi Tolak Asas',
+            desc: 'Mencari baki perbezaan kuantiti',
+            icon: '➖',
+            note: {
+              heading: 'Tolak Menjadikan Kuantiti Berkurang',
+              body: 'Operasi tolak adalah proses membuang sebahagian kuantiti daripada nombor asal. Baki mestilah sentiasa lebih kecil daripada nombor asal.'
+            },
+            example: {
+              q: '15 − 4 = ?',
+              explanation: 'Daripada 15, kita undur 4 langkah ke belakang: 14, 13, 12, 11. Baki jawapannya ialah 11.'
+            },
+            practice: {
+              q: 'Cari baki bagi: 19 − 7 = ?',
+              options: ['12', '11', '13', '14'],
+              a: '12'
+            },
+            quiz: [
+              { q: '28 − 5 = ?', options: ['23', '24', '22', '25'], a: '23' },
+              { q: 'Ibu beli 10 biji telur. 3 biji telah pecah. Berapa baki telur yang elok?', options: ['7', '6', '8', '5'], a: '7' },
+              { q: '50 − 20 = ?', options: ['30', '40', '20', '10'], a: '30' }
+            ]
+          }
+        ],
+        bm: [
+          {
+            id: 'bm1_1',
+            title: 'Kata Nama Am & Khas',
+            desc: 'Nama manusia, haiwan & benda',
+            icon: '📖',
+            note: {
+              heading: 'Perbezaan Huruf Besar & Kecil',
+              body: 'Kata Nama Am ditulis huruf kecil secara umum (cth: kucing, sekolah). Kata Nama Khas merujuk nama spesifik dan sentiasa bermula dengan HURUF BESAR (cth: Si Tompok, SK Perdana).'
+            },
+            example: {
+              q: 'Manakah satu Kata Nama Khas?',
+              explanation: 'Sang Kancil ialah Kata Nama Khas kerana ia nama khas bagi haiwan dan dieja dengan huruf besar.'
+            },
+            practice: {
+              q: 'Pilih Kata Nama Am yang tepat:',
+              options: ['kereta', 'Proton Saga', 'Pak Abu', 'Malaysia'],
+              a: 'kereta'
+            },
+            quiz: [
+              { q: 'Antara berikut, yang manakah Kata Nama Khas?', options: ['Si Belang', 'harimau', 'pokok', 'murid'], a: 'Si Belang' },
+              { q: 'Kata nama am untuk tempat tinggal kita ialah:', options: ['rumah', 'Istana Negara', 'Kuala Lumpur', 'Zoo Negara'], a: 'rumah' },
+              { q: 'Pilih ayat yang menggunakan kata nama khas dengan betul:', options: ['Cikgu Sarah mengajar kami.', 'cikgu sarah mengajar kami.', 'Cikgu sarah Mengajar kami.', 'cikgu Sarah mengajar kami.'], a: 'Cikgu Sarah mengajar kami.' }
+            ]
+          },
+          {
+            id: 'bm1_2',
+            title: 'Kata Kerja Asas',
+            desc: 'Perlakuan atau aktiviti tubuh',
+            icon: '🏃',
+            note: {
+              heading: 'Perkataan Yang Melakukan Perbuatan',
+              body: 'Kata kerja ialah perkataan yang menceritakan apa yang sedang dibuat seperti membaca, menyanyi, berlari, dan menyapu sampah.'
+            },
+            example: {
+              q: 'Ayah sedang ____ surat khabar di beranda.',
+              explanation: 'Kata kerja yang sesuai bagi surat khabar ialah membaca.'
+            },
+            practice: {
+              q: 'Pilih kata kerja yang sesuai untuk makanan:',
+              options: ['mengunyah', 'membaling', 'menunggang', 'mendengar'],
+              a: 'mengunyah'
+            },
+            quiz: [
+              { q: 'Adik suka ____ lagu kanak-kanak.', options: ['menyanyi', 'memasak', 'menjahit', 'memanjat'], a: 'menyanyi' },
+              { q: 'Kakak ____ bilik tidurnya sehingga bersih.', options: ['mengemas', 'memandu', 'menulis', 'melihat'], a: 'mengemas' },
+              { q: 'Burung murai terbang tinggi di angkasa. Perkataan kata kerjanya ialah:', options: ['terbang', 'burung', 'tinggi', 'angkasa'], a: 'terbang' }
+            ]
+          }
+        ],
+        bi: [
+          {
+            id: 'bi1_1',
+            title: 'Nouns & Simple Pronouns',
+            desc: 'He, She, It & Plurals',
+            icon: '🔤',
+            note: {
+              heading: 'Using He, She, and It',
+              body: 'Use "He" for boys/men, "She" for girls/women, and "It" for animals or objects. Add -s or -es for plural nouns (e.g. 1 cat -> 2 cats).'
+            },
+            example: {
+              q: 'Aiman is a boy. ____ is playing football.',
+              explanation: 'We replace Aiman with "He" because he is a boy.'
+            },
+            practice: {
+              q: 'Choose the correct plural form for "Box":',
+              options: ['Boxes', 'Boxs', 'Boxies', 'Boxen'],
+              a: 'Boxes'
+            },
+            quiz: [
+              { q: 'Sarah is my sister. ____ is seven years old.', options: ['She', 'He', 'It', 'They'], a: 'She' },
+              { q: 'The dog is barking. ____ is hungry.', options: ['It', 'He', 'She', 'We'], a: 'It' },
+              { q: 'Plural form of "Apple":', options: ['Apples', 'Appless', 'Applies', 'Apple'], a: 'Apples' }
+            ]
+          }
+        ],
+        science: [
+          {
+            id: 'sci1_1',
+            title: 'Benda Hidup & Bukan Hidup',
+            desc: 'Ciri asas hidupan sekeliling',
+            icon: '🌱',
+            note: {
+              heading: 'Ciri-Ciri Benda Hidup',
+              body: 'Benda hidup memerlukan air, udara dan makanan. Benda hidup juga boleh bernafas, membesar, bergerak dan membiak.'
+            },
+            example: {
+              q: 'Adakah pokok bunga benda hidup?',
+              explanation: 'Ya, pokok membesar dan memerlukan air serta cahaya matahari untuk menghasilkan makanan.'
+            },
+            practice: {
+              q: 'Manakah antara berikut benda BUKAN hidup?',
+              options: ['Kereta mainan', 'Kucing belang', 'Pokok kelapa', 'Burung merpati'],
+              a: 'Kereta mainan'
+            },
+            quiz: [
+              { q: 'Manakah keperluan asas benda hidup?', options: ['Makanan dan air', 'Bateri dan suis', 'Minyak petrol', 'Cermin mata'], a: 'Makanan dan air' },
+              { q: 'Objek yang manakah TIDAK membesar?', options: ['Batu', 'Anak ayam', 'Anak pokok', 'Bayi manusia'], a: 'Batu' },
+              { q: 'Benda hidup membiak untuk:', options: ['Menambah zuriat / keturunan', 'Menjadi robot', 'Mengecilkan saiz', 'Berhenti bergerak'], a: 'Menambah zuriat / keturunan' }
+            ]
+          }
+        ]
+      },
+      2: {
+        math: [
+          {
+            id: 'm2_1',
+            title: 'Sifir & Operasi Darab',
+            desc: 'Penambahan berulang kumpulan',
+            icon: '✖️',
+            note: {
+              heading: 'Darab Ialah Tambah Berulang',
+              body: 'Konsep 3 × 4 bermaksud ada 3 kumpulan, setiap kumpulan ada 4 objek (4 + 4 + 4 = 12). Menghafal sifir 2, 3, 4, 5, dan 10 membolehkan pengiraan pantas.'
+            },
+            example: {
+              q: '5 × 3 = ?',
+              explanation: 'Kira gandaan 5 sebanyak 3 kali: 5, 10, 15. Jawapannya ialah 15.'
+            },
+            practice: {
+              q: 'Kira hasil darab: 4 × 4 = ?',
+              options: ['16', '12', '18', '20'],
+              a: '16'
+            },
+            quiz: [
+              { q: '6 × 5 = ?', options: ['30', '25', '35', '40'], a: '30' },
+              { q: 'Ada 4 buah basikal. Setiap basikal ada 2 roda. Berapakah jumlah roda?', options: ['8', '6', '10', '12'], a: '8' },
+              { q: '10 × 7 = ?', options: ['70', '60', '80', '17'], a: '70' }
+            ]
+          }
+        ],
+        bm: [
+          {
+            id: 'bm2_1',
+            title: 'Penjodoh Bilangan',
+            desc: 'Bilah, kaki, ekor, helai & biji',
+            icon: '📏',
+            note: {
+              heading: 'Membilang Objek Dengan Tepat',
+              body: 'Penjodoh bilangan digunakan sebelum kata nama. Contoh: Sebatang penyapu, sebilah pisau, sekaki payung, sehelai kertas.'
+            },
+            example: {
+              q: 'Ibu menggunakan se____ gunting yang tajam.',
+              explanation: 'Gunting ialah objek tajam, jadi penjodoh bilangannya ialah "bilah".'
+            },
+            practice: {
+              q: 'Pilih penjodoh bilangan bagi "payung":',
+              options: ['kaki', 'batang', 'buah', 'helai'],
+              a: 'kaki'
+            },
+            quiz: [
+              { q: 'Pak Samad membeli dua ____ durian di gerai.', options: ['biji', 'keping', 'pucuk', 'utas'], a: 'biji' },
+              { q: 'Se____ benang diletakkan di dalam laci.', options: ['buku', 'pintu', 'batang', 'potong'], a: 'buku' },
+              { q: 'Kakak menyidai tiga ____ baju basah di ampaian.', options: ['helai', 'kaki', 'pasang', 'buah'], a: 'helai' }
+            ]
+          }
+        ],
+        bi: [
+          {
+            id: 'bi2_1',
+            title: 'Action Verbs & Tenses',
+            desc: 'Present continuous tense (-ing)',
+            icon: '⚡',
+            note: {
+              heading: 'Actions Happening Now',
+              body: 'When someone is doing something right now, we use am/is/are + verb-ing. Example: He is reading a book. They are running.'
+            },
+            example: {
+              q: 'The children ____ (play) in the park right now.',
+              explanation: 'Children is plural, so we use "are playing".'
+            },
+            practice: {
+              q: 'Choose the correct sentence:',
+              options: ['Mother is cooking in the kitchen.', 'Mother cooking in kitchen.', 'Mother are cooking now.', 'Mother is cook now.'],
+              a: 'Mother is cooking in the kitchen.'
+            },
+            quiz: [
+              { q: 'Look! The cat is ____ after the mouse.', options: ['running', 'runs', 'ran', 'run'], a: 'running' },
+              { q: 'They ____ watching a movie at the cinema.', options: ['are', 'is', 'am', 'was'], a: 'are' },
+              { q: 'I ____ writing my homework.', options: ['am', 'is', 'are', 'were'], a: 'am' }
+            ]
+          }
+        ],
+        science: [
+          {
+            id: 'sci2_1',
+            title: 'Deria & Organ Manusia',
+            desc: '5 deria utama & fungsinya',
+            icon: '👁️',
+            note: {
+              heading: '5 Deria Anugerah Tuhan',
+              body: '1. Penglihatan (Mata)\n2. Pendengaran (Telinga)\n3. Bau (Hidung)\n4. Rasa (Lidah)\n5. Sentuhan (Kulit)'
+            },
+            example: {
+              q: 'Apakah organ yang digunakan untuk merasa manis dan masin?',
+              explanation: 'Organ yang mempunyai tunas rasa ialah Lidah.'
+            },
+            practice: {
+              q: 'Deria pendengaran dihubungkan kepada organ:',
+              options: ['Telinga', 'Mata', 'Kulit', 'Hidung'],
+              a: 'Telinga'
+            },
+            quiz: [
+              { q: 'Kulit membantu kita mengesan:', options: ['Suhu panas dan sejuk', 'Warna pelangi', 'Bunyi wisel', 'Bau wangi sabun'], a: 'Suhu panas dan sejuk' },
+              { q: 'Organ yang mengesan bau asap ialah:', options: ['Hidung', 'Lidah', 'Mata', 'Telinga'], a: 'Hidung' },
+              { q: 'Mata kita membolehkan kita melihat ciri objek seperti:', options: ['Bentuk dan warna', 'Rasa manis', 'Kelantangan bunyi', 'Bau busuk'], a: 'Bentuk dan warna' }
+            ]
+          }
+        ]
+      },
+      3: {
+        math: [
+          {
+            id: 'm3_1',
+            title: 'Operasi Bahagi Pantas',
+            desc: 'Pengagihan sama rata kuantiti',
+            icon: '➗',
+            note: {
+              heading: 'Bahagi Ialah Songsangan Darab',
+              body: 'Membahagi bermaksud membahagikan sesuatu jumlah kepada kumpulan yang sama banyak. Contoh: 24 ÷ 6 = 4 kerana 4 × 6 = 24.'
+            },
+            example: {
+              q: '36 ÷ 4 = ?',
+              explanation: 'Fikirkan sifir 4: Berapakah didarab dengan 4 menghasilkan 36? Jawapannya ialah 9.'
+            },
+            practice: {
+              q: 'Kira: 45 ÷ 5 = ?',
+              options: ['9', '8', '7', '6'],
+              a: '9'
+            },
+            quiz: [
+              { q: '56 ÷ 7 = ?', options: ['8', '7', '9', '6'], a: '8' },
+              { q: 'Cikgu ada 30 batang pensel untuk diagihkan sama rata kepada 6 orang murid. Berapa batang setiap orang dapat?', options: ['5', '6', '4', '8'], a: '5' },
+              { q: '81 ÷ 9 = ?', options: ['9', '8', '7', '10'], a: '9' }
+            ]
+          }
+        ],
+        bm: [
+          {
+            id: 'bm3_1',
+            title: 'Simpulan Bahasa & Kiasan',
+            desc: 'Ungkapan indah warisan Melayu',
+            icon: '💡',
+            note: {
+              heading: 'Maksud Tersirat Simpulan Bahasa',
+              body: 'Simpulan bahasa terdiri daripada dua perkataan yang membawa makna khas. Contoh: "Ringan tulang" bermaksud orang yang rajin bekerja, "Ulat buku" ialah orang yang gemar membaca.'
+            },
+            example: {
+              q: 'Apakah maksud "Kaki bangku"?',
+              explanation: '"Kaki bangku" merujuk kepada orang yang tidak pandai bermain bola sepak.'
+            },
+            practice: {
+              q: 'Seseorang yang bersikap sombong digelar:',
+              options: ['Hidung tinggi', 'Telinga kuali', 'Panjang tangan', 'Hati batu'],
+              a: 'Hidung tinggi'
+            },
+            quiz: [
+              { q: 'Afif seorang yang rajin membantu ibunya di dapur. Dia seorang yang:', options: ['ringan tulang', 'berat tulang', 'kaki ayam', 'mandi kerbau'], a: 'ringan tulang' },
+              { q: 'Maksud simpulan bahasa "anak emas" ialah:', options: ['Anak yang sangat disayangi', 'Anak yang memakai rantai emas', 'Anak yang pandai melukis', 'Anak tunggal'], a: 'Anak yang sangat disayangi' },
+              { q: 'Pemberian ikhlas yang dibawa ketika menziarahi orang dinamakan:', options: ['buah tangan', 'buah mulut', 'kaki bangku', 'ambil angin'], a: 'buah tangan' }
+            ]
+          }
+        ],
+        bi: [
+          {
+            id: 'bi3_1',
+            title: 'Adjectives & Comparisons',
+            desc: 'Bigger, Smaller & Superlatives',
+            icon: '🐘',
+            note: {
+              heading: 'Comparing Two or More Objects',
+              body: 'Add -er when comparing 2 items (The horse is faster than the goat). Add -est when comparing 3 or more (The cheetah is the fastest).'
+            },
+            example: {
+              q: 'An elephant is ____ than a rabbit.',
+              explanation: 'Comparing two animals, so we use "bigger".'
+            },
+            practice: {
+              q: 'The blue whale is the ____ animal in the ocean.',
+              options: ['largest', 'larger', 'large', 'more large'],
+              a: 'largest'
+            },
+            quiz: [
+              { q: 'A plane travels ____ than a train.', options: ['faster', 'fastest', 'fast', 'more fast'], a: 'faster' },
+              { q: 'Mount Everest is the ____ mountain in the world.', options: ['highest', 'higher', 'high', 'most high'], a: 'highest' },
+              { q: 'Which is the correct opposite of "Bright"?', options: ['Dark', 'Shiny', 'Clean', 'Hot'], a: 'Dark' }
+            ]
+          }
+        ],
+        science: [
+          {
+            id: 'sci3_1',
+            title: 'Haiwan & Tabiat Pemakanan',
+            desc: 'Herbivor, Karnivor & Omnivor',
+            icon: '🦁',
+            note: {
+              heading: 'Pengelasan Makanan Haiwan',
+              body: '1. Herbivor: Makan tumbuhan sahaja (Cth: Lembu, Kambing, Arnab)\n2. Karnivor: Makan daging sahaja (Cth: Singa, Harimau, Buaya)\n3. Omnivor: Makan tumbuhan dan haiwan lain (Cth: Ayam, Monyet, Beruang)'
+            },
+            example: {
+              q: 'Harimau mempunyai gigi taring yang tajam untuk:',
+              explanation: 'Gigi taring berfungsi untuk mengoyak daging mangsanya.'
+            },
+            practice: {
+              q: 'Manakah antara haiwan berikut ialah Herbivor?',
+              options: ['Gajah', 'Serigala', 'Burung helang', 'Kucing'],
+              a: 'Gajah'
+            },
+            quiz: [
+              { q: 'Haiwan omnivor memakan:', options: ['Tumbuhan dan haiwan lain', 'Tumbuhan sahaja', 'Daging sahaja', 'Kayu reput sahaja'], a: 'Tumbuhan dan haiwan lain' },
+              { q: 'Gigi kacip manusia dan haiwan berfungsi untuk:', options: ['Memotong makanan', 'Mengoyak daging liat', 'Melumatkan makanan', 'Menghisap darah'], a: 'Memotong makanan' },
+              { q: 'Haiwan manakah yang mempunyai tabiat makan karnivor?', options: ['Ikan jerung', 'Kuda belang', 'Kura-kura darat', 'Rama-rama'], a: 'Ikan jerung' }
+            ]
+          }
+        ]
+      }
+    };
+
+    // Senarai Lencana Gamifikasi
+    const BADGES_CONFIG = [
+      { id: 'first_lesson', name: 'First Lesson', icon: '🏅', desc: 'Selesaikan modul pertama', reqType: 'completedTopics', reqVal: 1 },
+      { id: 'streak_3', name: '3-Day Streak', icon: '🔥', desc: 'Belajar 3 hari berturut-turut', reqType: 'streak', reqVal: 3 },
+      { id: 'math_master', name: 'Math Master', icon: '🔢', desc: 'Kuasai 3 topik Matematik', reqType: 'mathMastery', reqVal: 3 },
+      { id: 'bm_champion', name: 'BM Champion', icon: '🇲🇾', desc: 'Kuasai 2 topik Bahasa Melayu', reqType: 'bmMastery', reqVal: 2 },
+      { id: 'english_star', name: 'English Star', icon: '🇬🇧', desc: 'Kuasai 2 topik English Ace', reqType: 'biMastery', reqVal: 2 },
+      { id: 'little_sci', name: 'Little Scientist', icon: '🔬', desc: 'Kuasai 2 topik Sains Eksplorasi', reqType: 'sciMastery', reqVal: 2 },
+      { id: 'bookworm', name: 'Bookworm', icon: '📚', desc: 'Kumpul 500 XP pembelajaran', reqType: 'xp', reqVal: 500 },
+      { id: 'edubox_master', name: 'EduBox Master', icon: '🏆', desc: 'Kumpul 1,500 XP & tamat 5 topik', reqType: 'xp', reqVal: 1500 }
+    ];
+
+    // Subjek Meta
+    const SUBJECT_META = {
+      math: { title: 'Matematik', icon: '🔢', color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50 border-amber-200 text-amber-700' },
+      bm: { title: 'Bahasa Melayu', icon: '📖', color: 'from-rose-500 to-red-600', bg: 'bg-rose-50 border-rose-200 text-rose-700' },
+      bi: { title: 'English Ace', icon: '🔤', color: 'from-blue-500 to-indigo-600', bg: 'bg-blue-50 border-blue-200 text-blue-700' },
+      science: { title: 'Sains', icon: '🔬', color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50 border-emerald-200 text-emerald-700' }
+    };
+
+    // ==========================================
+    // KOMPONEN UTAMA (EduBox App)
+    // ==========================================
+    function App() {
+      // 1. LocalStorage States
+      const [xp, setXp] = useState(() => parseInt(localStorage.getItem('edubox_xp') || '120'));
+      const [streak, setStreak] = useState(() => parseInt(localStorage.getItem('edubox_streak') || '1'));
+      const [completedTopics, setCompletedTopics] = useState(() => {
+        const saved = localStorage.getItem('edubox_completed_topics');
+        return saved ? JSON.parse(saved) : [];
+      });
+      const [unlockedBadges, setUnlockedBadges] = useState(() => {
+        const saved = localStorage.getItem('edubox_badges');
+        return saved ? JSON.parse(saved) : ['first_lesson'];
+      });
+
+      // 2. Navigation States
+      const [view, setView] = useState('dashboard'); // 'dashboard' | 'syllabus' | 'learn' | 'badges' | 'progress'
+      const [selectedYear, setSelectedYear] = useState(1);
+      const [selectedSubject, setSelectedSubject] = useState('math');
+      const [activeTopic, setActiveTopic] = useState(null);
+
+      // 3. Learning Flow States (0: NOTA, 1: CONTOH, 2: LATIHAN, 3: KUIZ, 4: MASTERED)
+      const [learnStep, setLearnStep] = useState(0);
+      const [practiceSelected, setPracticeSelected] = useState(null);
+      const [practiceFeedback, setPracticeFeedback] = useState(null);
+      
+      // Quiz Section States
+      const [quizIndex, setQuizIndex] = useState(0);
+      const [quizScore, setQuizScore] = useState(0);
+      const [quizFeedback, setQuizFeedback] = useState(null);
+      const [quizTimer, setQuizTimer] = useState(20);
+      const timerRef = useRef(null);
+
+      // Simpan perubahan ke localStorage
+      useEffect(() => {
+        localStorage.setItem('edubox_xp', xp.toString());
+        localStorage.setItem('edubox_streak', streak.toString());
+        localStorage.setItem('edubox_completed_topics', JSON.stringify(completedTopics));
+        localStorage.setItem('edubox_badges', JSON.stringify(unlockedBadges));
+        checkBadges();
+      }, [xp, streak, completedTopics, unlockedBadges]);
+
+      // Sistem Semakan Badge Automatik
+      const checkBadges = () => {
+        const newBadges = [...unlockedBadges];
+        const mathCount = completedTopics.filter(id => id.startsWith('m')).length;
+        const bmCount = completedTopics.filter(id => id.startsWith('bm')).length;
+        const biCount = completedTopics.filter(id => id.startsWith('bi')).length;
+        const sciCount = completedTopics.filter(id => id.startsWith('sci')).length;
+
+        BADGES_CONFIG.forEach(b => {
+          if (!newBadges.includes(b.id)) {
+            let unlock = false;
+            if (b.reqType === 'completedTopics' && completedTopics.length >= b.reqVal) unlock = true;
+            if (b.reqType === 'streak' && streak >= b.reqVal) unlock = true;
+            if (b.reqType === 'xp' && xp >= b.reqVal) unlock = true;
+            if (b.reqType === 'mathMastery' && mathCount >= b.reqVal) unlock = true;
+            if (b.reqType === 'bmMastery' && bmCount >= b.reqVal) unlock = true;
+            if (b.reqType === 'biMastery' && biCount >= b.reqVal) unlock = true;
+            if (b.reqType === 'sciMastery' && sciCount >= b.reqVal) unlock = true;
+
+            if (unlock) {
+              newBadges.push(b.id);
+              if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70 });
+            }
+          }
+        });
+
+        if (newBadges.length !== unlockedBadges.length) {
+          setUnlockedBadges(newBadges);
+        }
+      };
+
+      // Kawalan Pemasa Kuiz
+      useEffect(() => {
+        if (view === 'learn' && learnStep === 3 && !quizFeedback) {
+          setQuizTimer(20);
+          clearInterval(timerRef.current);
+          timerRef.current = setInterval(() => {
+            setQuizTimer((prev) => {
+              if (prev <= 1) {
+                clearInterval(timerRef.current);
+                handleQuizTimeout();
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
+        return () => clearInterval(timerRef.current);
+      }, [view, learnStep, quizIndex, quizFeedback]);
+
+      const handleQuizTimeout = () => {
+        playSound('wrong');
+        const correct = activeTopic.quiz[quizIndex].a;
+        setQuizFeedback({ status: 'wrong', text: `Masa Tamat! (Jawapan: ${correct})` });
+        setTimeout(proceedQuiz, 1400);
+      };
+
+      // Mula Belajar Topik
+      const startTopicLearning = (topic) => {
+        playSound('click');
+        setActiveTopic(topic);
+        setLearnStep(0);
+        setPracticeSelected(null);
+        setPracticeFeedback(null);
+        setQuizIndex(0);
+        setQuizScore(0);
+        setQuizFeedback(null);
+        setView('learn');
+      };
+
+      // Semak Latihan Interaktif
+      const checkPractice = (opt) => {
+        if (practiceFeedback) return;
+        setPracticeSelected(opt);
+        if (opt === activeTopic.practice.a) {
+          playSound('correct');
+          setPracticeFeedback({ status: 'correct', text: 'Tepat Sekali! 🎉 (+10 XP)' });
+          setXp(x => x + 10);
+        } else {
+          playSound('wrong');
+          setPracticeFeedback({ status: 'wrong', text: `Kurang tepat. Jawapan: ${activeTopic.practice.a}` });
+        }
+      };
+
+      // Semak Kuiz Penilaian
+      const checkQuizAnswer = (selectedOpt) => {
+        if (quizFeedback) return;
+        clearInterval(timerRef.current);
+        const curQ = activeTopic.quiz[quizIndex];
+
+        if (selectedOpt === curQ.a) {
+          playSound('correct');
+          setQuizScore(s => s + 1);
+          setXp(x => x + 15);
+          setQuizFeedback({ status: 'correct', text: 'Jawapan Tepat! 🌟 (+15 XP)' });
+        } else {
+          playSound('wrong');
+          setQuizFeedback({ status: 'wrong', text: `Salah! Jawapan: ${curQ.a}` });
+        }
+        setTimeout(proceedQuiz, 1300);
+      };
+
+      const proceedQuiz = () => {
+        if (quizIndex + 1 >= activeTopic.quiz.length) {
+          // Selesai Topik
+          playSound('complete');
+          if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+          
+          const isFirstTime = !completedTopics.includes(activeTopic.id);
+          if (isFirstTime) {
+            setCompletedTopics(prev => [...prev, activeTopic.id]);
+            setXp(x => x + 50); // +50 XP selesai topik
+          }
+          setLearnStep(4); // Skrin Mastered
+        } else {
+          setQuizIndex(i => i + 1);
+          setQuizFeedback(null);
+        }
+      };
+
+      // ==========================================
+      // PAPARAN 1: DASHBOARD UTAMA
+      // ==========================================
+      if (view === 'dashboard') {
+        const totalTopicsCount = 12; // Anggaran jumlah modul aktif
+        const progressPercent = Math.min(100, Math.round((completedTopics.length / totalTopicsCount) * 100));
+
+        return (
+          <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC] overflow-y-auto no-scrollbar">
+            <div>
+              {/* Header Profile & Stat Bar */}
+              <div className="flex items-center justify-between pt-2 mb-4">
+                <div>
+                  <h1 className="text-xl font-black text-slate-900 tracking-tight">👋 Hai, Pelajar Pintar!</h1>
+                  <p className="text-xs font-semibold text-slate-600">Jom kuasai ilmu hari ini 🚀</p>
+                </div>
+                <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black shadow-md shadow-indigo-200">
+                  🎒
+                </div>
+              </div>
+
+              {/* XP & Streak Banner */}
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl p-4 text-white shadow-md shadow-amber-200/50 flex items-center gap-3">
+                  <span className="text-3xl">⭐</span>
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-100 block">Jumlah XP</span>
+                    <span className="text-xl font-black">{xp.toLocaleString()} XP</span>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-rose-500 to-red-600 rounded-3xl p-4 text-white shadow-md shadow-rose-200/50 flex items-center gap-3">
+                  <span className="text-3xl">🔥</span>
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-100 block">Streak Harian</span>
+                    <span className="text-xl font-black">{streak} Hari Aktif</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pemilihan Tahun KSSR */}
+              <div className="mb-5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-600">Pilih Tahun Persekolahan</span>
+                  <span className="text-[11px] font-bold text-indigo-700">KSSR Semakan</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 bg-slate-200/80 p-1.5 rounded-2xl">
+                  {[1, 2, 3].map((yr) => (
+                    <button
+                      key={yr}
+                      onClick={() => { playSound('click'); setSelectedYear(yr); }}
+                      className={`py-3 rounded-xl font-black text-xs transition-all ${
+                        selectedYear === yr
+                          ? 'bg-white text-indigo-700 shadow-sm scale-100'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      Tahun {yr}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Kad Teruskan Pembelajaran (Active Track) */}
+              <div className="mb-5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-600">Status Kemajuan Keseluruhan</span>
+                  <span className="text-[11px] font-black text-emerald-600">{progressPercent}% Kuasai</span>
+                </div>
+                <div className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 shadow-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-2xl p-2 bg-indigo-50 rounded-xl">📚</span>
+                      <div>
+                        <h4 className="font-black text-slate-800 text-sm">Modul Tahun {selectedYear}</h4>
+                        <p className="text-[11px] font-bold text-slate-600">{completedTopics.length} Topik Berjaya Dikuasai</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className="bg-indigo-600 h-full rounded-full transition-all duration-700"
+                      style={{ width: `${Math.max(5, progressPercent)}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Modul Subjek Grid */}
+              <div className="mb-2">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-600 block mb-2.5">
+                  Subjek Tahun {selectedYear}
+                </span>
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.keys(SUBJECT_META).map((subjKey) => {
+                    const s = SUBJECT_META[subjKey];
+                    const topicsList = (SYLLABUS_DATA[selectedYear] && SYLLABUS_DATA[selectedYear][subjKey]) || [];
+                    const completedInSubj = topicsList.filter(t => completedTopics.includes(t.id)).length;
+
+                    return (
+                      <button
+                        key={subjKey}
+                        onClick={() => {
+                          playSound('click');
+                          setSelectedSubject(subjKey);
+                          setView('syllabus');
+                        }}
+                        className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 text-left active:bg-slate-50 transition shadow-sm flex flex-col justify-between h-36"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-3xl">{s.icon}</span>
+                          <span className="text-[10px] font-black bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
+                            {completedInSubj}/{topicsList.length}
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-800 text-sm">{s.title}</h4>
+                          <p className="text-[11px] font-bold text-slate-600">{topicsList.length} Topik Pembelajaran</p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Nav Bar */}
+            <div className="pt-3 border-t border-slate-200/80 flex items-center justify-around">
+              <button onClick={() => setView('dashboard')} className="flex flex-col items-center gap-1 text-indigo-700 font-bold text-[11px]">
+                <span className="text-xl">🏠</span> Utama
+              </button>
+              <button onClick={() => { playSound('click'); setView('badges'); }} className="flex flex-col items-center gap-1 text-slate-600 hover:text-slate-800 font-bold text-[11px]">
+                <span className="text-xl">🏆</span> Lencana ({unlockedBadges.length})
+              </button>
+              <button onClick={() => { playSound('click'); setView('progress'); }} className="flex flex-col items-center gap-1 text-slate-600 hover:text-slate-800 font-bold text-[11px]">
+                <span className="text-xl">📊</span> Analisis
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // PAPARAN 2: SENARAI SILIBUS SUBJEK
+      // ==========================================
+      if (view === 'syllabus') {
+        const topics = (SYLLABUS_DATA[selectedYear] && SYLLABUS_DATA[selectedYear][selectedSubject]) || [];
+        const sMeta = SUBJECT_META[selectedSubject];
+
+        return (
+          <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={() => { playSound('click'); setView('dashboard'); }}
+                  className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center font-black text-slate-600 active:scale-95 transition"
+                >
+                  ←
+                </button>
+                <div className="text-center">
+                  <h2 className="text-sm font-black text-slate-900">{sMeta.title}</h2>
+                  <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">
+                    Tahun {selectedYear}
+                  </span>
+                </div>
+                <div className="w-10"></div>
+              </div>
+
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-600">Pilih Topik Pembelajaran</span>
+                <span className="text-[11px] font-bold text-slate-600">Nota • Latihan • Kuiz</span>
+              </div>
+
+              {/* Senarai Topik */}
+              <div className="space-y-3 overflow-y-auto max-h-[580px] no-scrollbar pr-0.5">
+                {topics.map((t, idx) => {
+                  const isDone = completedTopics.includes(t.id);
+                  return (
+                    <div
+                      key={t.id}
+                      className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 shadow-sm flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl ${isDone ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
+                          {isDone ? '✓' : t.icon}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-black uppercase text-indigo-700">Topik {idx + 1}</span>
+                            {isDone && <span className="text-[9px] bg-emerald-100 text-emerald-700 font-extrabold px-1.5 py-0.5 rounded">Dikuasai</span>}
+                          </div>
+                          <h4 className="font-black text-slate-800 text-sm">{t.title}</h4>
+                          <p className="text-[11px] font-bold text-slate-600">{t.desc}</p>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => startTopicLearning(t)}
+                        className={`px-4 py-2.5 rounded-xl font-black text-xs active:scale-95 transition ${
+                          isDone ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
+                        }`}
+                      >
+                        {isDone ? 'Ulang ↺' : 'Mula 🚀'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setView('dashboard')}
+              className="w-full py-3.5 bg-slate-200/80 text-slate-700 rounded-2xl font-black text-xs active:scale-95 transition"
+            >
+              Kembali ke Menu Utama
+            </button>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // PAPARAN 3: MODUL PEMBELAJARAN 4-LANGKAH
+      // ==========================================
+      if (view === 'learn') {
+        const stepTitles = ['Nota Ringkas 💡', 'Contoh Aplikasi 📝', 'Latihan Pantas ✏️', 'Kuiz Penilaian 🧠', 'Tahniah! 🏆'];
+        const optionAlphabet = ['A', 'B', 'C', 'D'];
+
+        return (
+          <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
+            {/* Header Steps */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <button
+                  onClick={() => { playSound('click'); setView('syllabus'); }}
+                  className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center font-bold text-slate-600 text-xs active:scale-95 transition"
+                >
+                  ✕
+                </button>
+                <span className="text-xs font-black text-slate-800">{activeTopic.title}</span>
+                <span className="text-[10px] font-black bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full">
+                  Langkah {learnStep + 1}/5
+                </span>
+              </div>
+
+              {/* Step Tracker Pills */}
+              <div className="grid grid-cols-5 gap-1.5 mb-4">
+                {[0, 1, 2, 3, 4].map(st => (
+                  <div
+                    key={st}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      learnStep === st ? 'bg-indigo-600' : learnStep > st ? 'bg-emerald-500' : 'bg-slate-200'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* KANDUNGAN LANGKAH 1: NOTA */}
+            {learnStep === 0 && (
+              <div className="my-auto py-2">
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 shadow-sm">
+                  <span className="text-xs font-black uppercase text-amber-700 bg-amber-50 px-3 py-1 rounded-full inline-block mb-3">
+                    {stepTitles[0]}
+                  </span>
+                  <h3 className="text-lg font-black text-slate-900 mb-2">{activeTopic.note.heading}</h3>
+                  <p className="text-sm font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
+                    {activeTopic.note.body}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* KANDUNGAN LANGKAH 2: CONTOH */}
+            {learnStep === 1 && (
+              <div className="my-auto py-2">
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 shadow-sm">
+                  <span className="text-xs font-black uppercase text-blue-700 bg-blue-50 px-3 py-1 rounded-full inline-block mb-3">
+                    {stepTitles[1]}
+                  </span>
+                  <h4 className="text-xs font-bold text-slate-600 uppercase mb-1">Soalan Contoh:</h4>
+                  <p className="text-base font-black text-slate-800 mb-4">{activeTopic.example.q}</p>
+                  
+                  <div className="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4">
+                    <span className="text-xs font-black text-indigo-700 block mb-1">💡 Cara Selesai & Penjelasan:</span>
+                    <p className="text-xs font-bold text-indigo-900 leading-normal">{activeTopic.example.explanation}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* KANDUNGAN LANGKAH 3: LATIHAN */}
+            {learnStep === 2 && (
+              <div className="my-auto py-2">
+                {practiceFeedback && (
+                  <div className={`text-center text-xs font-black py-2 px-4 rounded-2xl mb-3 w-max mx-auto shadow-sm ${
+                    practiceFeedback.status === 'correct' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white animate-shake'
+                  }`}>
+                    {practiceFeedback.text}
+                  </div>
+                )}
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 shadow-sm mb-4">
+                  <span className="text-xs font-black uppercase text-purple-700 bg-purple-50 px-3 py-1 rounded-full inline-block mb-2">
+                    {stepTitles[2]}
+                  </span>
+                  <h3 className="text-base font-black text-slate-800">{activeTopic.practice.q}</h3>
+                </div>
+
+                <div className="space-y-2">
+                  {activeTopic.practice.options.map((opt, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => checkPractice(opt)}
+                      className={`w-full py-3.5 px-4 bg-white border-2 rounded-2xl text-xs font-black text-left flex items-center justify-between transition-all ${
+                        practiceSelected === opt
+                          ? opt === activeTopic.practice.a ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-rose-500 bg-rose-50 text-rose-900'
+                          : 'border-slate-200/80 text-slate-700 active:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-600">
+                          {optionAlphabet[idx]}
+                        </span>
+                        <span>{opt}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* KANDUNGAN LANGKAH 4: KUIZ PENILAIAN */}
+            {learnStep === 3 && (
+              <div className="my-auto py-2">
+                {/* Timer Bar */}
+                <div className="bg-white p-2.5 rounded-2xl border border-slate-200/80 mb-3 flex items-center gap-3 shadow-sm">
+                  <span className="text-xs font-black text-slate-700">⏱️ {quizTimer}s</span>
+                  <div className="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-1000 ${quizTimer > 10 ? 'bg-emerald-500' : quizTimer > 5 ? 'bg-amber-500' : 'bg-rose-500'}`}
+                      style={{ width: `${(quizTimer / 20) * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-[11px] font-black text-indigo-700">Soalan {quizIndex + 1}/{activeTopic.quiz.length}</span>
+                </div>
+
+                {quizFeedback && (
+                  <div className={`text-center text-xs font-black py-2 px-4 rounded-2xl mb-3 w-max mx-auto shadow-sm ${
+                    quizFeedback.status === 'correct' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white animate-shake'
+                  }`}>
+                    {quizFeedback.text}
+                  </div>
+                )}
+
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 text-center shadow-sm mb-4">
+                  <h3 className="text-lg font-black text-slate-800 leading-snug">
+                    {activeTopic.quiz[quizIndex].q}
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  {activeTopic.quiz[quizIndex].options.map((opt, idx) => (
+                    <button
+                      key={idx}
+                      disabled={Boolean(quizFeedback)}
+                      onClick={() => checkQuizAnswer(opt)}
+                      className="w-full py-3.5 px-4 bg-white border-2 border-slate-200/80 rounded-2xl text-xs font-black text-slate-700 active:bg-indigo-50 active:border-indigo-400 text-left flex items-center justify-between shadow-sm transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-600">
+                          {optionAlphabet[idx]}
+                        </span>
+                        <span>{opt}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* KANDUNGAN LANGKAH 5: TAHNIAH / MASTERED */}
+            {learnStep === 4 && (
+              <div className="my-auto py-4 text-center">
+                <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner">
+                  🏆
+                </div>
+                <h2 className="text-2xl font-black text-slate-800">Topik Berjaya Dikuasai!</h2>
+                <p className="text-xs font-bold text-slate-600 mt-1">{activeTopic.title} • Selesai Penuh</p>
+
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-5 my-5 shadow-sm">
+                  <span className="text-xs uppercase font-black text-indigo-700 block mb-1">Ganjaran Pembelajaran</span>
+                  <div className="text-3xl font-black text-indigo-700">+65 XP Diperoleh ⭐</div>
+                  <p className="text-[11px] font-bold text-slate-600 mt-2">
+                    Skor Kuiz: {quizScore} / {activeTopic.quiz.length} Soalan Tepat
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Bottom Actions */}
+            <div>
+              {learnStep < 2 && (
+                <button
+                  onClick={() => { playSound('click'); setLearnStep(s => s + 1); }}
+                  className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-indigo-200 active:scale-95 transition"
+                >
+                  Seterusnya: {stepTitles[learnStep + 1]} →
+                </button>
+              )}
+              {learnStep === 2 && (
+                <button
+                  disabled={!practiceFeedback}
+                  onClick={() => { playSound('click'); setLearnStep(3); }}
+                  className={`w-full py-4 rounded-2xl font-black text-xs active:scale-95 transition ${
+                    practiceFeedback ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-slate-200 text-slate-600 cursor-not-allowed'
+                  }`}
+                >
+                  Masuk Ke Kuiz Penilaian →
+                </button>
+              )}
+              {learnStep === 4 && (
+                <button
+                  onClick={() => { playSound('click'); setView('syllabus'); }}
+                  className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-emerald-200 active:scale-95 transition"
+                >
+                  Selesai & Pilih Topik Lain ✓
+                </button>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // PAPARAN 4: LENCANA PENCAPAIAN (BADGES)
+      // ==========================================
+      if (view === 'badges') {
+        return (
+          <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={() => { playSound('click'); setView('dashboard'); }}
+                  className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center font-black text-slate-600 text-xs active:scale-95 transition"
+                >
+                  ←
+                </button>
+                <div className="text-center">
+                  <h2 className="text-sm font-black text-slate-900">Koleksi Lencana</h2>
+                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">
+                    {unlockedBadges.length} daripada {BADGES_CONFIG.length} Terbuka
+                  </span>
+                </div>
+                <div className="w-10"></div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 max-h-[600px] overflow-y-auto no-scrollbar pr-0.5">
+                {BADGES_CONFIG.map(b => {
+                  const isUnlocked = unlockedBadges.includes(b.id);
+                  return (
+                    <div
+                      key={b.id}
+                      className={`p-4 rounded-3xl border-2 text-center flex flex-col items-center justify-between h-44 transition ${
+                        isUnlocked ? 'bg-white border-amber-300 shadow-sm' : 'bg-slate-100/70 border-slate-200 opacity-60'
+                      }`}
+                    >
+                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-2 ${
+                        isUnlocked ? 'bg-amber-100' : 'bg-slate-200 grayscale'
+                      }`}>
+                        {b.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-black text-slate-800 text-xs">{b.name}</h4>
+                        <p className="text-[10px] font-semibold text-slate-600 mt-0.5 leading-snug">{b.desc}</p>
+                      </div>
+                      <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                        isUnlocked ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
+                      }`}>
+                        {isUnlocked ? 'Dibuka ✓' : 'Terkunci 🔒'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setView('dashboard')}
+              className="w-full py-3.5 bg-slate-200/80 text-slate-700 rounded-2xl font-black text-xs active:scale-95 transition"
+            >
+              Kembali ke Dashboard
+            </button>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // PAPARAN 5: ANALISIS KEMAJUAN (PROGRESS)
+      // ==========================================
+      if (view === 'progress') {
+        return (
+          <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={() => { playSound('click'); setView('dashboard'); }}
+                  className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center font-black text-slate-600 text-xs active:scale-95 transition"
+                >
+                  ←
+                </button>
+                <h2 className="text-sm font-black text-slate-900">Analisis Prestasi</h2>
+                <div className="w-10"></div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 shadow-sm flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl p-2 bg-amber-50 rounded-xl">⭐</span>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-600 uppercase">Jumlah XP</span>
+                      <h4 className="font-black text-slate-800 text-base">{xp} XP</h4>
+                    </div>
+                  </div>
+                  <span className="text-xs font-black text-amber-700">Peringkat Pintar 🚀</span>
+                </div>
+
+                <div className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 shadow-sm flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl p-2 bg-emerald-50 rounded-xl">📚</span>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-600 uppercase">Topik Selesai</span>
+                      <h4 className="font-black text-slate-800 text-base">{completedTopics.length} Modul</h4>
+                    </div>
+                  </div>
+                  <span className="text-xs font-black text-emerald-600">Aktif</span>
+                </div>
+
+                <div className="bg-white p-4 rounded-3xl border-2 border-slate-200/80 shadow-sm flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl p-2 bg-rose-50 rounded-xl">🔥</span>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-600 uppercase">Streak Pembelajaran</span>
+                      <h4 className="font-black text-slate-800 text-base">{streak} Hari</h4>
+                    </div>
+                  </div>
+                  <span className="text-xs font-black text-rose-600">Konsisten</span>
+                </div>
+
+                <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-3xl">
+                  <h4 className="text-xs font-black text-indigo-900 mb-1">💡 Tips Belajar</h4>
+                  <p className="text-[11px] font-bold text-indigo-700 leading-relaxed">
+                    Selesaikan sekurang-kurangnya 1 topik setiap hari untuk mengekalkan Streak Harian dan mengumpul lencana khas!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setView('dashboard')}
+              className="w-full py-3.5 bg-slate-200/80 text-slate-700 rounded-2xl font-black text-xs active:scale-95 transition"
+            >
+              Kembali ke Dashboard
+            </button>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
