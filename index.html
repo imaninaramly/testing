@@ -3,816 +3,3954 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mega EduBox Pro: Edisi Penuh 50 Soalan (Tahun 1-3)</title>
+  <title>Edu Box — Learning Platform Tahun 1–3</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .animate-shake {
-      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    * {
+      box-sizing: border-box;
     }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", "Plus Jakarta Sans", sans-serif;
+      background:
+        radial-gradient(circle at top left, #e0f2fe 0, transparent 28%),
+        radial-gradient(circle at bottom right, #fce7f3 0, transparent 30%),
+        #f8fafc;
+      color: #172033;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+    }
+
+    .glass {
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .soft-shadow {
+      box-shadow: 0 12px 40px rgba(15,23,42,.08);
+    }
+
+    .card-hover {
+      transition: .2s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 45px rgba(15,23,42,.10);
+    }
+
+    .card-hover:active {
+      transform: scale(.98);
+    }
+
+    .animate-shake {
+      animation: shake .4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
     @keyframes shake {
-      10%, 90% { transform: translate3d(-1px, 0, 0); }
-      20%, 80% { transform: translate3d(2px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-      40%, 60% { transform: translate3d(4px, 0, 0); }
+      10%,90% { transform: translate3d(-1px,0,0); }
+      20%,80% { transform: translate3d(2px,0,0); }
+      30%,50%,70% { transform: translate3d(-4px,0,0); }
+      40%,60% { transform: translate3d(4px,0,0); }
+    }
+
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .progress-fill {
+      transition: width .5s ease;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .lesson-content p {
+      margin: 0 0 12px;
+    }
+
+    .option-btn {
+      transition: all .18s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: #818cf8;
+    }
+
+    .bottom-nav {
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-800 min-h-screen flex items-center justify-center p-0 sm:p-4">
-  <div id="root" class="w-full max-w-md bg-[#F8FAFC] min-h-screen sm:min-h-[840px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col justify-between border border-slate-700/20"></div>
 
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+<body>
+<div id="root"></div>
 
-    // ==========================================
-    // AUDIO ENGINE (Web Audio API)
-    // ==========================================
-    const playSound = (type) => {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+<script type="text/babel">
 
-        if (type === 'correct') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
-          osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
-          gain.gain.setValueAtTime(0.2, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.4);
-        } else if (type === 'wrong') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(220, ctx.currentTime);
-          osc.frequency.setValueAtTime(160, ctx.currentTime + 0.15);
-          gain.gain.setValueAtTime(0.3, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.4);
-        } else if (type === 'click') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(800, ctx.currentTime);
-          gain.gain.setValueAtTime(0.05, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.05);
-        } else if (type === 'timeout') {
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(300, ctx.currentTime);
-          osc.frequency.setValueAtTime(150, ctx.currentTime + 0.2);
-          gain.gain.setValueAtTime(0.2, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.5);
-        }
-      } catch (e) {
-        console.warn('Audio Context error:', e);
-      }
-    };
+const { useState, useEffect, useMemo } = React;
 
-    // ==========================================
-    // BANK SOALAN (50 SOALAN SETIAP SUBJEK)
-    // ==========================================
-    const BM_QUESTIONS = [
-      { q: "Pilih kata nama am hidup bukan manusia:", options: ["Kucing", "Meja", "Doktor", "Rumah"], a: "Kucing" },
-      { q: "Lengkapkan ayat: Sang Kancil ialah binatang yang ____.", options: ["cerdik", "lemah", "malas", "kasar"], a: "cerdik" },
-      { q: "Ayah sedang _____ surat khabar di ruang tamu.", options: ["membaca", "memasak", "menendang", "menjahit"], a: "membaca" },
-      { q: "Pilih kata ganti nama diri pertama:", options: ["Saya", "Mereka", "Beliau", "Dia"], a: "Saya" },
-      { q: "Bangunan Menara Berkembar Petronas sangat ____.", options: ["tinggi", "panjang", "tebal", "lebar"], a: "tinggi" },
-      { q: "Lengkapkan penjodoh bilangan: Se_____ payung.", options: ["kaki", "bilah", "buah", "batang"], a: "kaki" },
-      { q: "Pilih kata lawan bagi perkataan 'Rajin':", options: ["Malas", "Pintar", "Kuat", "Cepat"], a: "Malas" },
-      { q: "Adik menangis kerana giginya berasa ____.", options: ["sakit", "manis", "pedas", "masin"], a: "sakit" },
-      { q: "Ibu membeli dua _____ pisang di pasar mini.", options: ["sikat", "biji", "helai", "keping"], a: "sikat" },
-      { q: "Pilih kata kerja pasif yang betul:", options: ["dimakan", "makan", "termakan", "pemakan"], a: "dimakan" },
-      { q: "Ali dan abangnya suka bermain bola di ____.", options: ["padang", "dapur", "tandas", "stor"], a: "padang" },
-      { q: "Pilih perkataan berimbuhan awalan 'meN-':", options: ["Menulis", "Tulisan", "Tertulis", "Ditulis"], a: "Menulis" },
-      { q: "____ nama guru kelas kamu?", options: ["Siapakah", "Apakah", "Bagaimanakah", "Manakah"], a: "Siapakah" },
-      { q: "Pak Samad memotong rumput menggunakan sebilah ____.", options: ["parang", "gunting", "pembaris", "jarum"], a: "parang" },
-      { q: "Pilih ayat tunggal yang betul susunannya:", options: ["Ahmad bermain layang-layang.", "Bermain Ahmad layang.", "Layang Ahmad main.", "Ahmad layang main."], a: "Ahmad bermain layang-layang." },
-      { q: "Warna bendera Jalur Gemilang ada empat, iaitu merah, putih, kuning dan ____.", options: ["biru", "hijau", "ungu", "hitam"], a: "biru" },
-      { q: "Kereta baharu itu dipandu oleh ____.", options: ["ayah", "buku", "pokok", "awan"], a: "ayah" },
-      { q: "Pilih kata seerti bagi 'gembira':", options: ["Seronok", "Sedih", "Marah", "Takut"], a: "Seronok" },
-      { q: "Kakak menyiram pokok bunga supaya pokok itu tidak ____.", options: ["layu", "segar", "tumbuh", "besar"], a: "layu" },
-      { q: "Se_____ benang digunakan untuk menjahit baju yang koyak.", options: ["buku", "batang", "pintu", "kuntum"], a: "buku" },
-      { q: "Pilih kata ganti nama diri ketiga:", options: ["Mereka", "Awak", "Kami", "Saya"], a: "Mereka" },
-      { q: "Kucing comel itu tidur di ____ kerusi.", options: ["bawah", "atas", "luar", "antara"], a: "bawah" },
-      { q: "Murid-murid berbaris dengan tertib di tapak ____.", options: ["perhimpunan", "pejabat", "kantin", "jalan"], a: "perhimpunan" },
-      { q: "Pilih kata ganda penuh yang betul:", options: ["Kanak-kanak", "Kekisi", "Gunung-ganang", "Dedaun"], a: "Kanak-kanak" },
-      { q: "Lengkapkan simpulan bahasa: Ali suka membaca buku, dia seorang ____.", options: ["ulat buku", "kaki bangku", "ringan tulang", "hati batu"], a: "ulat buku" },
-      { q: "Pilih perkataan yang mempunyai ejaan yang tepat:", options: ["Keluarga", "Keluwarga", "Klurga", "Keluarge"], a: "Keluarga" },
-      { q: "Ibu memasak gulai menggunakan kuali di ____.", options: ["dapur", "bilik tidur", "garaj", "halaman"], a: "dapur" },
-      { q: "Amirul tidak hadir ke sekolah ____ dia demam panas.", options: ["kerana", "walaupun", "supaya", "lalu"], a: "kerana" },
-      { q: "Cikgu Rosli memuji murid yang bersikap ____.", options: ["jujur", "sombong", "bengis", "degil"], a: "jujur" },
-      { q: "Pilih tanda baca yang betul untuk ayat seruan:", options: ["!", "?", ".", ","], a: "!" },
-      { q: "Tolong senyap, bayi sedang ____ di dalam buaian.", options: ["tidur", "berlari", "makan", "menari"], a: "tidur" },
-      { q: "Lengkapkan ayat: Pokok mangga di belakang rumah berbuah ____.", options: ["lebat", "tebal", "tinggi", "luas"], a: "lebat" },
-      { q: "Pak Cik Kassim menternak sepuluh _____ lembu.", options: ["ekor", "buah", "pucuk", "biji"], a: "ekor" },
-      { q: "Pilih kata majmuk yang mantap:", options: ["Antarabangsa", "Buku tulis", "Meja makan", "Beg sekolah"], a: "Antarabangsa" },
-      { q: "Hassan membuka payung kerana hari hujan ____.", options: ["lebat", "panas", "kering", "redup"], a: "lebat" },
-      { q: "Kanak-kanak digalakkan minum air putih sekurang-kurangnya lapan _____ sehari.", options: ["gelas", "pinggan", "mangkuk", "senduk"], a: "gelas" },
-      { q: "Pilih kata hubung gabungan:", options: ["dan", "supaya", "kerana", "apabila"], a: "dan" },
-      { q: "Gajah mempunyai sepasang gading dan belalai yang ____.", options: ["panjang", "nipis", "pendek", "kecil"], a: "panjang" },
-      { q: "Pilih kata adjektif pancaindera rasa:", options: ["Manis", "Wangi", "Kasar", "Bising"], a: "Manis" },
-      { q: "Pilih peribahasa yang sesuai untuk orang yang rajin menolong:", options: ["Ringan tulang", "Berat mulut", "Kaki ayam", "Hidung tinggi"], a: "Ringan tulang" },
-      { q: "Burung helang terbang ____ di angkasa.", options: ["tinggi", "berat", "lambat", "dalam"], a: "tinggi" },
-      { q: "Lengkapkan: Puan Aminah menggoreng ikan di dalam minyak yang ____.", options: ["panas", "sejuk", "beku", "tawar"], a: "panas" },
-      { q: "Pilih imbuhan akhiran yang betul: 'ajar' + '____' = ajaran", options: ["-an", "-kan", "-i", "-nya"], a: "-an" },
-      { q: "Nelayan pergi ke laut menangkap ikan pada waktu ____.", options: ["malam", "siang", "tengah hari", "petang"], a: "malam" },
-      { q: "Se_____ jarum yang tajam terjatuh di atas permaidani.", options: ["bilah", "keping", "batang", "pucuk"], a: "bilah" },
-      { q: "Pilih kata tanya untuk menanyakan tempat:", options: ["Di manakah", "Mengapakah", "Berapakah", "Bilakah"], a: "Di manakah" },
-      { q: "Tubuh badan adik berasa cergas selepas berriadah di ____.", options: ["taman rekreasi", "hospital", "pasar raya", "panggung"], a: "taman rekreasi" },
-      { q: "Kerja rumah ini mestilah disiapkan ____ esok.", options: ["sebelum", "daripada", "tentang", "antara"], a: "sebelum" },
-      { q: "Pilih kata seru yang melambangkan perasaan kagum:", options: ["Wah", "Aduh", "Aduhai", "Cis"], a: "Wah" },
-      { q: "Siti mencuci tangan dengan sabun agar terhindar daripada kuman dan ____.", options: ["penyakit", "kesihatan", "kebersihan", "tenaga"], a: "penyakit" }
-    ];
+/* =========================================================
+   AUDIO
+========================================================= */
 
-    const BI_QUESTIONS = [
-      { q: "Choose the correct plural form of 'Cat':", options: ["Cats", "Cates", "Caties", "Cat"], a: "Cats" },
-      { q: "The apple is ____ color.", options: ["red", "walk", "loud", "jump"], a: "red" },
-      { q: "She ____ to school every morning.", options: ["walks", "walk", "walking", "walked"], a: "walks" },
-      { q: "Which one is an animal?", options: ["Elephant", "Chair", "Table", "Pencil"], a: "Elephant" },
-      { q: "They ____ playing football at the field.", options: ["are", "is", "am", "was"], a: "are" },
-      { q: "Opposite word for 'Heavy':", options: ["Light", "Big", "Strong", "Dark"], a: "Light" },
-      { q: "An airplane flies in the ____.", options: ["sky", "sea", "soil", "forest"], a: "sky" },
-      { q: "Choose the correct pronoun: '____ is my mother.'", options: ["She", "He", "It", "They"], a: "She" },
-      { q: "A baby dog is called a ____.", options: ["puppy", "kitten", "cub", "chick"], a: "puppy" },
-      { q: "Choose the correct spelling:", options: ["Beautiful", "Beutiful", "Beatifull", "Beatiful"], a: "Beautiful" },
-      { q: "We use our ears to ____.", options: ["hear", "see", "smell", "taste"], a: "hear" },
-      { q: "There are ____ days in a week.", options: ["seven", "five", "twelve", "thirty"], a: "seven" },
-      { q: "The sun rises in the ____.", options: ["east", "west", "north", "south"], a: "east" },
-      { q: "Which of these is a fruit?", options: ["Banana", "Carrot", "Potato", "Broccoli"], a: "Banana" },
-      { q: "I have two ____ to walk and run.", options: ["legs", "hands", "noses", "mouths"], a: "legs" },
-      { q: "Choose the correct article: 'I saw ____ owl last night.'", options: ["an", "a", "the", "two"], a: "an" },
-      { q: "Fish live and swim in the ____.", options: ["water", "tree", "sand", "air"], a: "water" },
-      { q: "What is the past tense of 'play'?", options: ["played", "playing", "plays", "play"], a: "played" },
-      { q: "The opposite of 'Hot' is ____.", options: ["Cold", "Warm", "Dry", "Sunny"], a: "Cold" },
-      { q: "Choose the correct color of grass:", options: ["Green", "Blue", "Pink", "Purple"], a: "Green" },
-      { q: "A doctor works in a ____.", options: ["hospital", "school", "bakery", "police station"], a: "hospital" },
-      { q: "Birds build their ____ in trees.", options: ["nests", "dens", "caves", "sheds"], a: "nests" },
-      { q: "My brother likes to ____ storybooks before bedtime.", options: ["read", "eat", "kick", "sleep"], a: "read" },
-      { q: "Which number comes after twenty-nine?", options: ["Thirty", "Twenty", "Thirty-one", "Nineteen"], a: "Thirty" },
-      { q: "Choose the correct verb: 'The baby is ____ loudly.'", options: ["crying", "cry", "cried", "cries"], a: "crying" },
-      { q: "A clock shows us the ____.", options: ["time", "weather", "date", "money"], a: "time" },
-      { q: "Ice cream tastes very ____.", options: ["sweet", "sour", "bitter", "salty"], a: "sweet" },
-      { q: "We use an umbrella when it is ____.", options: ["raining", "windy", "snowy", "foggy"], a: "raining" },
-      { q: "Choose the correct conjunction: 'I like milk ____ cookies.'", options: ["and", "but", "or", "so"], a: "and" },
-      { q: "The giraffe has a very long ____.", options: ["neck", "tail", "ear", "nose"], a: "neck" },
-      { q: "What do bees make?", options: ["Honey", "Milk", "Juice", "Bread"], a: "Honey" },
-      { q: "Choose the rhyming word for 'Cake':", options: ["Bake", "Book", "Car", "Ball"], a: "Bake" },
-      { q: "My sister is ____ taller than me.", options: ["much", "many", "very", "more"], a: "much" },
-      { q: "We celebrate National Day in the month of ____.", options: ["August", "January", "May", "December"], a: "August" },
-      { q: "Plural form of 'Tooth' is ____.", options: ["Teeth", "Tooths", "Teethes", "Toothies"], a: "Teeth" },
-      { q: "Choose the correct sentence:", options: ["The boy kicks the ball.", "The boy kick the balls.", "Boy the ball kicks.", "The kicks boy ball."], a: "The boy kicks the ball." },
-      { q: "Frogs can jump and ____.", options: ["swim", "fly", "drive", "write"], a: "swim" },
-      { q: "Opposite of 'Fast':", options: ["Slow", "Quick", "Smart", "Brave"], a: "Slow" },
-      { q: "The library is a place where we ____ books.", options: ["borrow", "buy", "cook", "paint"], a: "borrow" },
-      { q: "Choose the correct question word: '____ are you crying?'", options: ["Why", "Who", "What", "Which"], a: "Why" },
-      { q: "Which animal gives us wool?", options: ["Sheep", "Cow", "Duck", "Horse"], a: "Sheep" },
-      { q: "We brush our teeth with a ____.", options: ["toothbrush", "spoon", "fork", "pencil"], a: "toothbrush" },
-      { q: "A triangle has ____ sides.", options: ["three", "four", "five", "six"], a: "three" },
-      { q: "The stars shine brightly at ____.", options: ["night", "noon", "morning", "afternoon"], a: "night" },
-      { q: "He ____ breakfast at 7:00 AM every day.", options: ["eats", "eating", "eat", "eaten"], a: "eats" },
-      { q: "Choose the silent letter in 'Knee':", options: ["K", "N", "E", "None"], a: "K" },
-      { q: "Rabbits love to eat ____.", options: ["carrots", "meat", "fish", "cheese"], a: "carrots" },
-      { q: "The king lives in a huge ____.", options: ["palace", "hut", "flat", "tent"], a: "palace" },
-      { q: "Opposite of 'Happy':", options: ["Sad", "Glad", "Tired", "Angry"], a: "Sad" },
-      { q: "Choose the correct greeting in the morning:", options: ["Good morning", "Good night", "Good evening", "Good afternoon"], a: "Good morning" }
-    ];
+const playSound = (type) => {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-    const SAINS_QUESTIONS = [
-      { q: "Manakah antara berikut adalah benda hidup?", options: ["Pokok Bunga", "Batu", "Kereta", "Kerusi"], a: "Pokok Bunga" },
-      { q: "Kita menggunakan organ ____ untuk melihat objek sekeliling.", options: ["Mata", "Telinga", "Hidung", "Lidah"], a: "Mata" },
-      { q: "Haiwan yang memakan tumbuhan sahaja dipanggil:", options: ["Herbivor", "Karnivor", "Omnivor", "Pengurai"], a: "Herbivor" },
-      { q: "Tumbuhan memerlukan cahaya matahari, air dan ____ untuk hidup subur.", options: ["Udara", "Minyak", "Susu", "Gula"], a: "Udara" },
-      { q: "Gigi ____ digunakan untuk memotong makanan.", options: ["Kacip", "Taring", "Geraham", "Susu"], a: "Kacip" },
-      { q: "Magnet akan menarik objek yang diperbuat daripada bahan:", options: ["Besi", "Plastik", "Kayu", "Kaca"], a: "Besi" },
-      { q: "Manakah haiwan yang membiak secara bertelur?", options: ["Ayam", "Kucing", "Lembu", "Kambing"], a: "Ayam" },
-      { q: "Deria rasa manis boleh dikesan menggunakan organ ____.", options: ["Lidah", "Kulit", "Mata", "Hidung"], a: "Lidah" },
-      { q: "Apakah sumber tenaga utama bagi hidupan di Bumi?", options: ["Matahari", "Bateri", "Angin", "Ombak"], a: "Matahari" },
-      { q: "Manakah antara berikut adalah bahan kalis air?", options: ["Plastik", "Kertas", "Kain Kapas", "Tisu"], a: "Plastik" },
-      { q: "Tumbuhan bernafas menyerap gas ____ pada waktu siang.", options: ["Karbon dioksida", "Oksigen", "Nitrogen", "Helium"], a: "Karbon dioksida" },
-      { q: "Berapakah bilangan kutub yang ada pada sebatang magnet?", options: ["Dua (Utara & Selatan)", "Satu", "Tiga", "Empat"], a: "Dua (Utara & Selatan)" },
-      { q: "Gigi taring berfungsi untuk ____.", options: ["Mengoyak makanan", "Memotong makanan", "Melumatkan makanan", "Menghisap air"], a: "Mengoyak makanan" },
-      { q: "Manakah haiwan omnivor (makan tumbuhan dan haiwan lain)?", options: ["Monyet", "Harimau", "Arnab", "Lembu"], a: "Monyet" },
-      { q: "Haiwan manakah yang bernafas melalui insang?", options: ["Ikan", "Kucing", "Burung", "Cacing"], a: "Ikan" },
-      { q: "Batu dan guli akan ____ apabila dimasukkan ke dalam air.", options: ["Tenggelam", "Terapung", "Cair", "Menguap"], a: "Tenggelam" },
-      { q: "Bahagian tumbuhan manakah yang berfungsi menyerap air dari tanah?", options: ["Akar", "Daun", "Bunga", "Buah"], a: "Akar" },
-      { q: "Apakah unit piawai bagi mengukur panjang objek?", options: ["Sentimeter (cm)", "Kilogram (kg)", "Liter (l)", "Saat (s)"], a: "Sentimeter (cm)" },
-      { q: "Bayang-bayang terbentuk apabila cahaya matahari ____.", options: ["Dihalang oleh objek legap", "Menembusi cermin", "Dipantulkan ke langit", "Hilang"], a: "Dihalang oleh objek legap" },
-      { q: "Manakah planet yang paling hampir dengan Matahari?", options: ["Utarid", "Zuhrah", "Bumi", "Marikh"], a: "Utarid" },
-      { q: "Katak adalah haiwan yang boleh hidup di darat dan di ____.", options: ["Air", "Pokok tinggi", "Awan", "Gua gelap"], a: "Air" },
-      { q: "Set gigi susu manusia mempunyai sejumlah ____ batang gigi.", options: ["20", "32", "28", "16"], a: "20" },
-      { q: "Set gigi kekal manusia yang lengkap mengandungi ____ batang gigi.", options: ["32", "20", "30", "36"], a: "32" },
-      { q: "Bahan manakah yang menyerap air dengan baik?", options: ["Kain tuala", "Beg plastik", "Cermin kaca", "Klip kertas"], a: "Kain tuala" },
-      { q: "Apakah tabiat pemakanan seekor harimau?", options: ["Karnivor", "Herbivor", "Omnivor", "Insektivor"], a: "Karnivor" },
-      { q: "Kitaran hidup rama-rama bermula daripada ____.", options: ["Telur", "Ulat beluncas", "Kepompong", "Pupa"], a: "Telur" },
-      { q: "Apakah fungsi kerangka tulang pada tubuh manusia?", options: ["Menyokong tubuh badan", "Mengepam darah", "Mencerna makanan", "Menghidu bau"], a: "Menyokong tubuh badan" },
-      { q: "Manakah antara berikut adalah sumber cahaya semula jadi?", options: ["Matahari", "Lilin", "Lampu suluh", "Mentol"], a: "Matahari" },
-      { q: "Dua kutub magnet yang sama (Utara dengan Utara) akan ____.", options: ["Menolak", "Menarik", "Melekat kuat", "Patah"], a: "Menolak" },
-      { q: "Apakah organ pernafasan utama bagi manusia?", options: ["Peparu", "Jantung", "Perut", "Insang"], a: "Peparu" },
-      { q: "Bumi berputar pada paksinya dari arah ____ ke timur.", options: ["Barat", "Utara", "Selatan", "Tenggara"], a: "Barat" },
-      { q: "Manakah campuran yang boleh dipisahkan menggunakan kaedah penurasan?", options: ["Air dan pasir", "Air dan garam", "Air dan sirap", "Beras dan klip"], a: "Air dan pasir" },
-      { q: "Bahan yang membenarkan semua cahaya melaluinya dipanggil bahan ____.", options: ["Lut sinar", "Lut cahaya", "Legap", "Keras"], a: "Lut sinar" },
-      { q: "Urat daun jejala biasanya terdapat pada pokok ____.", options: ["Bunga raya", "Jagung", "Kelapa", "Padi"], a: "Bunga raya" },
-      { q: "Proses air bertukar menjadi wap air dipanggil ____.", options: ["Penyejatan", "Kondensasi", "Pembekuan", "Peleburan"], a: "Penyejatan" },
-      { q: "Bunyi dihasilkan melalui objek yang ____.", options: ["Bergetar", "Pecah", "Diam", "Sejuk"], a: "Bergetar" },
-      { q: "Kucing dan lembu bernafas menggunakan ____.", options: ["Peparu", "Insang", "Kulit lembap", "Spirakel"], a: "Peparu" },
-      { q: "Manakah antara berikut merupakan makanan berkhasiat untuk gigi?", options: ["Susu berkalsium", "Gula-gula", "Air bikarbonat", "Coklat manis"], a: "Susu berkalsium" },
-      { q: "Haiwan manakah yang menjaga anaknya di dalam kantung?", options: ["Kanggaru", "Kucing", "Gajah", "Singa"], a: "Kanggaru" },
-      { q: "Berapakah bilangan planet dalam Sistem Suria kita?", options: ["8", "9", "7", "10"], a: "8" },
-      { q: "Daun pokok berwarna hijau kerana mempunyai pigmen ____.", options: ["Klorofil", "Karoten", "Glukosa", "Oksigen"], a: "Klorofil" },
-      { q: "Manakah objek buatan manusia yang menggunakan tenaga elektrik?", options: ["Peti sejuk", "Basikal roda tiga", "Lilin", "Penyapu"], a: "Peti sejuk" },
-      { q: "Cacing tanah bernafas melalui ____.", options: ["Kulit lembap", "Peparu", "Insang", "Hidung"], a: "Kulit lembap" },
-      { q: "Apakah rasa jus lemon tulen?", options: ["Masam", "Manis", "Pahit", "Masin"], a: "Masam" },
-      { q: "Kaca mata pembesar berfungsi untuk membesarkan ____.", options: ["Imej objek kecil", "Suara", "Cahaya gelap", "Berat objek"], a: "Imej objek kecil" },
-      { q: "Apakah sifat fizikal ais pada suhu bilik?", options: ["Melebur menjadi air", "Membeku", "Menjadi wap serta-merta", "Menjadi keras"], a: "Melebur menjadi air" },
-      { q: "Haiwan manakah yang menggunakan cangkerang keras sebagai perlindungan?", options: ["Kura-kura", "Kucing", "Ular", "Arnab"], a: "Kura-kura" },
-      { q: "Apakah deria yang digunakan untuk mendengar lagu kegemaran?", options: ["Deria pendengaran", "Deria penglihatan", "Deria sentuhan", "Deria bau"], a: "Deria pendengaran" },
-      { q: "Tumbuhan membuat makanannya sendiri melalui proses ____.", options: ["Fotosintesis", "Pencernaan", "Pernafasan", "Penapaian"], a: "Fotosintesis" },
-      { q: "Apakah planet yang dikenali sebagai 'Planet Merah'?", options: ["Marikh", "Musytari", "Zuhal", "Neptun"], a: "Marikh" }
-    ];
+    osc.connect(gain);
+    gain.connect(ctx.destination);
 
-    // ==========================================
-    // PENJANA MATEMATIK PINTAR (50 SOALAN UNIK)
-    // ==========================================
-    const generateMathPool = (year, count = 50) => {
-      const ops = ['+', '-', '×', '÷'];
-      const list = [];
-
-      for (let i = 0; i < count; i++) {
-        const op = ops[i % ops.length];
-        let n1, n2, ans, text;
-
-        if (year === 1) {
-          if (op === '+') {
-            n1 = Math.floor(Math.random() * 15) + 1;
-            n2 = Math.floor(Math.random() * 10) + 1;
-            ans = n1 + n2;
-            text = `${n1} + ${n2} = ?`;
-          } else if (op === '-') {
-            n2 = Math.floor(Math.random() * 10) + 1;
-            n1 = n2 + Math.floor(Math.random() * 10);
-            ans = n1 - n2;
-            text = `${n1} − ${n2} = ?`;
-          } else if (op === '×') {
-            const tables = [2, 5, 10];
-            n1 = tables[Math.floor(Math.random() * tables.length)];
-            n2 = Math.floor(Math.random() * 9) + 1;
-            ans = n1 * n2;
-            text = `${n1} × ${n2} = ?`;
-          } else {
-            n2 = [2, 5, 10][Math.floor(Math.random() * 3)];
-            ans = Math.floor(Math.random() * 5) + 1;
-            n1 = n2 * ans;
-            text = `${n1} ÷ ${n2} = ?`;
-          }
-        } else if (year === 2) {
-          if (op === '+') {
-            n1 = Math.floor(Math.random() * 50) + 10;
-            n2 = Math.floor(Math.random() * 40) + 5;
-            ans = n1 + n2;
-            text = `${n1} + ${n2} = ?`;
-          } else if (op === '-') {
-            n2 = Math.floor(Math.random() * 40) + 5;
-            n1 = n2 + Math.floor(Math.random() * 45);
-            ans = n1 - n2;
-            text = `${n1} − ${n2} = ?`;
-          } else if (op === '×') {
-            const tables = [2, 3, 4, 5, 10];
-            n1 = tables[Math.floor(Math.random() * tables.length)];
-            n2 = Math.floor(Math.random() * 9) + 1;
-            ans = n1 * n2;
-            text = `${n1} × ${n2} = ?`;
-          } else {
-            n2 = [2, 3, 4, 5][Math.floor(Math.random() * 4)];
-            ans = Math.floor(Math.random() * 8) + 2;
-            n1 = n2 * ans;
-            text = `${n1} ÷ ${n2} = ?`;
-          }
-        } else {
-          if (op === '+') {
-            n1 = Math.floor(Math.random() * 400) + 100;
-            n2 = Math.floor(Math.random() * 300) + 50;
-            ans = n1 + n2;
-            text = `${n1} + ${n2} = ?`;
-          } else if (op === '-') {
-            n2 = Math.floor(Math.random() * 300) + 50;
-            n1 = n2 + Math.floor(Math.random() * 400);
-            ans = n1 - n2;
-            text = `${n1} − ${n2} = ?`;
-          } else if (op === '×') {
-            const tables = [6, 7, 8, 9];
-            n1 = tables[Math.floor(Math.random() * tables.length)];
-            n2 = Math.floor(Math.random() * 9) + 2;
-            ans = n1 * n2;
-            text = `${n1} × ${n2} = ?`;
-          } else {
-            n2 = [6, 7, 8, 9][Math.floor(Math.random() * 4)];
-            ans = Math.floor(Math.random() * 9) + 2;
-            n1 = n2 * ans;
-            text = `${n1} ÷ ${n2} = ?`;
-          }
-        }
-
-        list.push({
-          q: text,
-          options: [],
-          a: ans.toString(),
-          type: 'numpad'
-        });
-      }
-      return list;
-    };
-
-    // Fisher-Yates Shuffle
-    function shuffleArray(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
+    if (type === "correct") {
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+      osc.frequency.setValueAtTime(659.25, ctx.currentTime + .1);
+      osc.frequency.setValueAtTime(783.99, ctx.currentTime + .2);
+      gain.gain.setValueAtTime(.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .4);
+      osc.start();
+      osc.stop(ctx.currentTime + .4);
     }
 
-    const SUBJECT_CONFIG = {
-      math: {
-        title: "Matematik Pintar",
-        tag: "+ − × ÷ Lengkap (50 Soalan)",
-        icon: "🔢",
-        type: "numpad"
-      },
-      bm: {
-        title: "Bahasa Melayu",
-        tag: "Tatabahasa (50 Soalan)",
-        icon: "📖",
-        type: "mcq"
-      },
-      bi: {
-        title: "English Ace",
-        tag: "Grammar & Vocab (50 Questions)",
-        icon: "🔤",
-        type: "mcq"
-      },
-      science: {
-        title: "Sains Eksplorasi",
-        tag: "Inkuiri & Alam (50 Soalan)",
-        icon: "🔬",
-        type: "mcq"
-      }
-    };
+    if (type === "wrong") {
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(220, ctx.currentTime);
+      osc.frequency.setValueAtTime(160, ctx.currentTime + .15);
+      gain.gain.setValueAtTime(.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .4);
+      osc.start();
+      osc.stop(ctx.currentTime + .4);
+    }
 
-    // ==========================================
-    // KOMPONEN UTAMA
-    // ==========================================
-    function App() {
-      const [screen, setScreen] = useState('hub');
-      const [activeSubject, setActiveSubject] = useState('math');
-      const [activeYear, setActiveYear] = useState(1);
-      const [sessionQuestions, setSessionQuestions] = useState([]);
-      const [currentIndex, setCurrentIndex] = useState(0);
-      const [inputVal, setInputVal] = useState('');
-      const [score, setScore] = useState(0);
-      const [correctCount, setCorrectCount] = useState(0);
-      const [combo, setCombo] = useState(0);
-      const [highestCombo, setHighestCombo] = useState(0);
-      const [feedback, setFeedback] = useState(null);
-      const [timeLeft, setTimeLeft] = useState(20);
-      const [highScores, setHighScores] = useState(() => {
-        const saved = localStorage.getItem('edubox_highscores_50');
-        return saved ? JSON.parse(saved) : {};
+    if (type === "click") {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      gain.gain.setValueAtTime(.04, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .05);
+      osc.start();
+      osc.stop(ctx.currentTime + .05);
+    }
+
+  } catch(e) {}
+};
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const SUBJECTS = {
+  math: {
+    key: "math",
+    name: "Matematik",
+    short: "Math",
+    icon: "🔢",
+    emoji: "🧮",
+    description: "Kira, faham dan selesaikan masalah.",
+    gradient: "from-blue-500 to-indigo-600",
+    light: "bg-blue-50",
+    text: "text-blue-700"
+  },
+
+  science: {
+    key: "science",
+    name: "Sains",
+    short: "Science",
+    icon: "🔬",
+    emoji: "🌱",
+    description: "Teroka dunia melalui sains.",
+    gradient: "from-emerald-500 to-teal-600",
+    light: "bg-emerald-50",
+    text: "text-emerald-700"
+  },
+
+  bm: {
+    key: "bm",
+    name: "Bahasa Melayu",
+    short: "BM",
+    icon: "📖",
+    emoji: "🇲🇾",
+    description: "Baca, tulis dan kuasai tatabahasa.",
+    gradient: "from-rose-500 to-pink-600",
+    light: "bg-rose-50",
+    text: "text-rose-700"
+  },
+
+  bi: {
+    key: "bi",
+    name: "English",
+    short: "English",
+    icon: "🔤",
+    emoji: "🇬🇧",
+    description: "Build vocabulary and grammar skills.",
+    gradient: "from-violet-500 to-purple-600",
+    light: "bg-violet-50",
+    text: "text-violet-700"
+  }
+};
+
+
+/* =========================================================
+   CURRICULUM
+========================================================= */
+
+const CURRICULUM = {
+
+  1: {
+    math: [
+      {
+        id: "y1m1",
+        title: "Nombor hingga 100",
+        icon: "🔢",
+        description: "Kenal, baca, tulis dan susun nombor.",
+        progress: 80,
+        lessons: [
+          {
+            title: "Kenali Nombor",
+            body: `
+              <p><strong>Nombor</strong> digunakan untuk menunjukkan kuantiti.</p>
+              <p>Contohnya: 1, 2, 3, 4, 5...</p>
+              <p>Apabila kita melihat 🍎🍎🍎, terdapat <strong>3 biji epal</strong>.</p>
+            `
+          },
+          {
+            title: "Sebelum dan Selepas",
+            body: `
+              <p>Nombor sebelum 8 ialah <strong>7</strong>.</p>
+              <p>Nombor selepas 8 ialah <strong>9</strong>.</p>
+              <p>Jadi: 7 → 8 → 9</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1m2",
+        title: "Tambah",
+        icon: "➕",
+        description: "Belajar operasi tambah secara mudah.",
+        progress: 65,
+        lessons: [
+          {
+            title: "Apa itu Tambah?",
+            body: `
+              <p>Tambah bermaksud <strong>menggabungkan</strong> dua kumpulan.</p>
+              <p>🍎🍎 + 🍎🍎🍎 = 🍎🍎🍎🍎🍎</p>
+              <p>2 + 3 = <strong>5</strong></p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1m3",
+        title: "Tolak",
+        icon: "➖",
+        description: "Belajar mengambil sebahagian daripada jumlah.",
+        progress: 50,
+        lessons: [
+          {
+            title: "Apa itu Tolak?",
+            body: `
+              <p>Tolak bermaksud mengambil sebahagian daripada sesuatu.</p>
+              <p>🍎🍎🍎🍎🍎 → ambil 2</p>
+              <p>5 − 2 = <strong>3</strong></p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1m4",
+        title: "Wang",
+        icon: "💰",
+        description: "Kenali wang Malaysia dan nilai wang.",
+        progress: 40,
+        lessons: [
+          {
+            title: "Wang Malaysia",
+            body: `
+              <p>Kita menggunakan Ringgit Malaysia, iaitu <strong>RM</strong>.</p>
+              <p>Contoh wang: RM1, RM5, RM10, RM20, RM50 dan RM100.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1m5",
+        title: "Masa",
+        icon: "🕐",
+        description: "Kenali jam, hari, minggu dan bulan.",
+        progress: 30,
+        lessons: [
+          {
+            title: "Masa",
+            body: `
+              <p>Satu hari mempunyai <strong>24 jam</strong>.</p>
+              <p>Satu minggu mempunyai <strong>7 hari</strong>.</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    science: [
+      {
+        id: "y1s1",
+        title: "Benda Hidup",
+        icon: "🌱",
+        description: "Bezakan benda hidup dan bukan hidup.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Hidup atau Bukan Hidup?",
+            body: `
+              <p>Manusia, haiwan dan tumbuhan ialah <strong>benda hidup</strong>.</p>
+              <p>Batu, meja dan kereta ialah <strong>benda bukan hidup</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1s2",
+        title: "Deria Manusia",
+        icon: "👀",
+        description: "Kenali lima deria manusia.",
+        progress: 60,
+        lessons: [
+          {
+            title: "Lima Deria",
+            body: `
+              <p>👀 Mata → melihat</p>
+              <p>👂 Telinga → mendengar</p>
+              <p>👃 Hidung → menghidu</p>
+              <p>👅 Lidah → merasa</p>
+              <p>🖐️ Kulit → menyentuh</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1s3",
+        title: "Haiwan",
+        icon: "🐘",
+        description: "Kenali haiwan dan ciri-cirinya.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Dunia Haiwan",
+            body: `
+              <p>Haiwan mempunyai pelbagai saiz, bentuk dan habitat.</p>
+              <p>Contoh: ikan hidup di air, burung boleh terbang dan kucing hidup di darat.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1s4",
+        title: "Tumbuhan",
+        icon: "🌻",
+        description: "Kenali bahagian asas tumbuhan.",
+        progress: 35,
+        lessons: [
+          {
+            title: "Bahagian Tumbuhan",
+            body: `
+              <p>🌱 Akar</p>
+              <p>🌿 Batang</p>
+              <p>🍃 Daun</p>
+              <p>🌸 Bunga</p>
+              <p>🍎 Buah</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bm: [
+      {
+        id: "y1b1",
+        title: "Huruf & Suku Kata",
+        icon: "🔤",
+        description: "Kenali huruf dan bina suku kata.",
+        progress: 80,
+        lessons: [
+          {
+            title: "Suku Kata",
+            body: `
+              <p>Contoh:</p>
+              <p><strong>ba + ju = baju</strong></p>
+              <p><strong>bu + ku = buku</strong></p>
+              <p><strong>ma + ta = mata</strong></p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1b2",
+        title: "Kata Nama",
+        icon: "🧑",
+        description: "Kenali nama manusia, haiwan dan benda.",
+        progress: 60,
+        lessons: [
+          {
+            title: "Kata Nama",
+            body: `
+              <p>Kata nama digunakan untuk menamakan manusia, haiwan, benda dan tempat.</p>
+              <p>Contoh: <strong>Ali, kucing, meja, sekolah</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1b3",
+        title: "Kata Kerja",
+        icon: "🏃",
+        description: "Kenali perkataan yang menunjukkan perbuatan.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Kata Kerja",
+            body: `
+              <p>Contoh kata kerja:</p>
+              <p>🏃 berlari</p>
+              <p>📖 membaca</p>
+              <p>🍳 memasak</p>
+              <p>✍️ menulis</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bi: [
+      {
+        id: "y1e1",
+        title: "My Family",
+        icon: "👨‍👩‍👧",
+        description: "Learn words about family members.",
+        progress: 80,
+        lessons: [
+          {
+            title: "Family Members",
+            body: `
+              <p>Father = Ayah</p>
+              <p>Mother = Ibu</p>
+              <p>Brother = Abang / Adik lelaki</p>
+              <p>Sister = Kakak / Adik perempuan</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1e2",
+        title: "Colours",
+        icon: "🎨",
+        description: "Learn common colours.",
+        progress: 65,
+        lessons: [
+          {
+            title: "Colours",
+            body: `
+              <p>🔴 Red</p>
+              <p>🔵 Blue</p>
+              <p>🟢 Green</p>
+              <p>🟡 Yellow</p>
+              <p>🟣 Purple</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y1e3",
+        title: "My Body",
+        icon: "🧍",
+        description: "Learn basic body parts.",
+        progress: 50,
+        lessons: [
+          {
+            title: "Body Parts",
+            body: `
+              <p>Eyes, ears, nose, mouth, hands and legs.</p>
+              <p>Example: <strong>We use our eyes to see.</strong></p>
+            `
+          }
+        ]
+      }
+    ]
+  },
+
+  2: {
+    math: [
+      {
+        id: "y2m1",
+        title: "Nombor hingga 1,000",
+        icon: "🔢",
+        description: "Baca, tulis dan bandingkan nombor.",
+        progress: 75,
+        lessons: [
+          {
+            title: "Nilai Tempat",
+            body: `
+              <p>Dalam nombor <strong>345</strong>:</p>
+              <p>3 = ratus</p>
+              <p>4 = puluh</p>
+              <p>5 = sa</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2m2",
+        title: "Darab",
+        icon: "✖️",
+        description: "Kuasai konsep dan fakta darab.",
+        progress: 60,
+        lessons: [
+          {
+            title: "Darab sebagai Tambah Berulang",
+            body: `
+              <p>3 × 4 bermaksud 3 kumpulan yang mempunyai 4.</p>
+              <p>4 + 4 + 4 = <strong>12</strong></p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2m3",
+        title: "Bahagi",
+        icon: "➗",
+        description: "Belajar pembahagian secara sama rata.",
+        progress: 50,
+        lessons: [
+          {
+            title: "Bahagi Sama Rata",
+            body: `
+              <p>12 ÷ 3 bermaksud 12 dikongsi kepada 3 kumpulan.</p>
+              <p>Setiap kumpulan mendapat <strong>4</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2m4",
+        title: "Pecahan",
+        icon: "🍕",
+        description: "Kenali bahagian daripada keseluruhan.",
+        progress: 35,
+        lessons: [
+          {
+            title: "Pecahan Asas",
+            body: `
+              <p>Jika pizza dibahagi kepada 4 bahagian sama besar dan kita ambil 1 bahagian, kita mendapat <strong>1/4</strong>.</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    science: [
+      {
+        id: "y2s1",
+        title: "Manusia",
+        icon: "🫀",
+        description: "Kenali tubuh dan keperluan manusia.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Tubuh Manusia",
+            body: `
+              <p>Tubuh manusia mempunyai pelbagai organ dengan fungsi yang berbeza.</p>
+              <p>Contoh: jantung membantu mengepam darah.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2s2",
+        title: "Tumbuhan",
+        icon: "🌿",
+        description: "Fahami keperluan asas tumbuhan.",
+        progress: 55,
+        lessons: [
+          {
+            title: "Tumbuhan Memerlukan Apa?",
+            body: `
+              <p>Tumbuhan memerlukan air, cahaya dan udara untuk hidup dan membesar.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2s3",
+        title: "Bahan",
+        icon: "🧪",
+        description: "Kenali sifat bahan di sekeliling.",
+        progress: 40,
+        lessons: [
+          {
+            title: "Sifat Bahan",
+            body: `
+              <p>Sesetengah bahan menyerap air manakala sesetengah bahan kalis air.</p>
+              <p>Contoh bahan kalis air: plastik.</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bm: [
+      {
+        id: "y2b1",
+        title: "Kata Nama & Kata Kerja",
+        icon: "📚",
+        description: "Bezakan kata nama dan kata kerja.",
+        progress: 75,
+        lessons: [
+          {
+            title: "Kata Nama dan Kata Kerja",
+            body: `
+              <p><strong>Ali</strong> = kata nama.</p>
+              <p><strong>berlari</strong> = kata kerja.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2b2",
+        title: "Kata Adjektif",
+        icon: "⭐",
+        description: "Gunakan perkataan yang menerangkan sifat.",
+        progress: 55,
+        lessons: [
+          {
+            title: "Kata Adjektif",
+            body: `
+              <p>Contoh: cantik, besar, kecil, tinggi, rendah, manis dan pahit.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2b3",
+        title: "Bina Ayat",
+        icon: "✍️",
+        description: "Susun perkataan menjadi ayat lengkap.",
+        progress: 40,
+        lessons: [
+          {
+            title: "Ayat Mudah",
+            body: `
+              <p>Contoh perkataan:</p>
+              <p>Ali / membaca / buku.</p>
+              <p>Ayat: <strong>Ali membaca buku.</strong></p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bi: [
+      {
+        id: "y2e1",
+        title: "Daily Activities",
+        icon: "⏰",
+        description: "Talk about everyday activities.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Daily Routine",
+            body: `
+              <p>I wake up.</p>
+              <p>I brush my teeth.</p>
+              <p>I go to school.</p>
+              <p>I do my homework.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2e2",
+        title: "Simple Present",
+        icon: "📝",
+        description: "Learn basic present tense.",
+        progress: 60,
+        lessons: [
+          {
+            title: "Simple Present",
+            body: `
+              <p>I play.</p>
+              <p>You play.</p>
+              <p>He <strong>plays</strong>.</p>
+              <p>She <strong>plays</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y2e3",
+        title: "Food",
+        icon: "🍎",
+        description: "Learn food vocabulary.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Food Words",
+            body: `
+              <p>Apple, banana, rice, bread, milk, chicken and vegetables.</p>
+            `
+          }
+        ]
+      }
+    ]
+  },
+
+  3: {
+    math: [
+      {
+        id: "y3m1",
+        title: "Nombor hingga 10,000",
+        icon: "🔢",
+        description: "Kuasai nombor lebih besar.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Nilai Tempat",
+            body: `
+              <p>Dalam nombor <strong>4,582</strong>:</p>
+              <p>4 = ribu</p>
+              <p>5 = ratus</p>
+              <p>8 = puluh</p>
+              <p>2 = sa</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3m2",
+        title: "Operasi Bergabung",
+        icon: "🧠",
+        description: "Gunakan lebih daripada satu operasi.",
+        progress: 55,
+        lessons: [
+          {
+            title: "Problem Solving",
+            body: `
+              <p>Baca soalan dengan teliti.</p>
+              <p>Kenal pasti maklumat.</p>
+              <p>Pilih operasi.</p>
+              <p>Kira dan semak jawapan.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3m3",
+        title: "Pecahan & Perpuluhan",
+        icon: "🍕",
+        description: "Kenali pecahan dan perpuluhan asas.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Pecahan",
+            body: `
+              <p>1/2 bermaksud satu daripada dua bahagian sama besar.</p>
+              <p>1/4 bermaksud satu daripada empat bahagian sama besar.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3m4",
+        title: "Penyelesaian Masalah",
+        icon: "🧩",
+        description: "Selesaikan masalah matematik harian.",
+        progress: 35,
+        lessons: [
+          {
+            title: "Math in Real Life",
+            body: `
+              <p>Sara mempunyai RM20.</p>
+              <p>Dia membeli buku RM7.50.</p>
+              <p>Kita perlu mencari baki wang Sara.</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    science: [
+      {
+        id: "y3s1",
+        title: "Magnet",
+        icon: "🧲",
+        description: "Teroka daya tarikan magnet.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Magnet",
+            body: `
+              <p>Magnet mempunyai dua kutub: <strong>Utara</strong> dan <strong>Selatan</strong>.</p>
+              <p>Kutub yang sama menolak.</p>
+              <p>Kutub yang berbeza menarik.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3s2",
+        title: "Cahaya",
+        icon: "💡",
+        description: "Fahami cahaya dan bayang-bayang.",
+        progress: 60,
+        lessons: [
+          {
+            title: "Bayang-bayang",
+            body: `
+              <p>Bayang-bayang terbentuk apabila cahaya dihalang oleh objek.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3s3",
+        title: "Bunyi",
+        icon: "🔊",
+        description: "Ketahui bagaimana bunyi dihasilkan.",
+        progress: 50,
+        lessons: [
+          {
+            title: "Getaran",
+            body: `
+              <p>Bunyi terhasil apabila sesuatu objek <strong>bergetar</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3s4",
+        title: "Alam Sekitar",
+        icon: "🌍",
+        description: "Jaga bumi dan sumber semula jadi.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Jaga Bumi",
+            body: `
+              <p>Kita boleh menjaga alam sekitar dengan mengurangkan sampah, menggunakan semula bahan dan mengitar semula.</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bm: [
+      {
+        id: "y3b1",
+        title: "Imbuhan",
+        icon: "🧩",
+        description: "Kenali imbuhan awalan dan akhiran.",
+        progress: 65,
+        lessons: [
+          {
+            title: "Imbuhan",
+            body: `
+              <p>Contoh awalan:</p>
+              <p>tulis → <strong>menulis</strong></p>
+              <p>Contoh akhiran:</p>
+              <p>ajar → <strong>ajaran</strong></p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3b2",
+        title: "Ayat Majmuk",
+        icon: "🔗",
+        description: "Gabungkan ayat menggunakan kata hubung.",
+        progress: 55,
+        lessons: [
+          {
+            title: "Kata Hubung",
+            body: `
+              <p>Contoh: dan, tetapi, kerana, supaya.</p>
+              <p>Ali membaca buku <strong>dan</strong> Amir menulis.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3b3",
+        title: "Karangan",
+        icon: "✍️",
+        description: "Belajar membina perenggan.",
+        progress: 45,
+        lessons: [
+          {
+            title: "Struktur Karangan",
+            body: `
+              <p>1. Pengenalan</p>
+              <p>2. Isi</p>
+              <p>3. Huraian</p>
+              <p>4. Penutup</p>
+            `
+          }
+        ]
+      }
+    ],
+
+    bi: [
+      {
+        id: "y3e1",
+        title: "Grammar Basics",
+        icon: "📘",
+        description: "Build stronger grammar foundations.",
+        progress: 70,
+        lessons: [
+          {
+            title: "Subject + Verb",
+            body: `
+              <p>He <strong>plays</strong>.</p>
+              <p>She <strong>reads</strong>.</p>
+              <p>They <strong>play</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3e2",
+        title: "Past Tense",
+        icon: "🕰️",
+        description: "Talk about things that happened.",
+        progress: 55,
+        lessons: [
+          {
+            title: "Past Tense",
+            body: `
+              <p>Today: I <strong>play</strong>.</p>
+              <p>Yesterday: I <strong>played</strong>.</p>
+            `
+          }
+        ]
+      },
+
+      {
+        id: "y3e3",
+        title: "Writing",
+        icon: "✍️",
+        description: "Write simple paragraphs and stories.",
+        progress: 40,
+        lessons: [
+          {
+            title: "Build a Paragraph",
+            body: `
+              <p>Start with a main idea.</p>
+              <p>Add supporting details.</p>
+              <p>End with a simple conclusion.</p>
+            `
+          }
+        ]
+      }
+    ]
+  }
+};
+
+
+/* =========================================================
+   QUESTION BANKS
+========================================================= */
+
+const BM_QUESTIONS = [
+  {
+    q: "Pilih kata nama am hidup bukan manusia:",
+    options: ["Kucing", "Meja", "Rumah", "Buku"],
+    a: "Kucing"
+  },
+  {
+    q: "Ayah sedang _____ surat khabar.",
+    options: ["membaca", "memasak", "menendang", "menjahit"],
+    a: "membaca"
+  },
+  {
+    q: "Pilih kata ganti nama diri pertama:",
+    options: ["Saya", "Mereka", "Beliau", "Dia"],
+    a: "Saya"
+  },
+  {
+    q: "Kata lawan bagi 'rajin' ialah:",
+    options: ["Malas", "Pintar", "Kuat", "Cepat"],
+    a: "Malas"
+  },
+  {
+    q: "Pilih kata kerja yang betul:",
+    options: ["berlari", "cantik", "rumah", "sekolah"],
+    a: "berlari"
+  },
+  {
+    q: "Ali bermain bola di ____.",
+    options: ["padang", "dapur", "tandas", "bilik"],
+    a: "padang"
+  },
+  {
+    q: "Pilih kata adjektif:",
+    options: ["Cantik", "Makan", "Buku", "Sekolah"],
+    a: "Cantik"
+  },
+  {
+    q: "Pilih kata hubung:",
+    options: ["dan", "rumah", "lari", "cantik"],
+    a: "dan"
+  },
+  {
+    q: "Se_____ payung.",
+    options: ["kaki", "ekor", "helai", "biji"],
+    a: "kaki"
+  },
+  {
+    q: "Pilih tanda baca untuk ayat tanya:",
+    options: ["?", "!", ".", ","],
+    a: "?"
+  },
+  {
+    q: "Perkataan yang betul ialah:",
+    options: ["Keluarga", "Keluwarga", "Keluarge", "Keluargae"],
+    a: "Keluarga"
+  },
+  {
+    q: "Kucing tidur di ____ kerusi.",
+    options: ["bawah", "atas", "antara", "dalam"],
+    a: "bawah"
+  }
+];
+
+const BI_QUESTIONS = [
+  {
+    q: "Choose the correct plural form of 'cat':",
+    options: ["Cats", "Cates", "Caties", "Cat"],
+    a: "Cats"
+  },
+  {
+    q: "The apple is ____.",
+    options: ["red", "walk", "loud", "jump"],
+    a: "red"
+  },
+  {
+    q: "She ____ to school every morning.",
+    options: ["walks", "walk", "walking", "walked"],
+    a: "walks"
+  },
+  {
+    q: "Which one is an animal?",
+    options: ["Elephant", "Chair", "Table", "Pencil"],
+    a: "Elephant"
+  },
+  {
+    q: "They ____ playing football.",
+    options: ["are", "is", "am", "was"],
+    a: "are"
+  },
+  {
+    q: "Opposite of 'heavy':",
+    options: ["Light", "Big", "Strong", "Dark"],
+    a: "Light"
+  },
+  {
+    q: "An airplane flies in the ____.",
+    options: ["sky", "sea", "soil", "forest"],
+    a: "sky"
+  },
+  {
+    q: "Choose the correct pronoun: ____ is my mother.",
+    options: ["She", "He", "It", "They"],
+    a: "She"
+  },
+  {
+    q: "A baby dog is called a ____.",
+    options: ["puppy", "kitten", "cub", "chick"],
+    a: "puppy"
+  },
+  {
+    q: "Choose the correct spelling:",
+    options: ["Beautiful", "Beutiful", "Beatifull", "Beatiful"],
+    a: "Beautiful"
+  },
+  {
+    q: "We use our ears to ____.",
+    options: ["hear", "see", "smell", "taste"],
+    a: "hear"
+  },
+  {
+    q: "There are ____ days in a week.",
+    options: ["seven", "five", "twelve", "thirty"],
+    a: "seven"
+  }
+];
+
+const SCIENCE_QUESTIONS = [
+  {
+    q: "Manakah antara berikut adalah benda hidup?",
+    options: ["Pokok Bunga", "Batu", "Kereta", "Kerusi"],
+    a: "Pokok Bunga"
+  },
+  {
+    q: "Kita menggunakan organ ____ untuk melihat.",
+    options: ["Mata", "Telinga", "Hidung", "Lidah"],
+    a: "Mata"
+  },
+  {
+    q: "Haiwan yang memakan tumbuhan sahaja dipanggil:",
+    options: ["Herbivor", "Karnivor", "Omnivor", "Pengurai"],
+    a: "Herbivor"
+  },
+  {
+    q: "Tumbuhan memerlukan cahaya matahari, air dan ____.",
+    options: ["Udara", "Minyak", "Susu", "Gula"],
+    a: "Udara"
+  },
+  {
+    q: "Magnet akan menarik objek yang diperbuat daripada:",
+    options: ["Besi", "Plastik", "Kayu", "Kaca"],
+    a: "Besi"
+  },
+  {
+    q: "Haiwan yang membiak secara bertelur:",
+    options: ["Ayam", "Kucing", "Lembu", "Kambing"],
+    a: "Ayam"
+  },
+  {
+    q: "Deria rasa digunakan oleh organ:",
+    options: ["Lidah", "Kulit", "Mata", "Hidung"],
+    a: "Lidah"
+  },
+  {
+    q: "Sumber tenaga utama bagi hidupan di Bumi:",
+    options: ["Matahari", "Bateri", "Angin", "Ombak"],
+    a: "Matahari"
+  },
+  {
+    q: "Bahan kalis air:",
+    options: ["Plastik", "Kertas", "Kain", "Tisu"],
+    a: "Plastik"
+  },
+  {
+    q: "Bunyi dihasilkan melalui objek yang:",
+    options: ["Bergetar", "Pecah", "Diam", "Sejuk"],
+    a: "Bergetar"
+  },
+  {
+    q: "Planet yang paling hampir dengan Matahari:",
+    options: ["Utarid", "Zuhrah", "Bumi", "Marikh"],
+    a: "Utarid"
+  },
+  {
+    q: "Bumi mempunyai berapa planet dalam Sistem Suria?",
+    options: ["8", "9", "7", "10"],
+    a: "8"
+  }
+];
+
+
+/* =========================================================
+   MATH QUESTION GENERATOR
+========================================================= */
+
+function generateMathQuestions(year, count = 12) {
+
+  const questions = [];
+
+  for (let i = 0; i < count; i++) {
+
+    let a, b, answer, operation;
+
+    const operationIndex = i % 4;
+
+    if (year === 1) {
+
+      if (operationIndex === 0) {
+        a = Math.floor(Math.random() * 15) + 1;
+        b = Math.floor(Math.random() * 10) + 1;
+        answer = a + b;
+        operation = `${a} + ${b} = ?`;
+      }
+
+      if (operationIndex === 1) {
+        b = Math.floor(Math.random() * 8) + 1;
+        a = b + Math.floor(Math.random() * 10) + 1;
+        answer = a - b;
+        operation = `${a} − ${b} = ?`;
+      }
+
+      if (operationIndex === 2) {
+        a = [2,5,10][Math.floor(Math.random()*3)];
+        b = Math.floor(Math.random()*5)+1;
+        answer = a*b;
+        operation = `${a} × ${b} = ?`;
+      }
+
+      if (operationIndex === 3) {
+        b = [2,5,10][Math.floor(Math.random()*3)];
+        answer = Math.floor(Math.random()*5)+1;
+        a = b*answer;
+        operation = `${a} ÷ ${b} = ?`;
+      }
+    }
+
+    if (year === 2) {
+
+      if (operationIndex === 0) {
+        a = Math.floor(Math.random()*80)+20;
+        b = Math.floor(Math.random()*60)+10;
+        answer = a+b;
+        operation = `${a} + ${b} = ?`;
+      }
+
+      if (operationIndex === 1) {
+        b = Math.floor(Math.random()*50)+10;
+        a = b+Math.floor(Math.random()*50)+10;
+        answer = a-b;
+        operation = `${a} − ${b} = ?`;
+      }
+
+      if (operationIndex === 2) {
+        a = [2,3,4,5,10][Math.floor(Math.random()*5)];
+        b = Math.floor(Math.random()*10)+1;
+        answer = a*b;
+        operation = `${a} × ${b} = ?`;
+      }
+
+      if (operationIndex === 3) {
+        b = [2,3,4,5][Math.floor(Math.random()*4)];
+        answer = Math.floor(Math.random()*8)+2;
+        a = b*answer;
+        operation = `${a} ÷ ${b} = ?`;
+      }
+    }
+
+    if (year === 3) {
+
+      if (operationIndex === 0) {
+        a = Math.floor(Math.random()*500)+100;
+        b = Math.floor(Math.random()*400)+50;
+        answer = a+b;
+        operation = `${a} + ${b} = ?`;
+      }
+
+      if (operationIndex === 1) {
+        b = Math.floor(Math.random()*300)+50;
+        a = b+Math.floor(Math.random()*400)+20;
+        answer = a-b;
+        operation = `${a} − ${b} = ?`;
+      }
+
+      if (operationIndex === 2) {
+        a = Math.floor(Math.random()*8)+2;
+        b = Math.floor(Math.random()*10)+2;
+        answer = a*b;
+        operation = `${a} × ${b} = ?`;
+      }
+
+      if (operationIndex === 3) {
+        b = Math.floor(Math.random()*8)+2;
+        answer = Math.floor(Math.random()*9)+2;
+        a = b*answer;
+        operation = `${a} ÷ ${b} = ?`;
+      }
+    }
+
+    questions.push({
+      q: operation,
+      options: [],
+      a: String(answer),
+      type: "numpad"
+    });
+  }
+
+  return questions;
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function shuffle(array) {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
+function getStoredProgress() {
+  try {
+    return JSON.parse(localStorage.getItem("edubox_progress")) || {
+      xp: 1240,
+      streak: 5,
+      completedLessons: 24,
+      quizzes: 18,
+      scores: {}
+    };
+  } catch {
+    return {
+      xp: 1240,
+      streak: 5,
+      completedLessons: 24,
+      quizzes: 18,
+      scores: {}
+    };
+  }
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+function App() {
+
+  const [screen, setScreen] = useState("dashboard");
+
+  const [year, setYear] = useState(1);
+  const [subject, setSubject] = useState("math");
+
+  const [progress, setProgress] = useState(getStoredProgress);
+
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [lessonIndex, setLessonIndex] = useState(0);
+
+  const [quizQuestions, setQuizQuestions] = useState([]);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizCorrect, setQuizCorrect] = useState(0);
+  const [quizCombo, setQuizCombo] = useState(0);
+  const [quizBestCombo, setQuizBestCombo] = useState(0);
+  const [quizFeedback, setQuizFeedback] = useState(null);
+  const [quizTime, setQuizTime] = useState(20);
+  const [quizInput, setQuizInput] = useState("");
+
+  const [gameType, setGameType] = useState(null);
+  const [gameScore, setGameScore] = useState(0);
+  const [gameQuestion, setGameQuestion] = useState(null);
+
+  const currentSubject = SUBJECTS[subject];
+
+  const topics = CURRICULUM[year]?.[subject] || [];
+
+  const overallProgress = useMemo(() => {
+
+    const all = [];
+
+    [1,2,3].forEach(y => {
+      Object.keys(SUBJECTS).forEach(s => {
+        (CURRICULUM[y]?.[s] || []).forEach(t => {
+          all.push(t.progress);
+        });
+      });
+    });
+
+    return Math.round(
+      all.reduce((sum, val) => sum + val, 0) / all.length
+    );
+
+  }, []);
+
+
+  /* =========================================================
+     SAVE PROGRESS
+  ========================================================= */
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "edubox_progress",
+      JSON.stringify(progress)
+    );
+
+  }, [progress]);
+
+
+  /* =========================================================
+     QUIZ TIMER
+  ========================================================= */
+
+  useEffect(() => {
+
+    if (screen !== "quiz" || quizFeedback) return;
+
+    const timer = setInterval(() => {
+
+      setQuizTime(prev => {
+
+        if (prev <= 1) {
+
+          clearInterval(timer);
+
+          handleQuizTimeout();
+
+          return 0;
+        }
+
+        return prev - 1;
       });
 
-      const timerRef = useRef(null);
-      const TOTAL_QUESTIONS = 50;
+    }, 1000);
 
-      // Pemasa 20 Saat
-      useEffect(() => {
-        if (screen !== 'quiz' || feedback) return;
+    return () => clearInterval(timer);
 
-        setTimeLeft(20);
-        clearInterval(timerRef.current);
+  }, [screen, quizIndex, quizFeedback]);
 
-        timerRef.current = setInterval(() => {
-          setTimeLeft((prev) => {
-            if (prev <= 1) {
-              clearInterval(timerRef.current);
-              handleTimeOut();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
 
-        return () => clearInterval(timerRef.current);
-      }, [screen, currentIndex, feedback]);
+  /* =========================================================
+     NAVIGATION
+  ========================================================= */
 
-      const handleTimeOut = () => {
-        playSound('timeout');
-        setCombo(0);
-        const correct = sessionQuestions[currentIndex]?.a;
-        setFeedback({
-          status: 'timeout',
-          text: `Masa Tamat! ⏰ (Jawapan: ${correct})`
+  const go = (page) => {
+    playSound("click");
+    setScreen(page);
+  };
+
+
+  const chooseSubject = (key) => {
+
+    playSound("click");
+
+    setSubject(key);
+
+    setSelectedTopic(null);
+
+    setScreen("subjects");
+  };
+
+
+  const chooseYear = (y) => {
+
+    playSound("click");
+
+    setYear(y);
+
+    setScreen("subjects");
+  };
+
+
+  /* =========================================================
+     LEARNING
+  ========================================================= */
+
+  const openTopic = (topic) => {
+
+    playSound("click");
+
+    setSelectedTopic(topic);
+    setLessonIndex(0);
+    setScreen("lesson");
+  };
+
+
+  const completeLesson = () => {
+
+    playSound("correct");
+
+    setProgress(prev => ({
+      ...prev,
+      xp: prev.xp + 10,
+      completedLessons: prev.completedLessons + 1
+    }));
+
+    if (lessonIndex + 1 < selectedTopic.lessons.length) {
+
+      setLessonIndex(i => i + 1);
+
+    } else {
+
+      if (typeof confetti === "function") {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: .6 }
         });
-
-        setTimeout(nextQuestionOrResult, 1400);
-      };
-
-      const startSession = (subjKey, year) => {
-        playSound('click');
-        setActiveSubject(subjKey);
-        setActiveYear(year);
-        setScore(0);
-        setCorrectCount(0);
-        setCombo(0);
-        setHighestCombo(0);
-        setCurrentIndex(0);
-        setInputVal('');
-        setFeedback(null);
-
-        let pool = [];
-        if (subjKey === 'math') {
-          pool = generateMathPool(year, TOTAL_QUESTIONS);
-        } else if (subjKey === 'bm') {
-          pool = BM_QUESTIONS;
-        } else if (subjKey === 'bi') {
-          pool = BI_QUESTIONS;
-        } else if (subjKey === 'science') {
-          pool = SAINS_QUESTIONS;
-        }
-
-        // Rawakkan susunan 50 soalan dan rawakkan susunan pilihan jawapan
-        const shuffled = shuffleArray(pool).slice(0, TOTAL_QUESTIONS).map(item => {
-          if (item.options && item.options.length > 0) {
-            return {
-              ...item,
-              options: shuffleArray(item.options)
-            };
-          }
-          return item;
-        });
-
-        setSessionQuestions(shuffled);
-        setScreen('quiz');
-      };
-
-      const checkAnswer = (userAns) => {
-        if (feedback || !userAns) return;
-        clearInterval(timerRef.current);
-
-        const currentQ = sessionQuestions[currentIndex];
-        const isRight = userAns.toString().trim().toLowerCase() === currentQ.a.toString().trim().toLowerCase();
-
-        if (isRight) {
-          playSound('correct');
-          const bonus = Math.floor(timeLeft * 0.5);
-          const addedScore = 10 + bonus;
-          setScore((s) => s + addedScore);
-          setCorrectCount((c) => c + 1);
-          setCombo((c) => {
-            const nextC = c + 1;
-            if (nextC > highestCombo) setHighestCombo(nextC);
-            return nextC;
-          });
-          setFeedback({
-            status: 'correct',
-            text: combo >= 2 ? `Hebat! Combo x${combo + 1} 🔥 (+${addedScore})` : `Tepat Sekali! 🎉 (+${addedScore})`
-          });
-        } else {
-          playSound('wrong');
-          setCombo(0);
-          setFeedback({
-            status: 'wrong',
-            text: `Kurang Tepat! ❌ (Jawapan: ${currentQ.a})`
-          });
-        }
-
-        setTimeout(nextQuestionOrResult, 1300);
-      };
-
-      const nextQuestionOrResult = () => {
-        if (currentIndex + 1 >= sessionQuestions.length) {
-          if (typeof confetti === 'function') {
-            confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
-          }
-          const key = `${activeSubject}_${activeYear}`;
-          const currentBest = highScores[key] || 0;
-          if (score > currentBest) {
-            const updated = { ...highScores, [key]: score };
-            setHighScores(updated);
-            localStorage.setItem('edubox_highscores_50', JSON.stringify(updated));
-          }
-          setScreen('result');
-        } else {
-          setCurrentIndex((i) => i + 1);
-          setInputVal('');
-          setFeedback(null);
-        }
-      };
-
-      const handleNumpadInput = (key) => {
-        if (feedback) return;
-        playSound('click');
-        if (key === 'del') {
-          setInputVal((prev) => prev.slice(0, -1));
-        } else if (key === 'enter') {
-          if (inputVal.length > 0) checkAnswer(inputVal);
-        } else {
-          if (inputVal.length < 5) setInputVal((prev) => prev + key);
-        }
-      };
-
-      // ==========================================
-      // PAPARAN 1: HUB UTAMA
-      // ==========================================
-      if (screen === 'hub') {
-        return (
-          <div className="flex flex-col h-full justify-between p-5 sm:p-6 bg-slate-50">
-            <div>
-              {/* Header */}
-              <div className="bg-gradient-to-br from-indigo-700 via-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden mb-6">
-                <div className="absolute top-0 right-0 w-36 h-36 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="bg-amber-400 text-slate-900 text-[11px] px-3 py-1 rounded-full font-black uppercase tracking-wider shadow-sm">
-                    💎 Modul Penuh 50 Soalan
-                  </span>
-                  <span className="text-xs font-bold text-indigo-200">KSSR Semakan</span>
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight">StudyBox Pintar 🚀</h1>
-                <p className="text-xs text-indigo-100 font-semibold mt-1">
-                  50 Soalan Sekaligus • Pilihan Jawapan Dirawakkan
-                </p>
-              </div>
-
-              {/* Pemilihan Tahun */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-slate-400">Pilih Tahap Tahun</span>
-                  <span className="text-[11px] font-bold text-indigo-600">Tahun 1, 2 & 3</span>
-                </div>
-                <div className="grid grid-cols-3 gap-2 bg-slate-200/80 p-1.5 rounded-2xl">
-                  {[1, 2, 3].map((yr) => (
-                    <button
-                      key={yr}
-                      onClick={() => { playSound('click'); setActiveYear(yr); }}
-                      className={`py-3 rounded-xl font-extrabold text-xs transition-all duration-200 ${
-                        activeYear === yr
-                          ? 'bg-white shadow-md text-indigo-700 scale-100'
-                          : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      Tahun {yr}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Subjek Grid */}
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400">Pilih Subjek Pembelajaran</span>
-                <span className="text-[11px] font-bold text-slate-400">20s Setiap Soalan ⏱️</span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3.5">
-                {Object.keys(SUBJECT_CONFIG).map((key) => {
-                  const s = SUBJECT_CONFIG[key];
-                  const best = highScores[`${key}_${activeYear}`] || 0;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => startSession(key, activeYear)}
-                      className="group bg-white p-4 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-indigo-400 hover:shadow-md active:scale-95 transition-all text-left flex flex-col justify-between h-40 relative overflow-hidden"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-3xl p-2 bg-slate-50 rounded-2xl group-hover:scale-110 transition">{s.icon}</span>
-                        {best > 0 && (
-                          <span className="text-[10px] bg-amber-100 text-amber-800 font-black px-2 py-0.5 rounded-full">
-                            ★ {best}
-                          </span>
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-black text-slate-800 text-sm leading-snug">{s.title}</h3>
-                        <p className="text-[11px] font-bold text-slate-400 mt-0.5">{s.tag}</p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-slate-200/60 text-center">
-              <p className="text-[11px] font-bold text-slate-400">
-                ✨ 50 Soalan Berterusan • Pilihan Jawapan A-D Rawak
-              </p>
-            </div>
-          </div>
-        );
       }
 
-      // ==========================================
-      // PAPARAN 2: KEPUTUSAN KUIZ (50 SOALAN)
-      // ==========================================
-      if (screen === 'result') {
-        const accuracy = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
-        const grade = accuracy >= 85 ? 'Cemerlang A+' : accuracy >= 70 ? 'Amat Baik A' : accuracy >= 50 ? 'Lulus B' : 'Perlu Usaha C';
+      setScreen("topicComplete");
+    }
+  };
 
-        return (
-          <div className="flex flex-col h-full justify-between p-6 bg-slate-50 text-center">
-            <div className="my-auto">
-              <div className="w-20 h-20 bg-amber-100 text-amber-600 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner">
-                🏆
-              </div>
-              <h2 className="text-2xl font-black text-slate-800">50 Soalan Selesai Dijawab!</h2>
-              <p className="text-xs font-bold text-slate-400 mt-1">
-                {SUBJECT_CONFIG[activeSubject].title} • Tahun {activeYear}
-              </p>
 
-              <div className="bg-white border-2 border-slate-100 rounded-3xl p-5 my-6 shadow-sm">
-                <span className="text-xs uppercase font-black text-indigo-500 tracking-wider block mb-1">Jumlah Markah Terkumpul</span>
-                <div className="text-4xl font-black text-indigo-700">{score}</div>
-                <div className="inline-block mt-2 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-extrabold">
-                  Ketepatan: {accuracy}% ({correctCount}/50) • {grade}
-                </div>
+  /* =========================================================
+     QUIZ
+  ========================================================= */
 
-                <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-slate-100 text-left">
-                  <div className="bg-slate-50 p-3 rounded-2xl">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Streak Tertinggi</span>
-                    <span className="text-base font-black text-slate-700">{highestCombo}x Combo</span>
-                  </div>
-                  <div className="bg-slate-50 p-3 rounded-2xl">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Status Modul</span>
-                    <span className="text-base font-black text-emerald-600">Selesai 50/50 ✓</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+  const startQuiz = () => {
 
-            <div className="flex flex-col gap-2.5">
-              <button
-                onClick={() => startSession(activeSubject, activeYear)}
-                className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-sm active:scale-95 shadow-lg shadow-indigo-200 transition"
-              >
-                Cuba Lagi (Soalan & Jawapan Dirawakkan Semula) ↺
-              </button>
-              <button
-                onClick={() => { playSound('click'); setScreen('hub'); }}
-                className="w-full py-3.5 bg-white border-2 border-slate-200 text-slate-700 rounded-2xl font-extrabold text-sm active:scale-95 transition"
-              >
-                Kembali ke Menu Utama
-              </button>
-            </div>
-          </div>
-        );
-      }
+    playSound("click");
 
-      // ==========================================
-      // PAPARAN 3: KUIZ AKTIF
-      // ==========================================
-      const currentQ = sessionQuestions[currentIndex];
-      const isNumpad = currentQ?.type === 'numpad' || SUBJECT_CONFIG[activeSubject].type === 'numpad';
-      const timerProgress = (timeLeft / 20) * 100;
-      const timerColor = timeLeft > 10 ? 'bg-emerald-500' : timeLeft > 5 ? 'bg-amber-500' : 'bg-rose-500 animate-pulse';
-      const optionLabels = ['A', 'B', 'C', 'D'];
+    let pool;
 
-      return (
-        <div className="flex flex-col h-full justify-between p-5 bg-slate-50 select-none">
-          {/* Top Bar Header */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <button
-                onClick={() => { playSound('click'); setScreen('hub'); }}
-                className="w-9 h-9 rounded-2xl bg-white border border-slate-200 font-black text-slate-400 flex items-center justify-center active:scale-90 transition"
-              >
-                ✕
-              </button>
-              <div className="text-center">
-                <span className="text-xs font-black text-slate-800 block">
-                  {SUBJECT_CONFIG[activeSubject].title}
-                </span>
-                <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                  Tahun {activeYear}
-                </span>
-              </div>
-              <div className="bg-amber-100 border border-amber-200 text-amber-800 px-3 py-1 rounded-2xl text-xs font-black">
-                ⭐ {score}
-              </div>
-            </div>
-
-            {/* Pemasa Visual 20 Saat & Status Bilangan Soalan */}
-            <div className="mt-3 bg-white p-2.5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3">
-              <span className="text-xs font-black text-slate-700 flex items-center gap-1">
-                ⏱️ {timeLeft}s
-              </span>
-              <div className="flex-1 bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
-                <div
-                  className={`h-full rounded-full transition-all duration-1000 ${timerColor}`}
-                  style={{ width: `${timerProgress}%` }}
-                />
-              </div>
-              <span className="text-[11px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg">
-                {currentIndex + 1} / {sessionQuestions.length}
-              </span>
-            </div>
-          </div>
-
-          {/* Kad Soalan */}
-          <div className="my-auto py-2">
-            {feedback && (
-              <div
-                className={`text-center text-xs font-black py-2 px-4 rounded-2xl mb-3 w-max mx-auto shadow-md transition-all ${
-                  feedback.status === 'correct'
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-rose-500 text-white animate-shake'
-                }`}
-              >
-                {feedback.text}
-              </div>
-            )}
-
-            <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 text-center shadow-sm relative overflow-hidden">
-              <span className="text-[10px] font-black uppercase tracking-wider text-indigo-500 block mb-2">
-                Soalan {currentIndex + 1} daripada {sessionQuestions.length}
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-800 leading-snug">
-                {currentQ?.q}
-              </h2>
-
-              {isNumpad && (
-                <div className="mt-5">
-                  <div className="inline-flex items-center justify-center min-w-[120px] h-14 bg-indigo-50/70 border-b-4 border-indigo-600 rounded-2xl px-4 text-3xl font-black text-indigo-700 tracking-wider shadow-inner">
-                    {inputVal || <span className="text-indigo-300">?</span>}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Pilihan Jawapan Rawak (MCQ Tanpa Sticky Hover) */}
-          <div className="mb-2">
-            {!isNumpad ? (
-              <div className="grid grid-cols-1 gap-2.5">
-                {currentQ?.options?.map((opt, idx) => (
-                  <button
-                    key={idx}
-                    disabled={Boolean(feedback)}
-                    onClick={() => checkAnswer(opt)}
-                    className="w-full py-3.5 px-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-extrabold text-slate-700 active:bg-indigo-50 active:border-indigo-400 active:scale-[0.98] transition-all text-left shadow-sm flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="w-7 h-7 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-black text-slate-500">
-                        {optionLabels[idx]}
-                      </span>
-                      <span className="text-slate-800">{opt}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                  <button
-                    key={num}
-                    onClick={() => handleNumpadInput(num.toString())}
-                    className="h-12 bg-white border border-slate-200 rounded-2xl font-black text-lg text-slate-700 active:bg-slate-100 shadow-sm active:scale-95 transition"
-                  >
-                    {num}
-                  </button>
-                ))}
-                <button
-                  onClick={() => handleNumpadInput('del')}
-                  className="h-12 bg-rose-50 border border-rose-100 rounded-2xl font-black text-sm text-rose-600 active:scale-95 transition flex items-center justify-center"
-                >
-                  Padam ⌫
-                </button>
-                <button
-                  onClick={() => handleNumpadInput('0')}
-                  className="h-12 bg-white border border-slate-200 rounded-2xl font-black text-lg text-slate-700 active:bg-slate-100 shadow-sm active:scale-95 transition"
-                >
-                  0
-                </button>
-                <button
-                  onClick={() => handleNumpadInput('enter')}
-                  className="h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-sm active:scale-95 shadow-md shadow-indigo-200 transition flex items-center justify-center"
-                >
-                  Semak ✓
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      );
+    if (subject === "math") {
+      pool = generateMathQuestions(year, 12);
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
+    if (subject === "bm") {
+      pool = shuffle(BM_QUESTIONS).slice(0,12);
+    }
+
+    if (subject === "bi") {
+      pool = shuffle(BI_QUESTIONS).slice(0,12);
+    }
+
+    if (subject === "science") {
+      pool = shuffle(SCIENCE_QUESTIONS).slice(0,12);
+    }
+
+    pool = pool.map(item => ({
+      ...item,
+      options: item.options?.length
+        ? shuffle(item.options)
+        : []
+    }));
+
+    setQuizQuestions(pool);
+    setQuizIndex(0);
+    setQuizScore(0);
+    setQuizCorrect(0);
+    setQuizCombo(0);
+    setQuizBestCombo(0);
+    setQuizFeedback(null);
+    setQuizInput("");
+    setQuizTime(20);
+
+    setScreen("quiz");
+  };
+
+
+  const handleQuizTimeout = () => {
+
+    if (quizFeedback) return;
+
+    playSound("wrong");
+
+    const q = quizQuestions[quizIndex];
+
+    setQuizCombo(0);
+
+    setQuizFeedback({
+      status: "wrong",
+      text: `Masa tamat! ⏰ Jawapan: ${q?.a}`
+    });
+
+    setTimeout(nextQuizQuestion, 1200);
+  };
+
+
+  const answerQuiz = (answer) => {
+
+    if (quizFeedback) return;
+
+    const q = quizQuestions[quizIndex];
+
+    const correct =
+      String(answer).trim().toLowerCase() ===
+      String(q.a).trim().toLowerCase();
+
+    if (correct) {
+
+      playSound("correct");
+
+      const bonus = Math.floor(quizTime * .5);
+      const added = 10 + bonus;
+
+      const newCombo = quizCombo + 1;
+
+      setQuizScore(prev => prev + added);
+      setQuizCorrect(prev => prev + 1);
+      setQuizCombo(newCombo);
+
+      setQuizBestCombo(prev =>
+        Math.max(prev, newCombo)
+      );
+
+      setQuizFeedback({
+        status: "correct",
+        text:
+          newCombo >= 3
+            ? `Hebat! 🔥 Combo x${newCombo}`
+            : `Betul! 🎉 +${added} XP`
+      });
+
+    } else {
+
+      playSound("wrong");
+
+      setQuizCombo(0);
+
+      setQuizFeedback({
+        status: "wrong",
+        text: `Belum tepat ❌ Jawapan: ${q.a}`
+      });
+    }
+
+    setTimeout(nextQuizQuestion, 1200);
+  };
+
+
+  const nextQuizQuestion = () => {
+
+    if (quizIndex + 1 >= quizQuestions.length) {
+
+      const percentage =
+        Math.round(
+          (quizCorrect / quizQuestions.length) * 100
+        );
+
+      if (percentage >= 70 && typeof confetti === "function") {
+
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: .6 }
+        });
+      }
+
+      const scoreKey = `${subject}_${year}`;
+
+      setProgress(prev => ({
+        ...prev,
+        xp: prev.xp + quizScore,
+        quizzes: prev.quizzes + 1,
+        scores: {
+          ...prev.scores,
+          [scoreKey]: Math.max(
+            prev.scores?.[scoreKey] || 0,
+            quizScore
+          )
+        }
+      }));
+
+      setScreen("quizResult");
+
+    } else {
+
+      setQuizIndex(i => i + 1);
+      setQuizFeedback(null);
+      setQuizInput("");
+      setQuizTime(20);
+    }
+  };
+
+
+  const handleNumpad = (key) => {
+
+    if (quizFeedback) return;
+
+    playSound("click");
+
+    if (key === "delete") {
+      setQuizInput(prev => prev.slice(0,-1));
+      return;
+    }
+
+    if (key === "enter") {
+
+      if (quizInput.length) {
+        answerQuiz(quizInput);
+      }
+
+      return;
+    }
+
+    if (quizInput.length < 6) {
+      setQuizInput(prev => prev + key);
+    }
+  };
+
+
+  /* =========================================================
+     GAMES
+  ========================================================= */
+
+  const startGame = (type) => {
+
+    playSound("click");
+
+    setGameType(type);
+    setGameScore(0);
+    generateGameQuestion(type);
+
+    setScreen("game");
+  };
+
+
+  const generateGameQuestion = (type) => {
+
+    if (type === "math") {
+
+      const a = Math.floor(Math.random()*10)+1;
+      const b = Math.floor(Math.random()*10)+1;
+
+      setGameQuestion({
+        q: `${a} + ${b} = ?`,
+        answer: a+b,
+        options: shuffle([
+          a+b,
+          a+b+1,
+          Math.max(0,a+b-2),
+          a+b+3
+        ])
+      });
+
+      return;
+    }
+
+    if (type === "science") {
+
+      setGameQuestion({
+        q: "Haiwan manakah hidup di dalam air?",
+        answer: "Ikan",
+        options: shuffle([
+          "Ikan",
+          "Kucing",
+          "Ayam",
+          "Arnab"
+        ])
+      });
+
+      return;
+    }
+
+    if (type === "bm") {
+
+      setGameQuestion({
+        q: "Pilih kata kerja:",
+        answer: "Berlari",
+        options: shuffle([
+          "Berlari",
+          "Rumah",
+          "Cantik",
+          "Buku"
+        ])
+      });
+
+      return;
+    }
+
+    if (type === "bi") {
+
+      setGameQuestion({
+        q: "Choose the correct word for 🐶:",
+        answer: "Dog",
+        options: shuffle([
+          "Dog",
+          "Cat",
+          "Bird",
+          "Fish"
+        ])
+      });
+    }
+  };
+
+
+  const answerGame = (answer) => {
+
+    if (answer === gameQuestion.answer) {
+
+      playSound("correct");
+
+      setGameScore(prev => prev + 10);
+
+      if (typeof confetti === "function") {
+        confetti({
+          particleCount: 30,
+          spread: 50,
+          origin: { y: .65 }
+        });
+      }
+
+      setTimeout(() => {
+        generateGameQuestion(gameType);
+      }, 500);
+
+    } else {
+
+      playSound("wrong");
+
+    }
+  };
+
+
+  /* =========================================================
+     DASHBOARD
+  ========================================================= */
+
+  const Dashboard = () => (
+
+    <div className="space-y-6">
+
+      {/* HERO */}
+
+      <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white p-6 md:p-8 shadow-xl">
+
+        <div className="absolute -right-12 -top-12 w-44 h-44 rounded-full bg-white/10"></div>
+        <div className="absolute -left-10 -bottom-16 w-40 h-40 rounded-full bg-white/10"></div>
+
+        <div className="relative z-10">
+
+          <div className="flex justify-between items-start">
+
+            <div>
+
+              <span className="inline-flex px-3 py-1 rounded-full bg-white/15 text-xs font-black mb-3">
+                🎒 EDU BOX
+              </span>
+
+              <h1 className="text-3xl md:text-4xl font-black">
+                Hi, Aina! 👋
+              </h1>
+
+              <p className="mt-2 text-indigo-100 font-bold">
+                Jom belajar, bermain dan jadi Super Learner!
+              </p>
+
+            </div>
+
+            <div className="text-5xl float">
+              🧑‍🎓
+            </div>
+
+          </div>
+
+          <div className="mt-6 grid grid-cols-3 gap-2">
+
+            <div className="bg-white/10 rounded-2xl p-3">
+              <div className="text-2xl font-black">
+                {progress.xp.toLocaleString()}
+              </div>
+              <div className="text-[11px] text-indigo-100 font-bold">
+                XP
+              </div>
+            </div>
+
+            <div className="bg-white/10 rounded-2xl p-3">
+              <div className="text-2xl font-black">
+                🔥 {progress.streak}
+              </div>
+              <div className="text-[11px] text-indigo-100 font-bold">
+                Streak
+              </div>
+            </div>
+
+            <div className="bg-white/10 rounded-2xl p-3">
+              <div className="text-2xl font-black">
+                {overallProgress}%
+              </div>
+              <div className="text-[11px] text-indigo-100 font-bold">
+                Progress
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* TODAY'S MISSION */}
+
+      <div>
+
+        <div className="flex justify-between items-end mb-3">
+
+          <div>
+            <h2 className="text-xl font-black">
+              Today's Mission 🎯
+            </h2>
+
+            <p className="text-sm text-slate-400 font-bold">
+              Complete your learning goals today.
+            </p>
+          </div>
+
+          <button
+            onClick={() => go("progress")}
+            className="text-xs font-black text-indigo-600"
+          >
+            Lihat Progress →
+          </button>
+
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-3">
+
+          {Object.values(SUBJECTS).map((s, index) => (
+
+            <button
+              key={s.key}
+              onClick={() => chooseSubject(s.key)}
+              className="bg-white border border-slate-100 rounded-3xl p-4 text-left soft-shadow card-hover"
+            >
+
+              <div className={`w-12 h-12 rounded-2xl ${s.light} flex items-center justify-center text-2xl`}>
+                {s.icon}
+              </div>
+
+              <h3 className="font-black mt-3">
+                {s.name}
+              </h3>
+
+              <p className="text-xs text-slate-400 font-bold mt-1">
+                {index % 2 === 0
+                  ? "Continue learning"
+                  : "Practice today"}
+              </p>
+
+              <div className="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-full bg-gradient-to-r ${s.gradient} rounded-full`}
+                  style={{
+                    width:
+                      index === 0 ? "80%" :
+                      index === 1 ? "60%" :
+                      index === 2 ? "90%" : "70%"
+                  }}
+                />
+              </div>
+
+            </button>
+
+          ))}
+
+        </div>
+
+      </div>
+
+
+      {/* QUICK ACTIONS */}
+
+      <div>
+
+        <h2 className="text-xl font-black mb-3">
+          Quick Learning ⚡
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+          <button
+            onClick={() => go("subjects")}
+            className="bg-white rounded-3xl p-5 border border-slate-100 text-left card-hover"
+          >
+            <div className="text-3xl">📚</div>
+            <div className="font-black mt-3">Learn</div>
+            <div className="text-xs text-slate-400 font-bold">
+              Lessons & notes
+            </div>
+          </button>
+
+          <button
+            onClick={() => startQuiz()}
+            className="bg-white rounded-3xl p-5 border border-slate-100 text-left card-hover"
+          >
+            <div className="text-3xl">📝</div>
+            <div className="font-black mt-3">Quiz</div>
+            <div className="text-xs text-slate-400 font-bold">
+              Test your knowledge
+            </div>
+          </button>
+
+          <button
+            onClick={() => go("games")}
+            className="bg-white rounded-3xl p-5 border border-slate-100 text-left card-hover"
+          >
+            <div className="text-3xl">🎮</div>
+            <div className="font-black mt-3">Games</div>
+            <div className="text-xs text-slate-400 font-bold">
+              Learn while playing
+            </div>
+          </button>
+
+          <button
+            onClick={() => go("rewards")}
+            className="bg-white rounded-3xl p-5 border border-slate-100 text-left card-hover"
+          >
+            <div className="text-3xl">🏆</div>
+            <div className="font-black mt-3">Rewards</div>
+            <div className="text-xs text-slate-400 font-bold">
+              Collect badges
+            </div>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      {/* LEARNING MAP */}
+
+      <div>
+
+        <div className="flex justify-between items-center mb-3">
+
+          <h2 className="text-xl font-black">
+            Learning Map 🗺️
+          </h2>
+
+          <button
+            onClick={() => go("subjects")}
+            className="text-xs font-black text-indigo-600"
+          >
+            Explore →
+          </button>
+
+        </div>
+
+        <div className="bg-white rounded-[32px] border border-slate-100 p-5 soft-shadow">
+
+          <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+
+            {[
+              ["🌱","Start","Completed"],
+              ["🔢","Numbers","Completed"],
+              ["➕","Addition","Current"],
+              ["➖","Subtraction","Locked"],
+              ["💰","Money","Locked"]
+            ].map((item,index) => (
+
+              <div
+                key={index}
+                className="min-w-[130px] p-4 rounded-3xl bg-slate-50 text-center"
+              >
+
+                <div className="text-3xl">
+                  {item[0]}
+                </div>
+
+                <div className="font-black text-sm mt-2">
+                  {item[1]}
+                </div>
+
+                <div className={`text-[10px] font-black mt-1 ${
+                  item[2] === "Completed"
+                    ? "text-emerald-600"
+                    : item[2] === "Current"
+                    ? "text-indigo-600"
+                    : "text-slate-400"
+                }`}>
+                  {item[2]}
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     SUBJECT PAGE
+  ========================================================= */
+
+  const SubjectsPage = () => (
+
+    <div className="space-y-6">
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+        <div>
+
+          <h1 className="text-3xl font-black">
+            My Learning 📚
+          </h1>
+
+          <p className="text-slate-400 font-bold mt-1">
+            Pilih tahun dan subjek untuk mula belajar.
+          </p>
+
+        </div>
+
+        <div className="flex gap-2">
+
+          {[1,2,3].map(y => (
+
+            <button
+              key={y}
+              onClick={() => chooseYear(y)}
+              className={`px-4 py-2.5 rounded-2xl text-xs font-black transition ${
+                year === y
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "bg-white border border-slate-200 text-slate-600"
+              }`}
+            >
+              Tahun {y}
+            </button>
+
+          ))}
+
+        </div>
+
+      </div>
+
+
+      {/* SUBJECTS */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {Object.values(SUBJECTS).map(s => (
+
+          <button
+            key={s.key}
+            onClick={() => {
+              setSubject(s.key);
+              setScreen("topics");
+            }}
+            className="bg-white rounded-[32px] border border-slate-100 p-6 text-left soft-shadow card-hover"
+          >
+
+            <div className="flex items-center gap-4">
+
+              <div className={`w-16 h-16 rounded-3xl ${s.light} flex items-center justify-center text-4xl`}>
+                {s.icon}
+              </div>
+
+              <div className="flex-1">
+
+                <div className="text-xs font-black text-slate-400 uppercase">
+                  Tahun {year}
+                </div>
+
+                <h2 className="text-xl font-black mt-1">
+                  {s.name}
+                </h2>
+
+                <p className="text-sm text-slate-400 font-bold mt-1">
+                  {s.description}
+                </p>
+
+              </div>
+
+              <div className="text-xl">
+                →
+              </div>
+
+            </div>
+
+          </button>
+
+        ))}
+
+      </div>
+
+
+      {/* WEEKLY TEST */}
+
+      <div className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-[32px] p-6 text-white">
+
+        <div className="flex items-center gap-4">
+
+          <div className="text-5xl">
+            🏆
+          </div>
+
+          <div className="flex-1">
+
+            <div className="font-black text-xl">
+              Weekly Challenge
+            </div>
+
+            <div className="text-sm text-orange-50 font-bold">
+              20 soalan campuran untuk uji kemahiran minggu ini.
+            </div>
+
+          </div>
+
+          <button
+            onClick={startQuiz}
+            className="bg-white text-orange-600 px-4 py-3 rounded-2xl font-black text-xs"
+          >
+            Mula
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     TOPICS PAGE
+  ========================================================= */
+
+  const TopicsPage = () => (
+
+    <div className="space-y-6">
+
+      <div className="flex items-center gap-3">
+
+        <button
+          onClick={() => go("subjects")}
+          className="w-10 h-10 rounded-2xl bg-white border border-slate-200 font-black"
+        >
+          ←
+        </button>
+
+        <div>
+
+          <div className={`text-xs font-black ${currentSubject.text}`}>
+            TAHUN {year}
+          </div>
+
+          <h1 className="text-2xl font-black">
+            {currentSubject.icon} {currentSubject.name}
+          </h1>
+
+        </div>
+
+      </div>
+
+
+      <div className={`rounded-[32px] bg-gradient-to-r ${currentSubject.gradient} p-6 text-white`}>
+
+        <div className="flex items-center gap-4">
+
+          <div className="text-5xl">
+            {currentSubject.icon}
+          </div>
+
+          <div>
+
+            <div className="text-2xl font-black">
+              {currentSubject.name}
+            </div>
+
+            <div className="text-sm text-white/80 font-bold">
+              Tahun {year} Learning Path
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div className="grid gap-4">
+
+        {topics.map((topic,index) => (
+
+          <button
+            key={topic.id}
+            onClick={() => openTopic(topic)}
+            className="bg-white border border-slate-100 rounded-[30px] p-5 text-left soft-shadow card-hover"
+          >
+
+            <div className="flex gap-4">
+
+              <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-3xl">
+                {topic.icon}
+              </div>
+
+              <div className="flex-1">
+
+                <div className="flex items-start justify-between">
+
+                  <div>
+
+                    <div className="text-[10px] font-black uppercase text-slate-400">
+                      Topic {index + 1}
+                    </div>
+
+                    <h3 className="text-lg font-black">
+                      {topic.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-400 font-bold mt-1">
+                      {topic.description}
+                    </p>
+
+                  </div>
+
+                  <span className="text-indigo-500 font-black">
+                    →
+                  </span>
+
+                </div>
+
+                <div className="mt-4">
+
+                  <div className="flex justify-between text-[10px] font-black mb-1">
+
+                    <span className="text-slate-400">
+                      Progress
+                    </span>
+
+                    <span className="text-indigo-600">
+                      {topic.progress}%
+                    </span>
+
+                  </div>
+
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+
+                    <div
+                      className={`h-full bg-gradient-to-r ${currentSubject.gradient}`}
+                      style={{
+                        width: `${topic.progress}%`
+                      }}
+                    />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </button>
+
+        ))}
+
+      </div>
+
+
+      <button
+        onClick={startQuiz}
+        className={`w-full py-4 rounded-2xl bg-gradient-to-r ${currentSubject.gradient} text-white font-black shadow-lg`}
+      >
+        📝 Practice {currentSubject.name}
+      </button>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     LESSON PAGE
+  ========================================================= */
+
+  const LessonPage = () => {
+
+    const lesson = selectedTopic?.lessons?.[lessonIndex];
+
+    if (!lesson) return null;
+
+    const lessonProgress =
+      ((lessonIndex + 1) / selectedTopic.lessons.length) * 100;
+
+    return (
+
+      <div className="max-w-3xl mx-auto">
+
+        <button
+          onClick={() => go("topics")}
+          className="mb-4 text-sm font-black text-slate-500"
+        >
+          ← Kembali ke topik
+        </button>
+
+        <div className="bg-white rounded-[36px] border border-slate-100 soft-shadow overflow-hidden">
+
+          <div className={`bg-gradient-to-r ${currentSubject.gradient} p-6 text-white`}>
+
+            <div className="text-5xl mb-3">
+              {selectedTopic.icon}
+            </div>
+
+            <div className="text-xs font-black uppercase text-white/70">
+              Tahun {year} • {currentSubject.name}
+            </div>
+
+            <h1 className="text-2xl md:text-3xl font-black mt-1">
+              {selectedTopic.title}
+            </h1>
+
+            <div className="mt-5 h-2 bg-white/20 rounded-full overflow-hidden">
+
+              <div
+                className="h-full bg-white rounded-full"
+                style={{
+                  width: `${lessonProgress}%`
+                }}
+              />
+
+            </div>
+
+            <div className="text-xs font-bold text-white/80 mt-2">
+              Lesson {lessonIndex + 1} of {selectedTopic.lessons.length}
+            </div>
+
+          </div>
+
+
+          <div className="p-6 md:p-8">
+
+            <div className="flex items-center gap-3 mb-5">
+
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl">
+                💡
+              </div>
+
+              <div>
+
+                <div className="text-xs font-black text-slate-400 uppercase">
+                  Learn
+                </div>
+
+                <h2 className="text-xl font-black">
+                  {lesson.title}
+                </h2>
+
+              </div>
+
+            </div>
+
+            <div
+              className="lesson-content text-slate-600 font-semibold leading-8 text-base"
+              dangerouslySetInnerHTML={{
+                __html: lesson.body
+              }}
+            />
+
+            <div className="mt-8 grid grid-cols-2 gap-3">
+
+              <button
+                onClick={() => {
+                  if (lessonIndex > 0) {
+                    setLessonIndex(i => i - 1);
+                  }
+                }}
+                disabled={lessonIndex === 0}
+                className="py-3 rounded-2xl border border-slate-200 font-black disabled:opacity-30"
+              >
+                ← Sebelum
+              </button>
+
+              <button
+                onClick={completeLesson}
+                className={`py-3 rounded-2xl bg-gradient-to-r ${currentSubject.gradient} text-white font-black`}
+              >
+                {lessonIndex + 1 === selectedTopic.lessons.length
+                  ? "Selesai ✓"
+                  : "Seterusnya →"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  /* =========================================================
+     TOPIC COMPLETE
+  ========================================================= */
+
+  const TopicComplete = () => (
+
+    <div className="max-w-xl mx-auto text-center py-8">
+
+      <div className="w-28 h-28 rounded-[36px] bg-emerald-100 flex items-center justify-center text-6xl mx-auto float">
+        🎉
+      </div>
+
+      <h1 className="text-3xl font-black mt-6">
+        Topic Complete!
+      </h1>
+
+      <p className="text-slate-400 font-bold mt-2">
+        Hebat! Kamu telah selesai belajar.
+      </p>
+
+      <div className="bg-white rounded-[32px] border border-slate-100 p-6 mt-6 soft-shadow">
+
+        <div className="text-xs font-black uppercase text-slate-400">
+          Reward
+        </div>
+
+        <div className="text-4xl font-black text-indigo-600 mt-2">
+          +10 XP ⭐
+        </div>
+
+      </div>
+
+      <div className="grid gap-3 mt-5">
+
+        <button
+          onClick={startQuiz}
+          className="py-4 rounded-2xl bg-indigo-600 text-white font-black"
+        >
+          📝 Practice Topic
+        </button>
+
+        <button
+          onClick={() => go("topics")}
+          className="py-4 rounded-2xl bg-white border-2 border-slate-200 font-black"
+        >
+          Kembali ke Topics
+        </button>
+
+      </div>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     QUIZ PAGE
+  ========================================================= */
+
+  const QuizPage = () => {
+
+    const q = quizQuestions[quizIndex];
+
+    if (!q) return null;
+
+    const isNumpad = q.type === "numpad";
+    const percentage = (quizTime / 20) * 100;
+
+    return (
+
+      <div className="max-w-2xl mx-auto">
+
+        <div className="flex items-center justify-between mb-4">
+
+          <button
+            onClick={() => go("dashboard")}
+            className="w-10 h-10 rounded-2xl bg-white border border-slate-200 font-black"
+          >
+            ✕
+          </button>
+
+          <div className="text-center">
+
+            <div className="font-black">
+              {currentSubject.name}
+            </div>
+
+            <div className="text-[10px] font-black text-indigo-600">
+              Tahun {year}
+            </div>
+
+          </div>
+
+          <div className="bg-amber-100 text-amber-700 px-3 py-2 rounded-2xl font-black text-xs">
+            ⭐ {quizScore}
+          </div>
+
+        </div>
+
+
+        {/* TIMER */}
+
+        <div className="bg-white rounded-2xl border border-slate-100 p-3 mb-4">
+
+          <div className="flex items-center gap-3">
+
+            <span className={`font-black text-sm ${
+              quizTime <= 5
+                ? "text-rose-600"
+                : "text-slate-700"
+            }`}>
+              ⏱️ {quizTime}s
+            </span>
+
+            <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
+
+              <div
+                className={`h-full rounded-full ${
+                  quizTime <= 5
+                    ? "bg-rose-500"
+                    : quizTime <= 10
+                    ? "bg-amber-500"
+                    : "bg-emerald-500"
+                }`}
+                style={{
+                  width: `${percentage}%`
+                }}
+              />
+
+            </div>
+
+            <span className="text-xs font-black text-indigo-600">
+              {quizIndex + 1}/{quizQuestions.length}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        {quizFeedback && (
+
+          <div className={`text-center py-3 px-4 rounded-2xl mb-4 font-black ${
+            quizFeedback.status === "correct"
+              ? "bg-emerald-500 text-white"
+              : "bg-rose-500 text-white animate-shake"
+          }`}>
+            {quizFeedback.text}
+          </div>
+
+        )}
+
+
+        {/* QUESTION */}
+
+        <div className="bg-white rounded-[36px] border border-slate-100 p-7 md:p-10 text-center soft-shadow">
+
+          <div className="text-[10px] font-black uppercase tracking-widest text-indigo-500">
+            Soalan {quizIndex + 1}
+          </div>
+
+          <h1 className="text-2xl md:text-3xl font-black mt-4 leading-tight">
+            {q.q}
+          </h1>
+
+
+          {isNumpad && (
+
+            <div className="mt-7">
+
+              <div className="inline-flex min-w-[140px] min-h-[65px] px-6 items-center justify-center rounded-2xl bg-indigo-50 border-b-4 border-indigo-600 text-3xl font-black text-indigo-700">
+
+                {quizInput || "?"}
+
+              </div>
+
+            </div>
+
+          )}
+
+        </div>
+
+
+        {/* ANSWERS */}
+
+        <div className="mt-4">
+
+          {!isNumpad ? (
+
+            <div className="grid gap-3">
+
+              {q.options.map((option,index) => (
+
+                <button
+                  key={index}
+                  disabled={Boolean(quizFeedback)}
+                  onClick={() => answerQuiz(option)}
+                  className="option-btn bg-white border-2 border-slate-200 rounded-2xl p-4 text-left font-black flex items-center gap-3 disabled:opacity-70"
+                >
+
+                  <span className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-black">
+                    {["A","B","C","D"][index]}
+                  </span>
+
+                  {option}
+
+                </button>
+
+              ))}
+
+            </div>
+
+          ) : (
+
+            <div className="grid grid-cols-3 gap-2">
+
+              {[1,2,3,4,5,6,7,8,9].map(num => (
+
+                <button
+                  key={num}
+                  onClick={() => handleNumpad(String(num))}
+                  className="h-14 rounded-2xl bg-white border border-slate-200 text-xl font-black shadow-sm"
+                >
+                  {num}
+                </button>
+
+              ))}
+
+              <button
+                onClick={() => handleNumpad("delete")}
+                className="h-14 rounded-2xl bg-rose-50 text-rose-600 font-black"
+              >
+                ⌫
+              </button>
+
+              <button
+                onClick={() => handleNumpad("0")}
+                className="h-14 rounded-2xl bg-white border border-slate-200 text-xl font-black"
+              >
+                0
+              </button>
+
+              <button
+                onClick={() => handleNumpad("enter")}
+                className="h-14 rounded-2xl bg-indigo-600 text-white font-black"
+              >
+                Semak ✓
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  /* =========================================================
+     QUIZ RESULT
+  ========================================================= */
+
+  const QuizResult = () => {
+
+    const accuracy =
+      Math.round(
+        (quizCorrect / quizQuestions.length) * 100
+      );
+
+    let grade;
+
+    if (accuracy >= 90) grade = "Cemerlang! 🏆";
+    else if (accuracy >= 70) grade = "Amat Baik! 🌟";
+    else if (accuracy >= 50) grade = "Bagus! 💪";
+    else grade = "Jom Cuba Lagi! 🚀";
+
+    return (
+
+      <div className="max-w-xl mx-auto text-center">
+
+        <div className="text-7xl float">
+          {accuracy >= 70 ? "🏆" : "💪"}
+        </div>
+
+        <h1 className="text-3xl font-black mt-5">
+          {grade}
+        </h1>
+
+        <p className="text-slate-400 font-bold">
+          {currentSubject.name} • Tahun {year}
+        </p>
+
+        <div className="bg-white rounded-[36px] border border-slate-100 p-7 mt-6 soft-shadow">
+
+          <div className="text-xs uppercase tracking-wider font-black text-indigo-500">
+            Your Score
+          </div>
+
+          <div className="text-5xl font-black text-indigo-700 mt-2">
+            {quizScore}
+          </div>
+
+          <div className="inline-block bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-xs font-black mt-3">
+            {quizCorrect}/{quizQuestions.length} betul • {accuracy}%
+          </div>
+
+
+          <div className="grid grid-cols-2 gap-3 mt-6">
+
+            <div className="bg-slate-50 rounded-2xl p-4 text-left">
+
+              <div className="text-[10px] uppercase text-slate-400 font-black">
+                Best Combo
+              </div>
+
+              <div className="text-xl font-black mt-1">
+                🔥 {quizBestCombo}x
+              </div>
+
+            </div>
+
+            <div className="bg-slate-50 rounded-2xl p-4 text-left">
+
+              <div className="text-[10px] uppercase text-slate-400 font-black">
+                XP Earned
+              </div>
+
+              <div className="text-xl font-black mt-1 text-amber-600">
+                +{quizScore} ⭐
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div className="grid gap-3 mt-5">
+
+          <button
+            onClick={startQuiz}
+            className={`py-4 rounded-2xl bg-gradient-to-r ${currentSubject.gradient} text-white font-black`}
+          >
+            Cuba Lagi ↻
+          </button>
+
+          <button
+            onClick={() => go("dashboard")}
+            className="py-4 rounded-2xl bg-white border-2 border-slate-200 font-black"
+          >
+            Dashboard
+          </button>
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  /* =========================================================
+     GAMES PAGE
+  ========================================================= */
+
+  const GamesPage = () => (
+
+    <div className="space-y-6">
+
+      <div>
+
+        <h1 className="text-3xl font-black">
+          Game Centre 🎮
+        </h1>
+
+        <p className="text-slate-400 font-bold mt-1">
+          Belajar sambil bermain!
+        </p>
+
+      </div>
+
+
+      <div className="grid md:grid-cols-2 gap-4">
+
+        <GameCard
+          icon="🔢"
+          title="Math Rush"
+          description="Jawab operasi matematik dengan pantas."
+          gradient="from-blue-500 to-indigo-600"
+          onClick={() => startGame("math")}
+        />
+
+        <GameCard
+          icon="🔬"
+          title="Science Explorer"
+          description="Uji pengetahuan tentang dunia sains."
+          gradient="from-emerald-500 to-teal-600"
+          onClick={() => startGame("science")}
+        />
+
+        <GameCard
+          icon="📖"
+          title="BM Word Builder"
+          description="Kenali kata nama, kerja dan adjektif."
+          gradient="from-rose-500 to-pink-600"
+          onClick={() => startGame("bm")}
+        />
+
+        <GameCard
+          icon="🇬🇧"
+          title="English Word Match"
+          description="Build your English vocabulary."
+          gradient="from-violet-500 to-purple-600"
+          onClick={() => startGame("bi")}
+        />
+
+      </div>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     GAME CARD
+  ========================================================= */
+
+  function GameCard({
+    icon,
+    title,
+    description,
+    gradient,
+    onClick
+  }) {
+
+    return (
+
+      <button
+        onClick={onClick}
+        className={`bg-gradient-to-br ${gradient} text-white rounded-[32px] p-6 text-left card-hover`}
+      >
+
+        <div className="text-5xl">
+          {icon}
+        </div>
+
+        <h2 className="text-2xl font-black mt-5">
+          {title}
+        </h2>
+
+        <p className="text-sm text-white/80 font-bold mt-1">
+          {description}
+        </p>
+
+        <div className="mt-5 inline-flex bg-white/15 rounded-xl px-3 py-2 text-xs font-black">
+          PLAY →
+        </div>
+
+      </button>
+    );
+  }
+
+
+  /* =========================================================
+     GAME PAGE
+  ========================================================= */
+
+  const GamePage = () => {
+
+    if (!gameQuestion) return null;
+
+    return (
+
+      <div className="max-w-xl mx-auto text-center">
+
+        <button
+          onClick={() => go("games")}
+          className="text-sm font-black text-slate-500 mb-4"
+        >
+          ← Game Centre
+        </button>
+
+        <div className="bg-white rounded-[36px] border border-slate-100 p-7 soft-shadow">
+
+          <div className="flex justify-between">
+
+            <div className="font-black">
+              🎮 {gameType === "math"
+                ? "Math Rush"
+                : gameType === "science"
+                ? "Science Explorer"
+                : gameType === "bm"
+                ? "BM Word Builder"
+                : "English Word Match"}
+            </div>
+
+            <div className="text-amber-600 font-black">
+              ⭐ {gameScore}
+            </div>
+
+          </div>
+
+          <div className="text-7xl mt-10">
+            {gameType === "math"
+              ? "🧮"
+              : gameType === "science"
+              ? "🔬"
+              : gameType === "bm"
+              ? "📖"
+              : "🇬🇧"}
+          </div>
+
+          <h1 className="text-2xl font-black mt-7">
+            {gameQuestion.q}
+          </h1>
+
+          <div className="grid gap-3 mt-7">
+
+            {gameQuestion.options.map((option,index) => (
+
+              <button
+                key={index}
+                onClick={() => answerGame(option)}
+                className="py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl font-black hover:border-indigo-400 transition"
+              >
+                {option}
+              </button>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  /* =========================================================
+     REWARDS
+  ========================================================= */
+
+  const RewardsPage = () => {
+
+    const badges = [
+
+      {
+        icon: "⭐",
+        title: "Learning Starter",
+        description: "Complete your first lesson",
+        unlocked: progress.completedLessons >= 1
+      },
+
+      {
+        icon: "🔥",
+        title: "7 Day Streak",
+        description: "Learn for 7 days",
+        unlocked: progress.streak >= 7
+      },
+
+      {
+        icon: "🔢",
+        title: "Math Star",
+        description: "Score 80% in Math",
+        unlocked: true
+      },
+
+      {
+        icon: "📖",
+        title: "Reading Hero",
+        description: "Complete BM lessons",
+        unlocked: true
+      },
+
+      {
+        icon: "🔬",
+        title: "Science Explorer",
+        description: "Complete Science topics",
+        unlocked: false
+      },
+
+      {
+        icon: "🇬🇧",
+        title: "English Explorer",
+        description: "Complete English practice",
+        unlocked: false
+      },
+
+      {
+        icon: "🏆",
+        title: "Quiz Champion",
+        description: "Complete 20 quizzes",
+        unlocked: progress.quizzes >= 20
+      },
+
+      {
+        icon: "💎",
+        title: "Edu Box Master",
+        description: "Reach 5,000 XP",
+        unlocked: progress.xp >= 5000
+      }
+
+    ];
+
+    return (
+
+      <div className="space-y-6">
+
+        <div>
+
+          <h1 className="text-3xl font-black">
+            Rewards & Badges 🏆
+          </h1>
+
+          <p className="text-slate-400 font-bold mt-1">
+            Collect badges sepanjang perjalanan belajar.
+          </p>
+
+        </div>
+
+
+        <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-[32px] p-6">
+
+          <div className="text-sm font-black text-orange-50">
+            YOUR XP
+          </div>
+
+          <div className="text-4xl font-black mt-1">
+            {progress.xp.toLocaleString()} ⭐
+          </div>
+
+          <div className="mt-4 h-3 bg-white/20 rounded-full overflow-hidden">
+
+            <div
+              className="h-full bg-white rounded-full"
+              style={{
+                width: `${Math.min((progress.xp / 5000)*100,100)}%`
+              }}
+            />
+
+          </div>
+
+          <div className="text-xs font-bold text-orange-50 mt-2">
+            {Math.max(0,5000-progress.xp).toLocaleString()} XP lagi untuk Edu Box Master
+          </div>
+
+        </div>
+
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+          {badges.map((badge,index) => (
+
+            <div
+              key={index}
+              className={`rounded-3xl p-5 text-center border ${
+                badge.unlocked
+                  ? "bg-white border-amber-100 soft-shadow"
+                  : "bg-slate-100 border-slate-200 opacity-50"
+              }`}
+            >
+
+              <div className="text-5xl">
+                {badge.icon}
+              </div>
+
+              <h3 className="font-black mt-3">
+                {badge.title}
+              </h3>
+
+              <p className="text-[11px] text-slate-400 font-bold mt-1">
+                {badge.description}
+              </p>
+
+              <div className={`text-[10px] font-black mt-3 ${
+                badge.unlocked
+                  ? "text-emerald-600"
+                  : "text-slate-400"
+              }`}>
+                {badge.unlocked
+                  ? "✓ UNLOCKED"
+                  : "🔒 LOCKED"}
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  /* =========================================================
+     PROGRESS
+  ========================================================= */
+
+  const ProgressPage = () => {
+
+    const subjectProgress = {
+      math: 80,
+      science: 65,
+      bm: 82,
+      bi: 70
+    };
+
+    return (
+
+      <div className="space-y-6">
+
+        <div>
+
+          <h1 className="text-3xl font-black">
+            My Progress 📊
+          </h1>
+
+          <p className="text-slate-400 font-bold mt-1">
+            Lihat perkembangan pembelajaran kamu.
+          </p>
+
+        </div>
+
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+          <Stat
+            icon="📚"
+            value={progress.completedLessons}
+            label="Lessons"
+          />
+
+          <Stat
+            icon="📝"
+            value={progress.quizzes}
+            label="Quizzes"
+          />
+
+          <Stat
+            icon="⭐"
+            value={progress.xp}
+            label="XP"
+          />
+
+          <Stat
+            icon="🔥"
+            value={progress.streak}
+            label="Day Streak"
+          />
+
+        </div>
+
+
+        <div className="bg-white rounded-[32px] border border-slate-100 p-6 soft-shadow">
+
+          <h2 className="text-xl font-black mb-5">
+            Subject Performance
+          </h2>
+
+          <div className="space-y-5">
+
+            {Object.entries(subjectProgress).map(([key,value]) => {
+
+              const s = SUBJECTS[key];
+
+              return (
+
+                <div key={key}>
+
+                  <div className="flex justify-between mb-2">
+
+                    <div className="flex items-center gap-2">
+
+                      <span>
+                        {s.icon}
+                      </span>
+
+                      <span className="font-black">
+                        {s.name}
+                      </span>
+
+                    </div>
+
+                    <span className={`font-black ${s.text}`}>
+                      {value}%
+                    </span>
+
+                  </div>
+
+                  <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+
+                    <div
+                      className={`h-full bg-gradient-to-r ${s.gradient} rounded-full`}
+                      style={{
+                        width: `${value}%`
+                      }}
+                    />
+
+                  </div>
+
+                </div>
+
+              );
+
+            })}
+
+          </div>
+
+        </div>
+
+
+        <div className="grid md:grid-cols-2 gap-4">
+
+          <div className="bg-white rounded-[32px] border border-slate-100 p-6">
+
+            <div className="text-3xl">
+              🌟
+            </div>
+
+            <h3 className="font-black text-lg mt-3">
+              Strong Areas
+            </h3>
+
+            <div className="flex flex-wrap gap-2 mt-4">
+
+              {[
+                "BM Reading",
+                "Addition",
+                "Animals",
+                "Vocabulary"
+              ].map(item => (
+
+                <span
+                  key={item}
+                  className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-xl text-xs font-black"
+                >
+                  ✓ {item}
+                </span>
+
+              ))}
+
+            </div>
+
+          </div>
+
+
+          <div className="bg-white rounded-[32px] border border-slate-100 p-6">
+
+            <div className="text-3xl">
+              🎯
+            </div>
+
+            <h3 className="font-black text-lg mt-3">
+              Need More Practice
+            </h3>
+
+            <div className="flex flex-wrap gap-2 mt-4">
+
+              {[
+                "Multiplication",
+                "Fractions",
+                "Grammar",
+                "Science"
+              ].map(item => (
+
+                <span
+                  key={item}
+                  className="px-3 py-2 bg-amber-50 text-amber-700 rounded-xl text-xs font-black"
+                >
+                  → {item}
+                </span>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  };
+
+
+  function Stat({icon,value,label}) {
+
+    return (
+
+      <div className="bg-white rounded-3xl border border-slate-100 p-5">
+
+        <div className="text-2xl">
+          {icon}
+        </div>
+
+        <div className="text-2xl font-black mt-2">
+          {Number(value).toLocaleString()}
+        </div>
+
+        <div className="text-xs text-slate-400 font-black">
+          {label}
+        </div>
+
+      </div>
+
+    );
+  }
+
+
+  /* =========================================================
+     PARENT DASHBOARD
+  ========================================================= */
+
+  const ParentPage = () => (
+
+    <div className="space-y-6">
+
+      <div>
+
+        <h1 className="text-3xl font-black">
+          Parent Dashboard 👨‍👩‍👧
+        </h1>
+
+        <p className="text-slate-400 font-bold mt-1">
+          Pantau perkembangan pembelajaran anak.
+        </p>
+
+      </div>
+
+
+      <div className="bg-white rounded-[32px] border border-slate-100 p-6 soft-shadow">
+
+        <div className="flex items-center gap-4">
+
+          <div className="w-16 h-16 rounded-3xl bg-pink-100 flex items-center justify-center text-4xl">
+            👧
+          </div>
+
+          <div>
+
+            <div className="text-xs text-slate-400 font-black uppercase">
+              Student
+            </div>
+
+            <h2 className="text-2xl font-black">
+              Aina
+            </h2>
+
+            <div className="text-sm text-indigo-600 font-black">
+              Tahun {year}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+
+          <Stat
+            icon="⏱️"
+            value="3h 42m"
+            label="Learning Time"
+          />
+
+          <Stat
+            icon="📚"
+            value={progress.completedLessons}
+            label="Lessons"
+          />
+
+          <Stat
+            icon="📝"
+            value={progress.quizzes}
+            label="Quizzes"
+          />
+
+          <Stat
+            icon="🔥"
+            value={progress.streak}
+            label="Streak"
+          />
+
+        </div>
+
+      </div>
+
+
+      <div className="grid md:grid-cols-2 gap-4">
+
+        <div className="bg-white rounded-[32px] border border-slate-100 p-6">
+
+          <h2 className="font-black text-xl">
+            🌟 Strong Areas
+          </h2>
+
+          <div className="space-y-3 mt-5">
+
+            {[
+              ["Bahasa Melayu","90%"],
+              ["Mathematics","82%"],
+              ["English","76%"]
+            ].map(item => (
+
+              <div key={item[0]}>
+
+                <div className="flex justify-between text-sm font-black">
+                  <span>{item[0]}</span>
+                  <span className="text-emerald-600">
+                    {item[1]}
+                  </span>
+                </div>
+
+                <div className="h-2 bg-slate-100 rounded-full mt-2">
+
+                  <div
+                    className="h-full bg-emerald-500 rounded-full"
+                    style={{
+                      width:item[1]
+                    }}
+                  />
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+
+        <div className="bg-white rounded-[32px] border border-slate-100 p-6">
+
+          <h2 className="font-black text-xl">
+            🎯 Needs Practice
+          </h2>
+
+          <div className="space-y-3 mt-5">
+
+            {[
+              "Multiplication",
+              "English Grammar",
+              "Science Materials"
+            ].map(item => (
+
+              <div
+                key={item}
+                className="flex items-center justify-between p-3 bg-amber-50 rounded-2xl"
+              >
+
+                <span className="font-black text-sm">
+                  {item}
+                </span>
+
+                <span className="text-amber-600">
+                  →
+                </span>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     PROFILE
+  ========================================================= */
+
+  const ProfilePage = () => (
+
+    <div className="max-w-2xl mx-auto space-y-5">
+
+      <div className="text-center">
+
+        <div className="w-24 h-24 rounded-[32px] bg-indigo-100 flex items-center justify-center text-6xl mx-auto">
+          🧑‍🎓
+        </div>
+
+        <h1 className="text-2xl font-black mt-4">
+          Aina
+        </h1>
+
+        <p className="text-slate-400 font-bold">
+          Year {year} Super Learner
+        </p>
+
+      </div>
+
+
+      <div className="bg-white rounded-[32px] border border-slate-100 p-6">
+
+        <h2 className="font-black text-lg">
+          Learning Settings
+        </h2>
+
+        <div className="mt-4 space-y-3">
+
+          <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+
+            <span className="font-black">
+              Tahun Pembelajaran
+            </span>
+
+            <select
+              value={year}
+              onChange={e => setYear(Number(e.target.value))}
+              className="bg-white border border-slate-200 rounded-xl px-3 py-2 font-black"
+            >
+
+              <option value={1}>Tahun 1</option>
+              <option value={2}>Tahun 2</option>
+              <option value={3}>Tahun 3</option>
+
+            </select>
+
+          </div>
+
+
+          <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+
+            <span className="font-black">
+              Sound Effects
+            </span>
+
+            <span className="text-emerald-600 font-black">
+              ON 🔊
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        onClick={() => {
+          localStorage.removeItem("edubox_progress");
+          window.location.reload();
+        }}
+        className="w-full py-4 bg-rose-50 text-rose-600 rounded-2xl font-black"
+      >
+        Reset Progress
+      </button>
+
+    </div>
+  );
+
+
+  /* =========================================================
+     MAIN SCREEN ROUTER
+  ========================================================= */
+
+  let content;
+
+  if (screen === "dashboard")
+    content = <Dashboard />;
+
+  else if (screen === "subjects")
+    content = <SubjectsPage />;
+
+  else if (screen === "topics")
+    content = <TopicsPage />;
+
+  else if (screen === "lesson")
+    content = <LessonPage />;
+
+  else if (screen === "topicComplete")
+    content = <TopicComplete />;
+
+  else if (screen === "quiz")
+    content = <QuizPage />;
+
+  else if (screen === "quizResult")
+    content = <QuizResult />;
+
+  else if (screen === "games")
+    content = <GamesPage />;
+
+  else if (screen === "game")
+    content = <GamePage />;
+
+  else if (screen === "rewards")
+    content = <RewardsPage />;
+
+  else if (screen === "progress")
+    content = <ProgressPage />;
+
+  else if (screen === "parent")
+    content = <ParentPage />;
+
+  else if (screen === "profile")
+    content = <ProfilePage />;
+
+  else
+    content = <Dashboard />;
+
+
+  /* =========================================================
+     APP LAYOUT
+  ========================================================= */
+
+  return (
+
+    <div className="app-shell">
+
+      {/* DESKTOP TOP BAR */}
+
+      <header className="sticky top-0 z-50 glass border-b border-slate-200/70">
+
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+
+          <button
+            onClick={() => go("dashboard")}
+            className="flex items-center gap-2"
+          >
+
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white flex items-center justify-center text-xl">
+              🎒
+            </div>
+
+            <div className="hidden sm:block">
+
+              <div className="font-black text-lg leading-none">
+                Edu Box
+              </div>
+
+              <div className="text-[10px] font-black text-slate-400">
+                LEARN • PLAY • GROW
+              </div>
+
+            </div>
+
+          </button>
+
+
+          <div className="hidden md:flex items-center gap-1">
+
+            <NavButton
+              active={screen === "dashboard"}
+              onClick={() => go("dashboard")}
+              icon="🏠"
+              label="Home"
+            />
+
+            <NavButton
+              active={["subjects","topics","lesson","topicComplete"].includes(screen)}
+              onClick={() => go("subjects")}
+              icon="📚"
+              label="Learn"
+            />
+
+            <NavButton
+              active={["games","game"].includes(screen)}
+              onClick={() => go("games")}
+              icon="🎮"
+              label="Games"
+            />
+
+            <NavButton
+              active={["quiz","quizResult"].includes(screen)}
+              onClick={() => startQuiz()}
+              icon="📝"
+              label="Quiz"
+            />
+
+            <NavButton
+              active={screen === "progress"}
+              onClick={() => go("progress")}
+              icon="📊"
+              label="Progress"
+            />
+
+          </div>
+
+
+          <div className="flex items-center gap-2">
+
+            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-amber-50 text-amber-700 text-xs font-black">
+              ⭐ {progress.xp}
+            </div>
+
+            <button
+              onClick={() => go("profile")}
+              className="w-10 h-10 rounded-2xl bg-pink-100 flex items-center justify-center"
+            >
+              🧑‍🎓
+            </button>
+
+          </div>
+
+        </div>
+
+      </header>
+
+
+      {/* CONTENT */}
+
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8 pb-28 md:pb-10">
+
+        {content}
+
+      </main>
+
+
+      {/* MOBILE NAV */}
+
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t border-slate-200 bottom-nav">
+
+        <div className="max-w-md mx-auto grid grid-cols-5 px-2 py-2">
+
+          <MobileNav
+            icon="🏠"
+            label="Home"
+            active={screen === "dashboard"}
+            onClick={() => go("dashboard")}
+          />
+
+          <MobileNav
+            icon="📚"
+            label="Learn"
+            active={["subjects","topics","lesson","topicComplete"].includes(screen)}
+            onClick={() => go("subjects")}
+          />
+
+          <MobileNav
+            icon="🎮"
+            label="Games"
+            active={["games","game"].includes(screen)}
+            onClick={() => go("games")}
+          />
+
+          <MobileNav
+            icon="🏆"
+            label="Rewards"
+            active={screen === "rewards"}
+            onClick={() => go("rewards")}
+          />
+
+          <MobileNav
+            icon="📊"
+            label="Progress"
+            active={screen === "progress"}
+            onClick={() => go("progress")}
+          />
+
+        </div>
+
+      </nav>
+
+    </div>
+  );
+}
+
+
+/* =========================================================
+   NAV COMPONENTS
+========================================================= */
+
+function NavButton({
+  active,
+  onClick,
+  icon,
+  label
+}) {
+
+  return (
+
+    <button
+      onClick={onClick}
+      className={`px-3 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 ${
+        active
+          ? "bg-indigo-50 text-indigo-700"
+          : "text-slate-500 hover:bg-slate-50"
+      }`}
+    >
+      <span>{icon}</span>
+      {label}
+    </button>
+
+  );
+}
+
+
+function MobileNav({
+  icon,
+  label,
+  active,
+  onClick
+}) {
+
+  return (
+
+    <button
+      onClick={onClick}
+      className={`flex flex-col items-center gap-1 py-1 rounded-xl ${
+        active
+          ? "text-indigo-600"
+          : "text-slate-400"
+      }`}
+    >
+
+      <span className="text-xl">
+        {icon}
+      </span>
+
+      <span className="text-[9px] font-black">
+        {label}
+      </span>
+
+    </button>
+
+  );
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+ReactDOM.createRoot(
+  document.getElementById("root")
+).render(
+  <App />
+);
+
+</script>
+
 </body>
 </html>
