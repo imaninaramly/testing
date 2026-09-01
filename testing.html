@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EduBox Pro — Platform Pembelajaran Pintar Tahun 1-3</title>
+  <title>Edu Pintar — Platform Pembelajaran Kanak-Kanak</title>
   
   <!-- CDN Scripts & Styling -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -90,16 +90,6 @@
       }
     };
 
-    // Helper Rawak Array
-    const shuffleArray = (arr) => {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    };
-
     // ==========================================
     // DATA SILIBUS KSSR & MODUL PEMBELAJARAN
     // ==========================================
@@ -153,30 +143,6 @@
               { q: 'Ali ada 8 biji guli. Ayah beri lagi 7 biji. Berapa jumlah guli Ali?', options: ['15', '14', '16', '13'], a: '15' },
               { q: '40 + 30 = ?', options: ['70', '60', '80', '50'], a: '70' }
             ]
-          },
-          {
-            id: 'm1_3',
-            title: 'Operasi Tolak Asas',
-            desc: 'Mencari baki perbezaan kuantiti',
-            icon: '➖',
-            note: {
-              heading: 'Tolak Menjadikan Kuantiti Berkurang',
-              body: 'Operasi tolak adalah proses membuang sebahagian kuantiti daripada nombor asal. Baki mestilah sentiasa lebih kecil daripada nombor asal.'
-            },
-            example: {
-              q: '15 − 4 = ?',
-              explanation: 'Daripada 15, kita undur 4 langkah ke belakang: 14, 13, 12, 11. Baki jawapannya ialah 11.'
-            },
-            practice: {
-              q: 'Cari baki bagi: 19 − 7 = ?',
-              options: ['12', '11', '13', '14'],
-              a: '12'
-            },
-            quiz: [
-              { q: '28 − 5 = ?', options: ['23', '24', '22', '25'], a: '23' },
-              { q: 'Ibu beli 10 biji telur. 3 biji telah pecah. Berapa baki telur yang elok?', options: ['7', '6', '8', '5'], a: '7' },
-              { q: '50 − 20 = ?', options: ['30', '40', '20', '10'], a: '30' }
-            ]
           }
         ],
         bm: [
@@ -202,30 +168,6 @@
               { q: 'Antara berikut, yang manakah Kata Nama Khas?', options: ['Si Belang', 'harimau', 'pokok', 'murid'], a: 'Si Belang' },
               { q: 'Kata nama am untuk tempat tinggal kita ialah:', options: ['rumah', 'Istana Negara', 'Kuala Lumpur', 'Zoo Negara'], a: 'rumah' },
               { q: 'Pilih ayat yang menggunakan kata nama khas dengan betul:', options: ['Cikgu Sarah mengajar kami.', 'cikgu sarah mengajar kami.', 'Cikgu sarah Mengajar kami.', 'cikgu Sarah mengajar kami.'], a: 'Cikgu Sarah mengajar kami.' }
-            ]
-          },
-          {
-            id: 'bm1_2',
-            title: 'Kata Kerja Asas',
-            desc: 'Perlakuan atau aktiviti tubuh',
-            icon: '🏃',
-            note: {
-              heading: 'Perkataan Yang Melakukan Perbuatan',
-              body: 'Kata kerja ialah perkataan yang menceritakan apa yang sedang dibuat seperti membaca, menyanyi, berlari, dan menyapu sampah.'
-            },
-            example: {
-              q: 'Ayah sedang ____ surat khabar di beranda.',
-              explanation: 'Kata kerja yang sesuai bagi surat khabar ialah membaca.'
-            },
-            practice: {
-              q: 'Pilih kata kerja yang sesuai untuk makanan:',
-              options: ['mengunyah', 'membaling', 'menunggang', 'mendengar'],
-              a: 'mengunyah'
-            },
-            quiz: [
-              { q: 'Adik suka ____ lagu kanak-kanak.', options: ['menyanyi', 'memasak', 'menjahit', 'memanjat'], a: 'menyanyi' },
-              { q: 'Kakak ____ bilik tidurnya sehingga bersih.', options: ['mengemas', 'memandu', 'menulis', 'melihat'], a: 'mengemas' },
-              { q: 'Burung murai terbang tinggi di angkasa. Perkataan kata kerjanya ialah:', options: ['terbang', 'burung', 'tinggi', 'angkasa'], a: 'terbang' }
             ]
           }
         ],
@@ -257,27 +199,253 @@
         ],
         science: [
           {
-            id: 'sci1_1',
-            title: 'Benda Hidup & Bukan Hidup',
-            desc: 'Ciri asas hidupan sekeliling',
-            icon: '🌱',
+            id: 'sci1_u1',
+            title: 'Unit 1: Kemahiran Saintifik',
+            desc: 'Kemahiran Proses & Manipulatif',
+            icon: '🔬',
             note: {
-              heading: 'Ciri-Ciri Benda Hidup',
-              body: 'Benda hidup memerlukan air, udara dan makanan. Benda hidup juga boleh bernafas, membesar, bergerak dan membiak.'
+              heading: 'Memerhati & Berkomunikasi',
+              body: '• Kita memerhati menggunakan 5 deria: Penglihatan, Pendengaran, Sentuhan, Rasa, dan Bau.\n• Cara berkomunikasi: Lisan, Tulisan, dan Lakaran.\n• Kemahiran Manipulatif: Mengguna, mengendali, melakar, membersih dan menyimpan alatan sains dengan betul.'
             },
             example: {
-              q: 'Adakah pokok bunga benda hidup?',
-              explanation: 'Ya, pokok membesar dan memerlukan air serta cahaya matahari untuk menghasilkan makanan.'
+              q: 'Apakah deria yang digunakan untuk mendengar bunyi loceng?',
+              explanation: 'Kita mendengar bunyi loceng menggunakan deria pendengaran (telinga).'
             },
             practice: {
-              q: 'Manakah antara berikut benda BUKAN hidup?',
-              options: ['Kereta mainan', 'Kucing belang', 'Pokok kelapa', 'Burung merpati'],
-              a: 'Kereta mainan'
+              q: 'Tiga cara kita berkomunikasi dalam sains ialah lisan, tulisan dan ______.',
+              options: ['lakaran', 'berlari', 'tidur', 'menyanyi'],
+              a: 'lakaran'
             },
             quiz: [
-              { q: 'Manakah keperluan asas benda hidup?', options: ['Makanan dan air', 'Bateri dan suis', 'Minyak petrol', 'Cermin mata'], a: 'Makanan dan air' },
-              { q: 'Objek yang manakah TIDAK membesar?', options: ['Batu', 'Anak ayam', 'Anak pokok', 'Bayi manusia'], a: 'Batu' },
-              { q: 'Benda hidup membiak untuk:', options: ['Menambah zuriat / keturunan', 'Menjadi robot', 'Mengecilkan saiz', 'Berhenti bergerak'], a: 'Menambah zuriat / keturunan' }
+              { q: 'Apakah deria yang digunakan untuk mendengar bunyi wisel?', options: ['Deria pendengaran', 'Deria bau', 'Deria sentuhan', 'Deria penglihatan'], a: 'Deria pendengaran' },
+              { q: 'Selepas selesai menjalankan eksperimen, apakah yang perlu dilakukan pada alatan sains?', options: ['Cuci dan simpan di tempat yang betul', 'Tinggalkan di atas meja', 'Bawa balik ke rumah', 'Buang ke dalam tong sampah'], a: 'Cuci dan simpan di tempat yang betul' },
+              { q: 'Alia melukis gambar kumbang kura-kura untuk rakannya. Alia berkomunikasi melalui cara:', options: ['Lakaran', 'Lisan', 'Bunyi', 'Sentuhan'], a: 'Lakaran' },
+              { q: 'Siti ingin mengkaji urat pada sehelai daun kecil dengan lebih jelas. Apakah alat sains yang paling sesuai?', options: ['Kanta pembesar', 'Pembaris', 'Gunting', 'Penimbang'], a: 'Kanta pembesar' }
+            ]
+          },
+          {
+            id: 'sci1_u2',
+            title: 'Unit 2: Peraturan Bilik Sains',
+            desc: 'Amalan keselamatan bilik sains',
+            icon: '🚸',
+            note: {
+              heading: 'Patuhi Peraturan Bilik Sains',
+              body: '1. Beratur dan minta kebenaran guru sebelum masuk.\n2. Dilarang bergurau, bermain dan berlari.\n3. Dilarang makan dan minum.\n4. Bersihkan dan kemaskan bilik sains sebelum keluar.\n5. Jangan buang sampah ke dalam singki.'
+            },
+            example: {
+              q: 'Mengapa kita tidak boleh berlari di dalam Bilik Sains?',
+              explanation: 'Berlari boleh menyebabkan kemalangan, kecederaan atau merosakkan alatan sains.'
+            },
+            practice: {
+              q: 'Apakah yang akan terjadi sekiranya sampah pepejal dibuang ke dalam singki?',
+              options: ['Singki akan tersumbat', 'Singki menjadi wangi', 'Air mengalir lebih laju', 'Singki berkilat'],
+              a: 'Singki akan tersumbat'
+            },
+            quiz: [
+              { q: 'Apakah yang perlu kita lakukan sebelum masuk ke dalam Bilik Sains?', options: ['Beratur dan meminta kebenaran guru', 'Berlari masuk terus', 'Makan bekalan di pintu', 'Bermain kejar-kejar'], a: 'Beratur dan meminta kebenaran guru' },
+              { q: 'Murid dibenarkan makan dan minum di dalam Bilik Sains jika lapar. (Benar / Palsu)', options: ['Palsu', 'Benar'], a: 'Palsu' },
+              { q: 'Sebelum keluar dari Bilik Sains, kita mestilah:', options: ['Membersihkan dan mengemaskan Bilik Sains', 'Menutup lampu dan biarkan bersepah', 'Meninggalkan sampah di singki', 'Terus berlari keluar'], a: 'Membersihkan dan mengemaskan Bilik Sains' },
+              { q: 'Raju terjumpa botol cecair tanpa label di bilik sains. Tindakan yang DILARANG ialah:', options: ['Menghidu dan meminum cecair tersebut', 'Melaporkan kepada guru', 'Membiarkannya di tempat selamat', 'Tidak menyentuh botol tersebut'], a: 'Menghidu dan meminum cecair tersebut' }
+            ]
+          },
+          {
+            id: 'sci1_u3',
+            title: 'Unit 3: Benda Hidup & Bukan Hidup',
+            desc: 'Ciri & keperluan asas hidupan',
+            icon: '🌱',
+            note: {
+              heading: 'Ciri & Keperluan Asas',
+              body: '• Ciri Benda Hidup: Bernafas, memerlukan air & makanan, bergerak, membesar, membiak.\n• Benda Bukan Hidup tidak mempunyai ciri-ciri ini.\n• Keperluan Asas: Makanan (tenaga), Air (hilangkan dahaga), Udara (bernafas), dan Tempat Perlindungan (lindung hujan, panas & bahaya).'
+            },
+            example: {
+              q: 'Adakah burung benda hidup dan kapal terbang benda bukan hidup?',
+              explanation: 'Ya, walaupun kedua-duanya terbang di udara, burung bernafas dan membesar manakala kapal terbang tidak.'
+            },
+            practice: {
+              q: 'Susun haiwan berikut daripada saiz KECIL kepada BESAR:',
+              options: ['Tikus -> Rusa -> Seladang -> Gajah', 'Gajah -> Seladang -> Rusa -> Tikus', 'Tikus -> Gajah -> Rusa -> Seladang', 'Rusa -> Tikus -> Gajah -> Seladang'],
+              a: 'Tikus -> Rusa -> Seladang -> Gajah'
+            },
+            quiz: [
+              { q: 'Antara berikut, yang manakah contoh benda hidup?', options: ['Pokok bunga ros', 'Kereta', 'Batu', 'Anak patung'], a: 'Pokok bunga ros' },
+              { q: 'Manusia dan haiwan memerlukan makanan untuk:', options: ['Mendapatkan tenaga dan membesar', 'Berenang laju', 'Mewarnakan kulit', 'Berlindung daripada hujan'], a: 'Mendapatkan tenaga dan membesar' },
+              { q: 'Bagaimanakah cara tumbuhan mendapatkan makanan?', options: ['Membuat makanan sendiri dengan air, udara & cahaya', 'Memburu haiwan lain', 'Membeli di kedai', 'Menyerap sampah'], a: 'Membuat makanan sendiri dengan air, udara & cahaya' },
+              { q: 'Belon ditiup boleh membesar dan terbang. Belon tetap benda BUKAN hidup kerana:', options: ['Tidak bernafas, tidak membiak & tidak makan', 'Berwarna-warni', 'Diperbuat daripada getah', 'Boleh pecah'], a: 'Tidak bernafas, tidak membiak & tidak makan' }
+            ]
+          },
+          {
+            id: 'sci1_u4',
+            title: 'Unit 4: Manusia',
+            desc: '5 deria & pengelasan objek',
+            icon: '👁️',
+            note: {
+              heading: 'Organ Deria Manusia',
+              body: '1. Penglihatan (Mata) - Warna, saiz & bentuk\n2. Pendengaran (Telinga) - Bunyi kuat & perlahan\n3. Bau (Hidung) - Bau wangi & busuk\n4. Rasa (Lidah) - Manis, masin, masam, pahit, tawar\n5. Sentuhan (Kulit) - Kasar, licin, lembut, keras, panas, sejuk'
+            },
+            example: {
+              q: 'Apakah organ deria bagi sentuhan?',
+              explanation: 'Kulit ialah organ deria bagi sentuhan untuk merasakan tekstur objek.'
+            },
+            practice: {
+              q: 'Antara kumpulan objek berikut, yang manakah kesemuanya berasa LEMBUT?',
+              options: ['Span dan kek cawan', 'Guli dan wisel', 'Batu dan penukul', 'Loceng dan duit syiling'],
+              a: 'Span dan kek cawan'
+            },
+            quiz: [
+              { q: 'Organ tubuh manakah yang digunakan untuk deria penglihatan?', options: ['Mata', 'Hidung', 'Lidah', 'Telinga'], a: 'Mata' },
+              { q: 'Kelaskan makanan berikut: Ciku dan Epal mempunyai rasa:', options: ['Manis', 'Masam', 'Pahit', 'Masin'], a: 'Manis' },
+              { q: 'Apakah alat yang membantu seseorang yang penglihatannya kabur?', options: ['Cermin mata', 'Alat bantu dengar', 'Topi keselamatan', 'Jam tangan'], a: 'Cermin mata' },
+              { q: 'Jika mata ditutup, deria manakah yang membantu mengecam buah limau?', options: ['Deria sentuh dan deria bau', 'Deria dengar sahaja', 'Deria melihat cahaya', 'Tiada deria berfungsi'], a: 'Deria sentuh dan deria bau' }
+            ]
+          },
+          {
+            id: 'sci1_u5',
+            title: 'Unit 5: Haiwan',
+            desc: 'Bahagian tubuh haiwan & fungsinya',
+            icon: '🐾',
+            note: {
+              heading: 'Struktur Tubuh Haiwan',
+              body: '• Bahagian Tubuh: Paruh, sisik, sirip, kepak, sumbu, tanduk, cangkerang, sesungut, bulu halus, bulu pelepah, kaki selaput renang.\n• Fungsi: Kepak (terbang), Sirip/Kaki selaput renang (berenang), Tanduk/Sumbu/Kulit keras (pertahankan diri), Ekor (pandu arah).'
+            },
+            example: {
+              q: 'Apakah fungsi kaki selaput renang pada itik?',
+              explanation: 'Kaki selaput renang bertindak seperti pendayung untuk membantu itik berenang di air.'
+            },
+            practice: {
+              q: 'Kerbau dan rusa menggunakan tanduk mereka untuk...',
+              options: ['Mempertahankan diri daripada musuh', 'Menyerap air tanah', 'Membantu terbang', 'Mendengar bunyi'],
+              a: 'Mempertahankan diri daripada musuh'
+            },
+            quiz: [
+              { q: 'Apakah bahagian tubuh burung untuk mematuk makanan?', options: ['Paruh', 'Sumbu', 'Tanduk', 'Sisik'], a: 'Paruh' },
+              { q: 'Antara haiwan berikut, yang manakah dilitupi BULU HALUS?', options: ['Kucing, Arnab dan Lembu', 'Itik dan Burung', 'Buaya dan Ikan', 'Katak dan Siput'], a: 'Kucing, Arnab dan Lembu' },
+              { q: 'Ekor pada haiwan seperti ikan dan burung berfungsi untuk:', options: ['Memandu arah pergerakan', 'Makan buah', 'Bernafas', 'Menghidu mangsa'], a: 'Memandu arah pergerakan' },
+              { q: 'Apakah ciri yang ada pada ITIK tetapi TIADA pada kambing?', options: ['Paruh, sayap dan kaki selaput renang', 'Kaki dan mata', 'Tanduk dan bulu halus', 'Ekor dan telinga'], a: 'Paruh, sayap dan kaki selaput renang' }
+            ]
+          },
+          {
+            id: 'sci1_u6',
+            title: 'Unit 6: Tumbuhan',
+            desc: 'Ciri bahagian daun, bunga, batang & akar',
+            icon: '🌺',
+            note: {
+              heading: 'Bahagian & Ciri Tumbuhan',
+              body: '• Bahagian Tumbuhan: Bunga (pembiakan/buah), Daun (membuat makanan), Batang (angkut air, nutrien & makanan), Akar (serap air & sokong pokok).\n• Urat Daun: Jejala / Selari.\n• Jenis Batang: Berkayu / Tidak Berkayu.\n• Jenis Akar: Akar Tunjang / Akar Serabut.'
+            },
+            example: {
+              q: 'Apakah jenis akar bagi pokok pandan?',
+              explanation: 'Pokok pandan mempunyai daun urat selari dan berakar serabut.'
+            },
+            practice: {
+              q: 'Bahagian tumbuhan manakah yang berfungsi untuk membuat makanan?',
+              options: ['Daun', 'Akar', 'Batang', 'Bunga'],
+              a: 'Daun'
+            },
+            quiz: [
+              { q: 'Apakah empat bahagian utama tumbuhan?', options: ['Bunga, daun, batang dan akar', 'Mata, telinga, kulit dan hidung', 'Kepak, paruh, ekor dan kaki', 'Pasir, batu, tanah dan air'], a: 'Bunga, daun, batang dan akar' },
+              { q: 'Pokok bunga ros berakar tunjang, manakala pokok pandan berakar:', options: ['Serabut', 'Tunjang', 'Berkayu', 'Jejala'], a: 'Serabut' },
+              { q: 'Pokok durian mempunyai batang berkayu manakala pokok betik mempunyai batang:', options: ['Tidak berkayu', 'Berkayu', 'Berduri tajam', 'Batu'], a: 'Tidak berkayu' },
+              { q: 'Ketika angin kencang, pokok rambutan tidak tumbang kerana peranannya:', options: ['Akar mencengkam tanah dengan kuat untuk sokongan', 'Bunga menolak angin', 'Daun menjadi keras', 'Buah memegang dahan'], a: 'Akar mencengkam tanah dengan kuat untuk sokongan' }
+            ]
+          },
+          {
+            id: 'sci1_u7',
+            title: 'Unit 7: Magnet',
+            desc: 'Bentuk, kutub & kekuatan magnet',
+            icon: '🧲',
+            note: {
+              heading: 'Sifat & Tindakan Magnet',
+              body: '• 6 Bentuk: Bar, Silinder, Ladam, Bentuk U, Butang, Cincin.\n• Magnet menarik objek besi/logam (bahan magnet).\n• 2 Kutub: Kutub Utara (U) dan Kutub Selatan (S).\n• Kutub BERLAINAN menarik; Kutub SAMA menolak.\n• Magnet lebih kuat menarik lebih banyak klip kertas dari jarak lebih jauh.'
+            },
+            example: {
+              q: 'Apakah yang terjadi jika Kutub Utara didekatkan dengan Kutub Selatan?',
+              explanation: 'Kutub berlainan jenis akan saling menarik dan melekat bersama.'
+            },
+            practice: {
+              q: 'Objek manakah yang BOLEH ditarik oleh magnet?',
+              options: ['Paku besi', 'Pemadam getah', 'Pembaris plastik', 'Kayu aiskrim'],
+              a: 'Paku besi'
+            },
+            quiz: [
+              { q: 'Antara berikut, yang manakah BUKAN bentuk magnet?', options: ['Magnet segi tiga', 'Magnet bar', 'Magnet ladam', 'Magnet butang'], a: 'Magnet segi tiga' },
+              { q: 'Pintu peti sejuk boleh ditutup rapat kerana dipasang:', options: ['Magnet', 'Paku', 'Gam gajah', 'Tali'], a: 'Magnet' },
+              { q: 'Apakah tindakan apabila dua kutub magnet yang SAMA didekatkan?', options: ['Menolak', 'Menarik', 'Melekat kuat', 'Berdengung'], a: 'Menolak' },
+              { q: 'Bagaimanakah cara pantas mengasingkan klip kertas daripada semangkuk serbuk bedak?', options: ['Gunakan magnet untuk menarik klip kertas keluar', 'Tapis dengan air panas', 'Tiup sampai bedak habis', 'Kutip satu persatu'], a: 'Gunakan magnet untuk menarik klip kertas keluar' }
+            ]
+          },
+          {
+            id: 'sci1_u8',
+            title: 'Unit 8: Penyerapan',
+            desc: 'Objek menyerap air & kalis air',
+            icon: '🧽',
+            note: {
+              heading: 'Bahan Menyerap & Tidak Menyerap Air',
+              body: '• Objek Menyerap Air: Tisu dapur, tuala kain, kapas, kertas surat khabar, kain lap.\n• Objek Tidak Menyerap Air (Kalis Air): Plastik, kaca, getah, logam.\n• Urutan keupayaan serap air: Kad manila < Kertas surat khabar < Kain lap < Tisu dapur.'
+            },
+            example: {
+              q: 'Mengapa baju hujan diperbuat daripada plastik?',
+              explanation: 'Plastik tidak menyerap air, jadi ia menghalang air hujan daripada membasahi badan.'
+            },
+            practice: {
+              q: 'Antara bahan berikut, yang manakah menyerap air paling BANYAK?',
+              options: ['Tisu dapur', 'Kertas surat khabar', 'Kad manila', 'Klip kertas'],
+              a: 'Tisu dapur'
+            },
+            quiz: [
+              { q: 'Antara objek berikut, yang manakah BOLEH menyerap air?', options: ['Tisu dapur', 'Duit syiling', 'Gelas kaca', 'Pembaris plastik'], a: 'Tisu dapur' },
+              { q: 'Payung plastik dan kasut getah digunakan semasa hujan kerana sifatnya:', options: ['Tidak menyerap air', 'Menyerap air', 'Boleh terapung', 'Mudah koyak'], a: 'Tidak menyerap air' },
+              { q: 'Susun bahan mengikut keupayaan menyerap air secara MENAIK:', options: ['Kad manila -> Surat khabar -> Kain lap', 'Kain lap -> Surat khabar -> Kad manila', 'Surat khabar -> Kad manila -> Kain lap', 'Kain lap -> Kad manila -> Surat khabar'], a: 'Kad manila -> Surat khabar -> Kain lap' },
+              { q: 'Air sirap tertumpah banyak di atas lantai. Alat manakah paling pantas menyerap tumpahan?', options: ['Mop bertali kain', 'Plastik sampah', 'Pembaris kayu', 'Duit syiling'], a: 'Mop bertali kain' }
+            ]
+          },
+          {
+            id: 'sci1_u9',
+            title: 'Unit 9: Bumi',
+            desc: 'Bentuk muka bumi & jenis tanah',
+            icon: '🌍',
+            note: {
+              heading: 'Bentuk Muka Bumi & Tanah',
+              body: '• 8 Bentuk Muka Bumi: Gunung, Bukit, Lembah, Sungai, Kolam, Tasik, Laut, Pantai.\n• 3 Jenis Tanah:\n  1. Tanah Kebun: Butir pasir, batu kecil, reputan daun & haiwan (subur untuk sayur).\n  2. Tanah Liat: Butiran sangat halus, kedap air (sesuai untuk padi).\n  3. Pasir: Butir pasir kasar & batu kecil (pantai/gurun).'
+            },
+            example: {
+              q: 'Apakah jenis tanah yang terdapat di sawah padi?',
+              explanation: 'Tanah liat, kerana ia mempunyai butiran halus yang dapat menakung air.'
+            },
+            practice: {
+              q: 'Kawasan tanah rendah di kiri kanan sungai atau kaki bukit dipanggil...',
+              options: ['Lembah', 'Gunung', 'Pantai', 'Laut'],
+              a: 'Lembah'
+            },
+            quiz: [
+              { q: 'Berapakah jenis bentuk muka bumi yang dipelajari dalam buku teks?', options: ['8', '3', '5', '10'], a: '8' },
+              { q: 'Tiga jenis tanah utama di permukaan Bumi ialah pasir, tanah liat dan:', options: ['Tanah kebun', 'Batu bata', 'Simen', 'Emas'], a: 'Tanah kebun' },
+              { q: 'Tanah yang mengandungi reputan daun dan haiwan sesuai untuk pertanian ialah:', options: ['Tanah kebun', 'Pasir laut', 'Tanah liat', 'Batu kerikil'], a: 'Tanah kebun' },
+              { q: 'Pesawah padi menanam padi di tanah liat kerana sifatnya yang:', options: ['Mempunyai butir halus & menakung air dengan baik', 'Berwarna merah', 'Kasar dan berpasir', 'Mudah ditiup angin'], a: 'Mempunyai butir halus & menakung air dengan baik' }
+            ]
+          },
+          {
+            id: 'sci1_u10',
+            title: 'Unit 10: Asas Binaan',
+            desc: 'Bentuk asas 2D & bongkah 3D',
+            icon: '🧱',
+            note: {
+              heading: 'Bentuk Asas & Bongkah Binaan',
+              body: '• 4 Bentuk Asas 2D: Segi tiga, Segi empat sama, Segi empat tepat, Bulatan.\n• 7 Bongkah Bentuk Asas 3D: Kubus, Kuboid, Piramid, Prisma, Kon, Silinder, Sfera.\n• Kepentingan bentuk: Sfera mudah bergolek (bola), Kuboid stabil (jam meja/kotak simpanan), Prisma memudahkan air mengalir (bumbung).'
+            },
+            example: {
+              q: 'Berapakah bentuk segi empat sama yang membentuk sebuah kubus?',
+              explanation: 'Sebuah kubus dibina daripada 6 bentuk segi empat sama yang sama saiz.'
+            },
+            practice: {
+              q: 'Apakah bentuk asas dua dimensi bagi sehelai wang kertas RM1?',
+              options: ['Segi empat tepat', 'Bulatan', 'Segi tiga', 'Sfera'],
+              a: 'Segi empat tepat'
+            },
+            quiz: [
+              { q: 'Apakah 4 bentuk asas yang dipelajari?', options: ['Segi tiga, Segi empat sama, Segi empat tepat, Bulatan', 'Kubus, Kuboid, Kon, Sfera', 'Bulat dan Bujur sahaja', 'Dadu dan Kotak'], a: 'Segi tiga, Segi empat sama, Segi empat tepat, Bulatan' },
+              { q: 'Dadu permainan merupakan contoh bagi bongkah bentuk:', options: ['Kubus', 'Kuboid', 'Silinder', 'Kon'], a: 'Kubus' },
+              { q: 'Bola sukan dibuat dalam bentuk sfera supaya:', options: ['Mudah bergolek dengan lancar apabila disepak', 'Sukar bergerak', 'Boleh disusun bertingkat', 'Tidak basah'], a: 'Mudah bergolek dengan lancar apabila disepak' },
+              { q: 'Kotak berbentuk KUBOID lebih sesuai menyimpan buku berbanding bentuk sfera kerana:', options: ['Mempunyai tapak rata & ruang sudut kemas untuk susunan buku', 'Boleh bergolek sendiri', 'Buku berbentuk sfera', 'Kotak kuboid tidak boleh diangkat'], a: 'Mempunyai tapak rata & ruang sudut kemas untuk susunan buku' }
             ]
           }
         ]
@@ -503,9 +671,9 @@
       { id: 'math_master', name: 'Math Master', icon: '🔢', desc: 'Kuasai 3 topik Matematik', reqType: 'mathMastery', reqVal: 3 },
       { id: 'bm_champion', name: 'BM Champion', icon: '🇲🇾', desc: 'Kuasai 2 topik Bahasa Melayu', reqType: 'bmMastery', reqVal: 2 },
       { id: 'english_star', name: 'English Star', icon: '🇬🇧', desc: 'Kuasai 2 topik English Ace', reqType: 'biMastery', reqVal: 2 },
-      { id: 'little_sci', name: 'Little Scientist', icon: '🔬', desc: 'Kuasai 2 topik Sains Eksplorasi', reqType: 'sciMastery', reqVal: 2 },
+      { id: 'little_sci', name: 'Little Scientist', icon: '🔬', desc: 'Kuasai 3 topik Sains Eksplorasi', reqType: 'sciMastery', reqVal: 3 },
       { id: 'bookworm', name: 'Bookworm', icon: '📚', desc: 'Kumpul 500 XP pembelajaran', reqType: 'xp', reqVal: 500 },
-      { id: 'edubox_master', name: 'EduBox Master', icon: '🏆', desc: 'Kumpul 1,500 XP & tamat 5 topik', reqType: 'xp', reqVal: 1500 }
+      { id: 'edubox_master', name: 'Edu Pintar Master', icon: '🏆', desc: 'Kumpul 1,500 XP & tamat 8 topik', reqType: 'xp', reqVal: 1500 }
     ];
 
     // Subjek Meta
@@ -517,7 +685,7 @@
     };
 
     // ==========================================
-    // KOMPONEN UTAMA (EduBox App)
+    // KOMPONEN UTAMA (Edu Pintar App)
     // ==========================================
     function App() {
       // 1. LocalStorage States
@@ -533,9 +701,9 @@
       });
 
       // 2. Navigation States
-      const [view, setView] = useState('dashboard'); // 'dashboard' | 'syllabus' | 'learn' | 'badges' | 'progress'
+      const [view, setView] = useState('dashboard');
       const [selectedYear, setSelectedYear] = useState(1);
-      const [selectedSubject, setSelectedSubject] = useState('math');
+      const [selectedSubject, setSelectedSubject] = useState('science');
       const [activeTopic, setActiveTopic] = useState(null);
 
       // 3. Learning Flow States (0: NOTA, 1: CONTOH, 2: LATIHAN, 3: KUIZ, 4: MASTERED)
@@ -550,7 +718,6 @@
       const [quizTimer, setQuizTimer] = useState(20);
       const timerRef = useRef(null);
 
-      // Simpan perubahan ke localStorage
       useEffect(() => {
         localStorage.setItem('edubox_xp', xp.toString());
         localStorage.setItem('edubox_streak', streak.toString());
@@ -559,7 +726,6 @@
         checkBadges();
       }, [xp, streak, completedTopics, unlockedBadges]);
 
-      // Sistem Semakan Badge Automatik
       const checkBadges = () => {
         const newBadges = [...unlockedBadges];
         const mathCount = completedTopics.filter(id => id.startsWith('m')).length;
@@ -590,7 +756,6 @@
         }
       };
 
-      // Kawalan Pemasa Kuiz
       useEffect(() => {
         if (view === 'learn' && learnStep === 3 && !quizFeedback) {
           setQuizTimer(20);
@@ -616,7 +781,6 @@
         setTimeout(proceedQuiz, 1400);
       };
 
-      // Mula Belajar Topik
       const startTopicLearning = (topic) => {
         playSound('click');
         setActiveTopic(topic);
@@ -629,7 +793,6 @@
         setView('learn');
       };
 
-      // Semak Latihan Interaktif
       const checkPractice = (opt) => {
         if (practiceFeedback) return;
         setPracticeSelected(opt);
@@ -643,7 +806,6 @@
         }
       };
 
-      // Semak Kuiz Penilaian
       const checkQuizAnswer = (selectedOpt) => {
         if (quizFeedback) return;
         clearInterval(timerRef.current);
@@ -663,16 +825,15 @@
 
       const proceedQuiz = () => {
         if (quizIndex + 1 >= activeTopic.quiz.length) {
-          // Selesai Topik
           playSound('complete');
           if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
           
           const isFirstTime = !completedTopics.includes(activeTopic.id);
           if (isFirstTime) {
             setCompletedTopics(prev => [...prev, activeTopic.id]);
-            setXp(x => x + 50); // +50 XP selesai topik
+            setXp(x => x + 50);
           }
-          setLearnStep(4); // Skrin Mastered
+          setLearnStep(4);
         } else {
           setQuizIndex(i => i + 1);
           setQuizFeedback(null);
@@ -683,7 +844,7 @@
       // PAPARAN 1: DASHBOARD UTAMA
       // ==========================================
       if (view === 'dashboard') {
-        const totalTopicsCount = 12; // Anggaran jumlah modul aktif
+        const totalTopicsCount = 15;
         const progressPercent = Math.min(100, Math.round((completedTopics.length / totalTopicsCount) * 100));
 
         return (
@@ -693,7 +854,7 @@
               <div className="flex items-center justify-between pt-2 mb-4">
                 <div>
                   <h1 className="text-xl font-black text-slate-900 tracking-tight">👋 Hai, Pelajar Pintar!</h1>
-                  <p className="text-xs font-semibold text-slate-600">Jom kuasai ilmu hari ini 🚀</p>
+                  <p className="text-xs font-semibold text-slate-600">Jom teroka Edu Pintar hari ini 🚀</p>
                 </div>
                 <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black shadow-md shadow-indigo-200">
                   🎒
@@ -741,7 +902,7 @@
                 </div>
               </div>
 
-              {/* Kad Teruskan Pembelajaran (Active Track) */}
+              {/* Kemajuan */}
               <div className="mb-5">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-black uppercase tracking-wider text-slate-600">Status Kemajuan Keseluruhan</span>
@@ -795,7 +956,7 @@
                         </div>
                         <div>
                           <h4 className="font-black text-slate-800 text-sm">{s.title}</h4>
-                          <p className="text-[11px] font-bold text-slate-600">{topicsList.length} Topik Pembelajaran</p>
+                          <p className="text-[11px] font-bold text-slate-600">{topicsList.length} Unit Pembelajaran</p>
                         </div>
                       </button>
                     );
@@ -830,7 +991,6 @@
         return (
           <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
             <div>
-              {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <button
                   onClick={() => { playSound('click'); setView('dashboard'); }}
@@ -865,19 +1025,19 @@
                         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl ${isDone ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
                           {isDone ? '✓' : t.icon}
                         </div>
-                        <div>
+                        <div className="max-w-[190px]">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-black uppercase text-indigo-700">Topik {idx + 1}</span>
+                            <span className="text-[10px] font-black uppercase text-indigo-700">{t.title.split(':')[0]}</span>
                             {isDone && <span className="text-[9px] bg-emerald-100 text-emerald-700 font-extrabold px-1.5 py-0.5 rounded">Dikuasai</span>}
                           </div>
-                          <h4 className="font-black text-slate-800 text-sm">{t.title}</h4>
-                          <p className="text-[11px] font-bold text-slate-600">{t.desc}</p>
+                          <h4 className="font-black text-slate-800 text-xs truncate">{t.title.split(':')[1] || t.title}</h4>
+                          <p className="text-[10px] font-bold text-slate-600">{t.desc}</p>
                         </div>
                       </div>
 
                       <button
                         onClick={() => startTopicLearning(t)}
-                        className={`px-4 py-2.5 rounded-xl font-black text-xs active:scale-95 transition ${
+                        className={`px-3.5 py-2.5 rounded-xl font-black text-xs active:scale-95 transition ${
                           isDone ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
                         }`}
                       >
@@ -908,7 +1068,6 @@
 
         return (
           <div className="flex flex-col h-full justify-between p-5 bg-[#F8FAFC]">
-            {/* Header Steps */}
             <div>
               <div className="flex items-center justify-between mb-3">
                 <button
@@ -917,7 +1076,7 @@
                 >
                   ✕
                 </button>
-                <span className="text-xs font-black text-slate-800">{activeTopic.title}</span>
+                <span className="text-xs font-black text-slate-800 truncate max-w-[200px]">{activeTopic.title}</span>
                 <span className="text-[10px] font-black bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full">
                   Langkah {learnStep + 1}/5
                 </span>
@@ -936,22 +1095,22 @@
               </div>
             </div>
 
-            {/* KANDUNGAN LANGKAH 1: NOTA */}
+            {/* NOTA */}
             {learnStep === 0 && (
               <div className="my-auto py-2">
                 <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 shadow-sm">
                   <span className="text-xs font-black uppercase text-amber-700 bg-amber-50 px-3 py-1 rounded-full inline-block mb-3">
                     {stepTitles[0]}
                   </span>
-                  <h3 className="text-lg font-black text-slate-900 mb-2">{activeTopic.note.heading}</h3>
-                  <p className="text-sm font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
+                  <h3 className="text-base font-black text-slate-900 mb-2">{activeTopic.note.heading}</h3>
+                  <p className="text-xs font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
                     {activeTopic.note.body}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* KANDUNGAN LANGKAH 2: CONTOH */}
+            {/* CONTOH */}
             {learnStep === 1 && (
               <div className="my-auto py-2">
                 <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 shadow-sm">
@@ -959,7 +1118,7 @@
                     {stepTitles[1]}
                   </span>
                   <h4 className="text-xs font-bold text-slate-600 uppercase mb-1">Soalan Contoh:</h4>
-                  <p className="text-base font-black text-slate-800 mb-4">{activeTopic.example.q}</p>
+                  <p className="text-sm font-black text-slate-800 mb-4">{activeTopic.example.q}</p>
                   
                   <div className="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4">
                     <span className="text-xs font-black text-indigo-700 block mb-1">💡 Cara Selesai & Penjelasan:</span>
@@ -969,7 +1128,7 @@
               </div>
             )}
 
-            {/* KANDUNGAN LANGKAH 3: LATIHAN */}
+            {/* LATIHAN */}
             {learnStep === 2 && (
               <div className="my-auto py-2">
                 {practiceFeedback && (
@@ -983,7 +1142,7 @@
                   <span className="text-xs font-black uppercase text-purple-700 bg-purple-50 px-3 py-1 rounded-full inline-block mb-2">
                     {stepTitles[2]}
                   </span>
-                  <h3 className="text-base font-black text-slate-800">{activeTopic.practice.q}</h3>
+                  <h3 className="text-sm font-black text-slate-800">{activeTopic.practice.q}</h3>
                 </div>
 
                 <div className="space-y-2">
@@ -1009,10 +1168,9 @@
               </div>
             )}
 
-            {/* KANDUNGAN LANGKAH 4: KUIZ PENILAIAN */}
+            {/* KUIZ */}
             {learnStep === 3 && (
               <div className="my-auto py-2">
-                {/* Timer Bar */}
                 <div className="bg-white p-2.5 rounded-2xl border border-slate-200/80 mb-3 flex items-center gap-3 shadow-sm">
                   <span className="text-xs font-black text-slate-700">⏱️ {quizTimer}s</span>
                   <div className="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
@@ -1032,8 +1190,8 @@
                   </div>
                 )}
 
-                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-6 text-center shadow-sm mb-4">
-                  <h3 className="text-lg font-black text-slate-800 leading-snug">
+                <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-5 text-center shadow-sm mb-4">
+                  <h3 className="text-sm font-black text-slate-800 leading-snug">
                     {activeTopic.quiz[quizIndex].q}
                   </h3>
                 </div>
@@ -1044,7 +1202,7 @@
                       key={idx}
                       disabled={Boolean(quizFeedback)}
                       onClick={() => checkQuizAnswer(opt)}
-                      className="w-full py-3.5 px-4 bg-white border-2 border-slate-200/80 rounded-2xl text-xs font-black text-slate-700 active:bg-indigo-50 active:border-indigo-400 text-left flex items-center justify-between shadow-sm transition"
+                      className="w-full py-3 px-4 bg-white border-2 border-slate-200/80 rounded-2xl text-xs font-black text-slate-700 active:bg-indigo-50 active:border-indigo-400 text-left flex items-center justify-between shadow-sm transition"
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-600">
@@ -1058,13 +1216,13 @@
               </div>
             )}
 
-            {/* KANDUNGAN LANGKAH 5: TAHNIAH / MASTERED */}
+            {/* MASTERED */}
             {learnStep === 4 && (
               <div className="my-auto py-4 text-center">
                 <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner">
                   🏆
                 </div>
-                <h2 className="text-2xl font-black text-slate-800">Topik Berjaya Dikuasai!</h2>
+                <h2 className="text-2xl font-black text-slate-800">Unit Berjaya Dikuasai!</h2>
                 <p className="text-xs font-bold text-slate-600 mt-1">{activeTopic.title} • Selesai Penuh</p>
 
                 <div className="bg-white border-2 border-slate-200/80 rounded-3xl p-5 my-5 shadow-sm">
@@ -1077,7 +1235,7 @@
               </div>
             )}
 
-            {/* Bottom Actions */}
+            {/* Butang Tindakan */}
             <div>
               {learnStep < 2 && (
                 <button
