@@ -91,7 +91,7 @@
     };
 
     // ==========================================
-    // DATA SILIBUS KSSR & MODUL PEMBELAJARAN
+    // DATA SILIBUS KSSR & QUESTION BANK LENGKAP
     // ==========================================
     const SYLLABUS_DATA = {
       1: {
@@ -119,30 +119,6 @@
               { q: 'Digit 6 dalam nombor 26 berada pada nilai tempat:', options: ['Sa', 'Puluh', 'Ratus', 'Ribu'], a: 'Sa' },
               { q: 'Pilih nombor yang paling besar nilainya:', options: ['92', '29', '89', '78'], a: '92' }
             ]
-          },
-          {
-            id: 'm1_2',
-            title: 'Operasi Tambah Mudah',
-            desc: 'Gabungan dua kumpulan objek',
-            icon: '➕',
-            note: {
-              heading: 'Tambah Ialah Penyatuan',
-              body: 'Bila kita menambah, jumlah kuantiti akan menjadi lebih banyak. Mulakan penambahan dari rumah Sa terlebih dahulu, kemudian barulah rumah Puluh.'
-            },
-            example: {
-              q: '12 + 5 = ?',
-              explanation: 'Simpan 12 di dalam kepala, buka 5 jari dan kira ke hadapan: 13, 14, 15, 16, 17. Jawapannya ialah 17.'
-            },
-            practice: {
-              q: 'Kira hasil tambah: 14 + 4 = ?',
-              options: ['18', '17', '19', '20'],
-              a: '18'
-            },
-            quiz: [
-              { q: '23 + 6 = ?', options: ['29', '28', '30', '26'], a: '29' },
-              { q: 'Ali ada 8 biji guli. Ayah beri lagi 7 biji. Berapa jumlah guli Ali?', options: ['15', '14', '16', '13'], a: '15' },
-              { q: '40 + 30 = ?', options: ['70', '60', '80', '50'], a: '70' }
-            ]
           }
         ],
         bm: [
@@ -166,8 +142,7 @@
             },
             quiz: [
               { q: 'Antara berikut, yang manakah Kata Nama Khas?', options: ['Si Belang', 'harimau', 'pokok', 'murid'], a: 'Si Belang' },
-              { q: 'Kata nama am untuk tempat tinggal kita ialah:', options: ['rumah', 'Istana Negara', 'Kuala Lumpur', 'Zoo Negara'], a: 'rumah' },
-              { q: 'Pilih ayat yang menggunakan kata nama khas dengan betul:', options: ['Cikgu Sarah mengajar kami.', 'cikgu sarah mengajar kami.', 'Cikgu sarah Mengajar kami.', 'cikgu Sarah mengajar kami.'], a: 'Cikgu Sarah mengajar kami.' }
+              { q: 'Kata nama am untuk tempat tinggal kita ialah:', options: ['rumah', 'Istana Negara', 'Kuala Lumpur', 'Zoo Negara'], a: 'rumah' }
             ]
           }
         ],
@@ -192,8 +167,7 @@
             },
             quiz: [
               { q: 'Sarah is my sister. ____ is seven years old.', options: ['She', 'He', 'It', 'They'], a: 'She' },
-              { q: 'The dog is barking. ____ is hungry.', options: ['It', 'He', 'She', 'We'], a: 'It' },
-              { q: 'Plural form of "Apple":', options: ['Apples', 'Appless', 'Applies', 'Apple'], a: 'Apples' }
+              { q: 'The dog is barking. ____ is hungry.', options: ['It', 'He', 'She', 'We'], a: 'It' }
             ]
           }
         ],
@@ -204,8 +178,8 @@
             desc: 'Kemahiran Proses & Manipulatif',
             icon: '🔬',
             note: {
-              heading: 'Memerhati & Berkomunikasi',
-              body: '• Kita memerhati menggunakan 5 deria: Penglihatan, Pendengaran, Sentuhan, Rasa, dan Bau.\n• Cara berkomunikasi: Lisan, Tulisan, dan Lakaran.\n• Kemahiran Manipulatif: Mengguna, mengendali, melakar, membersih dan menyimpan alatan sains dengan betul.'
+              heading: 'Memerhati & Kemahiran Manipulatif',
+              body: '• Kita memerhati menggunakan 5 deria: Penglihatan, Pendengaran, Sentuhan, Rasa, dan Bau.\n• Berkomunikasi boleh dilakukan secara Lisan, Tulisan, atau Lakaran.\n• Kemahiran manipulatif meliputi penggunaan dan penyimpanan alatan sains yang betul dan selamat.'
             },
             example: {
               q: 'Apakah deria yang digunakan untuk mendengar bunyi loceng?',
@@ -217,10 +191,15 @@
               a: 'lakaran'
             },
             quiz: [
-              { q: 'Apakah deria yang digunakan untuk mendengar bunyi wisel?', options: ['Deria pendengaran', 'Deria bau', 'Deria sentuhan', 'Deria penglihatan'], a: 'Deria pendengaran' },
-              { q: 'Selepas selesai menjalankan eksperimen, apakah yang perlu dilakukan pada alatan sains?', options: ['Cuci dan simpan di tempat yang betul', 'Tinggalkan di atas meja', 'Bawa balik ke rumah', 'Buang ke dalam tong sampah'], a: 'Cuci dan simpan di tempat yang betul' },
-              { q: 'Alia melukis gambar kumbang kura-kura untuk rakannya. Alia berkomunikasi melalui cara:', options: ['Lakaran', 'Lisan', 'Bunyi', 'Sentuhan'], a: 'Lakaran' },
-              { q: 'Siti ingin mengkaji urat pada sehelai daun kecil dengan lebih jelas. Apakah alat sains yang paling sesuai?', options: ['Kanta pembesar', 'Pembaris', 'Gunting', 'Penimbang'], a: 'Kanta pembesar' }
+              { q: 'Apakah deria yang digunakan untuk mendengar bunyi wisel?', options: ['Deria bau', 'Deria pendengaran', 'Deria sentuhan', 'Deria penglihatan'], a: 'Deria pendengaran' },
+              { q: 'Kita menggunakan deria rasa pada lidah untuk mengetahui warna bunga.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Selepas selesai menjalankan eksperimen, apakah yang perlu dilakukan pada alatan sains?', options: ['Tinggalkan di atas meja', 'Cuci dan simpan di tempat yang betul', 'Bawa balik ke rumah', 'Buang ke dalam tong sampah'], a: 'Cuci dan simpan di tempat yang betul' },
+              { q: 'Deria bau mengesan bau wangi bunga ros manakala bulu kucing yang lembut dikesan oleh deria:', options: ['Sentuhan', 'Rasa', 'Pendengaran', 'Penglihatan'], a: 'Sentuhan' },
+              { q: 'Bagaimanakah cara yang betul untuk mengendalikan spesimen hidup seperti cacing atau siput semasa penyiasatan?', options: ['Memukulnya sehingga mati', 'Mengendalikannya dengan betul dan cermat', 'Membuangnya ke dalam singki', 'Memijaknya dengan kasut'], a: 'Mengendalikannya dengan betul dan cermat' },
+              { q: 'Alia melukis gambar kumbang kura-kura dengan tompok hitam untuk ditunjukkan kepada kawannya. Alia berkomunikasi melalui cara:', options: ['Lisan', 'Lakaran', 'Bunyi', 'Sentuhan'], a: 'Lakaran' },
+              { q: 'Kanta pembesar perlu disimpan secara tersusun dan rapi di dalam laci berlabel.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Adam berada di dalam bilik yang gelap gelita kerana bekalan elektrik terputus. Deria manakah yang paling membantunya mencari pintu keluar?', options: ['Deria penglihatan', 'Deria sentuhan dan pendengaran', 'Deria rasa sahaja', 'Adam tidak boleh menggunakan sebarang deria'], a: 'Deria sentuhan dan pendengaran' },
+              { q: 'Siti ingin mengkaji urat pada sehelai daun kecil dengan lebih jelas. Apakah alat sains yang paling sesuai digunakan?', options: ['Gunakan kanta pembesar kemudian buat lakaran daun', 'Gunakan pembaris kemudian makan daun tersebut', 'Gunakan gunting untuk potong daun jadi serbuk', 'Gunakan penimbang berat sahaja'], a: 'Gunakan kanta pembesar kemudian buat lakaran daun' }
             ]
           },
           {
@@ -229,23 +208,27 @@
             desc: 'Amalan keselamatan bilik sains',
             icon: '🚸',
             note: {
-              heading: 'Patuhi Peraturan Bilik Sains',
-              body: '1. Beratur dan minta kebenaran guru sebelum masuk.\n2. Dilarang bergurau, bermain dan berlari.\n3. Dilarang makan dan minum.\n4. Bersihkan dan kemaskan bilik sains sebelum keluar.\n5. Jangan buang sampah ke dalam singki.'
+              heading: 'Peraturan Bilik Sains',
+              body: '1. Beratur dan minta kebenaran guru sebelum masuk.\n2. Dilarang bergurau, bermain dan berlari.\n3. Dilarang makan dan minum di dalam bilik sains.\n4. Bersihkan dan kemaskan bilik sains sebelum keluar.\n5. Jangan sesekali membuang sampah ke dalam singki.'
             },
             example: {
               q: 'Mengapa kita tidak boleh berlari di dalam Bilik Sains?',
-              explanation: 'Berlari boleh menyebabkan kemalangan, kecederaan atau merosakkan alatan sains.'
+              explanation: 'Berlari boleh menyebabkan perlanggaran, kaca pecah atau kecederaan fizikal.'
             },
             practice: {
-              q: 'Apakah yang akan terjadi sekiranya sampah pepejal dibuang ke dalam singki?',
-              options: ['Singki akan tersumbat', 'Singki menjadi wangi', 'Air mengalir lebih laju', 'Singki berkilat'],
+              q: 'Apakah yang akan terjadi sekiranya sampah pepejal dibuang ke dalam singki Bilik Sains?',
+              options: ['Singki menjadi lebih wangi', 'Singki akan tersumbat', 'Air singki mengalir lebih laju', 'Singki menjadi berkilat'],
               a: 'Singki akan tersumbat'
             },
             quiz: [
-              { q: 'Apakah yang perlu kita lakukan sebelum masuk ke dalam Bilik Sains?', options: ['Beratur dan meminta kebenaran guru', 'Berlari masuk terus', 'Makan bekalan di pintu', 'Bermain kejar-kejar'], a: 'Beratur dan meminta kebenaran guru' },
-              { q: 'Murid dibenarkan makan dan minum di dalam Bilik Sains jika lapar. (Benar / Palsu)', options: ['Palsu', 'Benar'], a: 'Palsu' },
-              { q: 'Sebelum keluar dari Bilik Sains, kita mestilah:', options: ['Membersihkan dan mengemaskan Bilik Sains', 'Menutup lampu dan biarkan bersepah', 'Meninggalkan sampah di singki', 'Terus berlari keluar'], a: 'Membersihkan dan mengemaskan Bilik Sains' },
-              { q: 'Raju terjumpa botol cecair tanpa label di bilik sains. Tindakan yang DILARANG ialah:', options: ['Menghidu dan meminum cecair tersebut', 'Melaporkan kepada guru', 'Membiarkannya di tempat selamat', 'Tidak menyentuh botol tersebut'], a: 'Menghidu dan meminum cecair tersebut' }
+              { q: 'Apakah yang perlu kita lakukan sebelum masuk ke dalam Bilik Sains?', options: ['Berlari masuk terus', 'Beratur dan meminta kebenaran guru', 'Makan bekalan di pintu', 'Bermain kejar-kejar'], a: 'Beratur dan meminta kebenaran guru' },
+              { q: 'Murid dibenarkan makan dan minum di dalam Bilik Sains jika berasa lapar.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Kita dilarang bergurau, bermain dan ______ di dalam Bilik Sains.', options: ['berlari', 'belajar', 'mendengar arahan', 'membaca buku'], a: 'berlari' },
+              { q: 'Sebelum keluar dari Bilik Sains, kita mestilah...', options: ['Menutup lampu dan membiarkan meja bersepah', 'Membersihkan dan mengemaskan Bilik Sains', 'Meninggalkan sampah di dalam singki', 'Terus berlari ke kantin'], a: 'Membersihkan dan mengemaskan Bilik Sains' },
+              { q: 'Mengapakah kita perlu mematuhi semua peraturan Bilik Sains?', options: ['Supaya pembelajaran dapat dilakukan dengan selamat dan berkesan', 'Supaya guru memberi hadiah', 'Supaya kita boleh bermain alatan sains sesuka hati', 'Supaya cepat pulang ke rumah'], a: 'Supaya pembelajaran dapat dilakukan dengan selamat dan berkesan' },
+              { q: 'Bermain dan bergurau semasa memegang alatan kaca boleh menyebabkan alatan pecah dan luka.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Amir ternampak rakannya tertumpahkan air berwarna di atas lantai Bilik Sains. Apakah tindakan terbaik yang patut Amir lakukan?', options: ['Melompat di atas air tumpah itu', 'Memberitahu guru dengan segera dan bantu mengelapnya', 'Membiarkannya sahaja', 'Menyembunyikan kejadian itu daripada guru'], a: 'Memberitahu guru dengan segera dan bantu mengelapnya' },
+              { q: 'Raju terjumpa botol cecair sains tanpa label di atas meja. Apakah tindakan yang TIDAK BOLEH dilakukan oleh Raju sama sekali?', options: ['Melaporkan kepada guru', 'Menghidu dan meminum cecair tersebut untuk menekanya', 'Membiarkan botol itu di tempat yang selamat', 'Tidak menyentuh botol cecair itu'], a: 'Menghidu dan meminum cecair tersebut untuk menekanya' }
             ]
           },
           {
@@ -254,23 +237,33 @@
             desc: 'Ciri & keperluan asas hidupan',
             icon: '🌱',
             note: {
-              heading: 'Ciri & Keperluan Asas',
-              body: '• Ciri Benda Hidup: Bernafas, memerlukan air & makanan, bergerak, membesar, membiak.\n• Benda Bukan Hidup tidak mempunyai ciri-ciri ini.\n• Keperluan Asas: Makanan (tenaga), Air (hilangkan dahaga), Udara (bernafas), dan Tempat Perlindungan (lindung hujan, panas & bahaya).'
+              heading: 'Ciri & Keperluan Hidupan',
+              body: '• Benda Hidup: Bernafas, memerlukan air & makanan, bergerak, membesar, membiak.\n• Benda Bukan Hidup: Tidak bernafas, tidak membiak, tidak membesar.\n• Keperluan Asas: Makanan (tenaga & pembesaran), Air (hilangkan dahaga), Udara (bernafas), dan Tempat Perlindungan (lindung hujan, panas & bahaya).'
             },
             example: {
-              q: 'Adakah burung benda hidup dan kapal terbang benda bukan hidup?',
-              explanation: 'Ya, walaupun kedua-duanya terbang di udara, burung bernafas dan membesar manakala kapal terbang tidak.'
+              q: 'Adakah kereta benda hidup?',
+              explanation: 'Kereta bukan benda hidup kerana ia tidak bernafas, tidak membesar dan tidak membiak.'
             },
             practice: {
-              q: 'Susun haiwan berikut daripada saiz KECIL kepada BESAR:',
-              options: ['Tikus -> Rusa -> Seladang -> Gajah', 'Gajah -> Seladang -> Rusa -> Tikus', 'Tikus -> Gajah -> Rusa -> Seladang', 'Rusa -> Tikus -> Gajah -> Seladang'],
-              a: 'Tikus -> Rusa -> Seladang -> Gajah'
+              q: 'Manusia dan haiwan memerlukan ______ untuk bernafas.',
+              options: ['udara', 'batu', 'tanah', 'cahaya'],
+              a: 'udara'
             },
             quiz: [
-              { q: 'Antara berikut, yang manakah contoh benda hidup?', options: ['Pokok bunga ros', 'Kereta', 'Batu', 'Anak patung'], a: 'Pokok bunga ros' },
-              { q: 'Manusia dan haiwan memerlukan makanan untuk:', options: ['Mendapatkan tenaga dan membesar', 'Berenang laju', 'Mewarnakan kulit', 'Berlindung daripada hujan'], a: 'Mendapatkan tenaga dan membesar' },
-              { q: 'Bagaimanakah cara tumbuhan mendapatkan makanan?', options: ['Membuat makanan sendiri dengan air, udara & cahaya', 'Memburu haiwan lain', 'Membeli di kedai', 'Menyerap sampah'], a: 'Membuat makanan sendiri dengan air, udara & cahaya' },
-              { q: 'Belon ditiup boleh membesar dan terbang. Belon tetap benda BUKAN hidup kerana:', options: ['Tidak bernafas, tidak membiak & tidak makan', 'Berwarna-warni', 'Diperbuat daripada getah', 'Boleh pecah'], a: 'Tidak bernafas, tidak membiak & tidak makan' }
+              { q: 'Antara berikut, yang manakah merupakan contoh benda hidup?', options: ['Kereta', 'Pokok bunga ros', 'Batu', 'Anak patung'], a: 'Pokok bunga ros' },
+              { q: 'Semua benda hidup memerlukan air dan makanan untuk terus hidup.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Burung membuat sarang di atas pokok untuk...', options: ['Bermain bersama kawan', 'Melindungi diri daripada hujan, panas dan bahaya', 'Menyimpan batu', 'Menjadikan pokok lebih cantik'], a: 'Melindungi diri daripada hujan, panas dan bahaya' },
+              { q: 'Antara haiwan berikut, yang manakah bersaiz paling besar?', options: ['Tikus', 'Rusa', 'Gajah', 'Kucing hutan'], a: 'Gajah' },
+              { q: 'Kereta boleh bergerak, jadi kereta ialah benda hidup.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Susun haiwan berikut mengikut urutan saiz daripada KECIL kepada BESAR:', options: ['Tikus -> Rusa -> Seladang -> Gajah', 'Gajah -> Seladang -> Rusa -> Tikus', 'Tikus -> Gajah -> Rusa -> Seladang', 'Rusa -> Tikus -> Seladang -> Gajah'], a: 'Tikus -> Rusa -> Seladang -> Gajah' },
+              { q: 'Bagaimanakah cara tumbuhan mendapatkan makanannya?', options: ['Memburu haiwan lain', 'Membuat makanannya sendiri menggunakan air, udara dan cahaya matahari', 'Membeli di kedai', 'Menyerap sisa makanan manusia di dapur'], a: 'Membuat makanannya sendiri menggunakan air, udara dan cahaya matahari' },
+              { q: 'Apakah urutan tumbesaran ayam yang betul?', options: ['Telur -> Anak ayam -> Ayam dewasa', 'Anak ayam -> Telur -> Ayam dewasa', 'Ayam dewasa -> Telur -> Anak ayam', 'Telur -> Ayam dewasa -> Anak ayam'], a: 'Telur -> Anak ayam -> Ayam dewasa' },
+              { q: 'Susun tumbuhan berikut daripada saiz KECIL kepada BESAR:', options: ['Rumput -> Padi -> Pokok pisang -> Pokok kelapa', 'Pokok kelapa -> Pokok pisang -> Padi -> Rumput', 'Rumput -> Pokok kelapa -> Padi -> Pokok pisang', 'Padi -> Rumput -> Pokok pisang -> Pokok kelapa'], a: 'Rumput -> Padi -> Pokok pisang -> Pokok kelapa' },
+              { q: 'Apakah dua kepentingan utama makanan kepada manusia dan haiwan?', options: ['Untuk berseronok dan menyanyi', 'Untuk memberi tenaga dan membesar', 'Untuk mewarnakan kulit dan berenang', 'Untuk berlindung daripada hujan'], a: 'Untuk memberi tenaga dan membesar' },
+              { q: 'Pokok pisang menghasilkan anak pokok pisang untuk membiak.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Seekor belalang ditutup di dalam bekas tanpa sebarang lubang udara. Selepas 2 hari belalang mati kerana:', options: ['Belalang berasa sunyi', 'Belalang tidak mendapat udara untuk bernafas', 'Bekas plastik terlalu besar', 'Belalang tidak dapat tidur'], a: 'Belalang tidak mendapat udara untuk bernafas' },
+              { q: 'Belon ditiup boleh membesar dan terbang di udara. Mengapakah belon tetap dikelaskan sebagai benda BUKAN hidup?', options: ['Kerana belon berwarna-warni', 'Kerana belon tidak bernafas, tidak memerlukan makanan dan tidak membiak', 'Kerana belon diperbuat daripada getah', 'Kerana belon terbang tinggi'], a: 'Kerana belon tidak bernafas, tidak memerlukan makanan dan tidak membiak' },
+              { q: 'Cawan A ada tisu basah dan Cawan B ada tisu kering. Biji benih hanya bercambah di Cawan A. Apakah kesimpulannya?', options: ['Biji benih memerlukan air untuk bercambah dan membesar', 'Biji benih tidak suka air', 'Cawan B lebih sejuk daripada Cawan A', 'Tisu kering menghalang cahaya matahari'], a: 'Biji benih memerlukan air untuk bercambah dan membesar' }
             ]
           },
           {
@@ -280,22 +273,32 @@
             icon: '👁️',
             note: {
               heading: 'Organ Deria Manusia',
-              body: '1. Penglihatan (Mata) - Warna, saiz & bentuk\n2. Pendengaran (Telinga) - Bunyi kuat & perlahan\n3. Bau (Hidung) - Bau wangi & busuk\n4. Rasa (Lidah) - Manis, masin, masam, pahit, tawar\n5. Sentuhan (Kulit) - Kasar, licin, lembut, keras, panas, sejuk'
+              body: '• Mata -> Deria Penglihatan (warna, saiz, bentuk)\n• Telinga -> Deria Pendengaran (bunyi kuat & perlahan)\n• Lidah -> Deria Rasa (manis, masin, masam, pahit, tawar)\n• Hidung -> Deria Bau (wangi & busuk)\n• Kulit -> Deria Sentuhan (kasar, licin, lembut, keras)'
             },
             example: {
-              q: 'Apakah organ deria bagi sentuhan?',
-              explanation: 'Kulit ialah organ deria bagi sentuhan untuk merasakan tekstur objek.'
+              q: 'Apakah fungsi cermin mata?',
+              explanation: 'Cermin mata membantu mata yang mengalami masalah penglihatan kabur melihat dengan jelas.'
             },
             practice: {
-              q: 'Antara kumpulan objek berikut, yang manakah kesemuanya berasa LEMBUT?',
-              options: ['Span dan kek cawan', 'Guli dan wisel', 'Batu dan penukul', 'Loceng dan duit syiling'],
-              a: 'Span dan kek cawan'
+              q: 'Organ tubuh bagi deria sentuhan ialah:',
+              options: ['kulit', 'mata', 'lidah', 'telinga'],
+              a: 'kulit'
             },
             quiz: [
-              { q: 'Organ tubuh manakah yang digunakan untuk deria penglihatan?', options: ['Mata', 'Hidung', 'Lidah', 'Telinga'], a: 'Mata' },
-              { q: 'Kelaskan makanan berikut: Ciku dan Epal mempunyai rasa:', options: ['Manis', 'Masam', 'Pahit', 'Masin'], a: 'Manis' },
-              { q: 'Apakah alat yang membantu seseorang yang penglihatannya kabur?', options: ['Cermin mata', 'Alat bantu dengar', 'Topi keselamatan', 'Jam tangan'], a: 'Cermin mata' },
-              { q: 'Jika mata ditutup, deria manakah yang membantu mengecam buah limau?', options: ['Deria sentuh dan deria bau', 'Deria dengar sahaja', 'Deria melihat cahaya', 'Tiada deria berfungsi'], a: 'Deria sentuh dan deria bau' }
+              { q: 'Organ tubuh manakah yang digunakan untuk deria penglihatan?', options: ['Hidung', 'Mata', 'Lidah', 'Telinga'], a: 'Mata' },
+              { q: 'Lidah membolehkan kita merasa pelbagai rasa seperti...', options: ['Manis, masam, masin dan pahit', 'Keras, lembut, licin dan kasar', 'Merah, biru, hijau dan kuning', 'Kuat, perlahan dan bising'], a: 'Manis, masam, masin dan pahit' },
+              { q: 'Kita menggunakan ______ untuk menghidu bau wangi dan bau busuk.', options: ['hidung', 'mata', 'kulit', 'telinga'], a: 'hidung' },
+              { q: 'Apakah alat yang boleh membantu seseorang yang mengalami masalah penglihatan kabur?', options: ['Topi keselamatan', 'Cermin mata', 'Alat bantuan pendengaran', 'Jam tangan'], a: 'Cermin mata' },
+              { q: 'Alat bantu pendengaran digunakan apabila deria pendengaran tidak dapat berfungsi dengan baik.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Kelaskan objek: Minyak wangi dan bunga ros mempunyai bau:', options: ['Wangi', 'Busuk', 'Masin', 'Pahit'], a: 'Wangi' },
+              { q: 'Antara kumpulan objek berikut, yang manakah kesemuanya mempunyai ciri LEMBUT?', options: ['Span dan kek cawan', 'Guli dan wisel', 'Batu dan penukul', 'Loceng dan duit syiling'], a: 'Span dan kek cawan' },
+              { q: 'Berdasarkan buku teks, buah ciku dan epal mempunyai rasa manis manakala oren dan kedondong berasa:', options: ['Masam', 'Pahit', 'Masin', 'Tawar'], a: 'Masam' },
+              { q: 'Antara buah berikut, yang manakah mempunyai bentuk BUJUR?', options: ['Epal dan Oren', 'Ciku dan Kedondong', 'Tembikai bulat', 'Bola sepak'], a: 'Ciku dan Kedondong' },
+              { q: 'Sesuatu buah boleh dikenal pasti dengan menggabungkan deria penglihatan (warna), deria bau dan deria rasa.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Kulit membolehkan kita membezakan permukaan meja yang ______ dan permukaan kertas pasir yang ______.', options: ['licin, kasar', 'manis, masam', 'merah, biru', 'wangi, busuk'], a: 'licin, kasar' },
+              { q: 'Mata Sarah ditutup kain. Dia diberi buah limau. Bagaimanakah Sarah boleh mengenal pasti buah itu?', options: ['Menghidu baunya yang sitrus dan merasa tekstur kulitnya yang menggerutu', 'Mendengar bunyi buah itu bercakap', 'Menggunakan cermin mata di atas penutup mata', 'Sarah tidak boleh berbuat apa-apa'], a: 'Menghidu baunya yang sitrus dan merasa tekstur kulitnya yang menggerutu' },
+              { q: 'Lina mencari pembaris di dalam beg tanpa melihat. Bagaimanakah deria sentuhan membantunya membezakan pembaris daripada buku?', options: ['Pembaris berasa nipis, panjang dan keras manakala buku segi empat tebal', 'Pembaris berasa manis manakala buku masam', 'Pembaris berbau wangi manakala buku tiada bau', 'Pembaris berbunyi kuat di dalam beg'], a: 'Pembaris berasa nipis, panjang dan keras manakala buku segi empat tebal' },
+              { q: 'Antara objek berikut, yang manakah bersifat KERAS dan BERBUNYI apabila diketuk?', options: ['Duit syiling dan Loceng logam', 'Span basah dan Kek cawan', 'Duit syiling dan Span', 'Loceng logam dan Kek cawan'], a: 'Duit syiling dan Loceng logam' }
             ]
           },
           {
@@ -304,23 +307,33 @@
             desc: 'Bahagian tubuh haiwan & fungsinya',
             icon: '🐾',
             note: {
-              heading: 'Struktur Tubuh Haiwan',
-              body: '• Bahagian Tubuh: Paruh, sisik, sirip, kepak, sumbu, tanduk, cangkerang, sesungut, bulu halus, bulu pelepah, kaki selaput renang.\n• Fungsi: Kepak (terbang), Sirip/Kaki selaput renang (berenang), Tanduk/Sumbu/Kulit keras (pertahankan diri), Ekor (pandu arah).'
+              heading: 'Bahagian Tubuh & Fungsinya',
+              body: '• Struktur: Paruh, sisik, sirip, kepak, sumbu, tanduk, cangkerang, sesungut, kulit keras, bulu halus, bulu pelepah, kaki selaput renang.\n• Fungsi Khas: Kepak untuk terbang; Kaki selaput renang & sirip untuk berenang; Tanduk, sumbu & kulit keras untuk pertahankan diri; Ekor untuk memandu arah.'
             },
             example: {
-              q: 'Apakah fungsi kaki selaput renang pada itik?',
-              explanation: 'Kaki selaput renang bertindak seperti pendayung untuk membantu itik berenang di air.'
+              q: 'Apakah fungsi sayap pada burung dan rama-rama?',
+              explanation: 'Sayap atau kepak membolehkan burung dan rama-rama terbang di udara.'
             },
             practice: {
-              q: 'Kerbau dan rusa menggunakan tanduk mereka untuk...',
-              options: ['Mempertahankan diri daripada musuh', 'Menyerap air tanah', 'Membantu terbang', 'Mendengar bunyi'],
-              a: 'Mempertahankan diri daripada musuh'
+              q: 'Struktur tajam di atas muncung badak sumbu dinamakan ______.',
+              options: ['sumbu', 'paruh', 'sayap', 'sirip'],
+              a: 'sumbu'
             },
             quiz: [
-              { q: 'Apakah bahagian tubuh burung untuk mematuk makanan?', options: ['Paruh', 'Sumbu', 'Tanduk', 'Sisik'], a: 'Paruh' },
-              { q: 'Antara haiwan berikut, yang manakah dilitupi BULU HALUS?', options: ['Kucing, Arnab dan Lembu', 'Itik dan Burung', 'Buaya dan Ikan', 'Katak dan Siput'], a: 'Kucing, Arnab dan Lembu' },
-              { q: 'Ekor pada haiwan seperti ikan dan burung berfungsi untuk:', options: ['Memandu arah pergerakan', 'Makan buah', 'Bernafas', 'Menghidu mangsa'], a: 'Memandu arah pergerakan' },
-              { q: 'Apakah ciri yang ada pada ITIK tetapi TIADA pada kambing?', options: ['Paruh, sayap dan kaki selaput renang', 'Kaki dan mata', 'Tanduk dan bulu halus', 'Ekor dan telinga'], a: 'Paruh, sayap dan kaki selaput renang' }
+              { q: 'Apakah bahagian tubuh yang terdapat pada seekor burung untuk mematuk makanan?', options: ['Sumbu', 'Paruh', 'Tanduk', 'Sisik'], a: 'Paruh' },
+              { q: 'Ikan mempunyai ______ untuk berenang di dalam air.', options: ['sirip', 'kepak', 'tanduk', 'sumbu'], a: 'sirip' },
+              { q: 'Siput dan kura-kura mempunyai cangkerang keras pada tubuh mereka.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Apakah kepentingan kepak kepada rama-rama dan burung?', options: ['Untuk berenang', 'Untuk terbang', 'Untuk menghidu bau', 'Untuk makan'], a: 'Untuk terbang' },
+              { q: 'Ayam dan burung dilitupi dengan bulu halus, manakala kucing dilitupi bulu pelepah.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Kerbau dan rusa menggunakan tanduk mereka untuk...', options: ['Mempertahankan diri daripada musuh', 'Menyerap air di dalam tanah', 'Mendengar bunyi dari jauh', 'Membantu mereka terbang'], a: 'Mempertahankan diri daripada musuh' },
+              { q: 'Haiwan yang mempunyai kaki selaput renang untuk berenang ialah:', options: ['Itik dan Katak', 'Ikan dan Buaya', 'Ayam dan Kucing', 'Rusa dan Kambing'], a: 'Itik dan Katak' },
+              { q: 'Antara kumpulan haiwan berikut, yang manakah kesemuanya mempunyai BULU HALUS?', options: ['Lembu, Kucing, Arnab dan Hamster', 'Itik, Ayam dan Burung', 'Buaya, Ikan dan Ular', 'Katak dan Siput'], a: 'Lembu, Kucing, Arnab dan Hamster' },
+              { q: 'Pepatung dan rama-rama mempunyai sepasang struktur halus di atas kepala yang dipanggil ______.', options: ['tanduk', 'sesungut', 'sumbu', 'paruh'], a: 'sesungut' },
+              { q: 'Ekor pada haiwan seperti ikan dan burung berfungsi untuk memandu ______ semasa bergerak.', options: ['arah', 'makanan', 'musuh', 'nafas'], a: 'arah' },
+              { q: 'Kulit keras dan tebal pada buaya berfungsi untuk membantunya terbang tinggi.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Seekor burung mengalami patah sayap. Apakah kesan utama kecederaan ini terhadap burung tersebut?', options: ['Burung tidak boleh berenang di dasar kolam', 'Burung tidak dapat terbang untuk mencari makanan dan lari daripada musuh', 'Burung tidak dapat mematuk buah', 'Bulu burung bertukar warna'], a: 'Burung tidak dapat terbang untuk mencari makanan dan lari daripada musuh' },
+              { q: 'Apakah ciri yang ada pada itik tetapi TIADA pada kambing?', options: ['Mata dan ekor', 'Kaki dan mulut', 'Paruh, bulu pelepah dan kaki selaput renang', 'Bulu halus dan tanduk'], a: 'Paruh, bulu pelepah dan kaki selaput renang' },
+              { q: 'Mengapakah tanduk rusa yang besar dan bercabang menyukarkannya bersembunyi di dalam lubang sempit?', options: ['Tanduknya tersangkut di pintu lubang kerana saiznya besar', 'Tanduknya akan hilang dalam tanah', 'Tanduk bertukar menjadi sayap', 'Tanah akan meletup'], a: 'Tanduknya tersangkut di pintu lubang kerana saiznya besar' }
             ]
           },
           {
@@ -329,23 +342,32 @@
             desc: 'Ciri bahagian daun, bunga, batang & akar',
             icon: '🌺',
             note: {
-              heading: 'Bahagian & Ciri Tumbuhan',
-              body: '• Bahagian Tumbuhan: Bunga (pembiakan/buah), Daun (membuat makanan), Batang (angkut air, nutrien & makanan), Akar (serap air & sokong pokok).\n• Urat Daun: Jejala / Selari.\n• Jenis Batang: Berkayu / Tidak Berkayu.\n• Jenis Akar: Akar Tunjang / Akar Serabut.'
+              heading: 'Struktur Pokok & Fungsinya',
+              body: '• Bahagian Utama: Daun, Bunga, Batang, dan Akar.\n• Bunga: Bahagian pembiakan, menghasilkan buah & biji benih.\n• Daun: Membuat makanan (urat jejala / urat selari).\n• Batang: Mengangkut air, nutrien dan makanan (berkayu / tidak berkayu).\n• Akar: Menyerap air dan mencengkam tanah menyokong pokok (akar tunjang / serabut).'
             },
             example: {
-              q: 'Apakah jenis akar bagi pokok pandan?',
-              explanation: 'Pokok pandan mempunyai daun urat selari dan berakar serabut.'
+              q: 'Mengapa pokok tidak mudah tumbang apabila ditiup angin?',
+              explanation: 'Akar mencengkam tanah dengan kuat untuk memberi sokongan teguh.'
             },
             practice: {
-              q: 'Bahagian tumbuhan manakah yang berfungsi untuk membuat makanan?',
-              options: ['Daun', 'Akar', 'Batang', 'Bunga'],
-              a: 'Daun'
+              q: 'Bunga ialah bahagian pembiakan tumbuhan yang akan bertukar menjadi buah dan ______.',
+              options: ['biji benih', 'daun kering', 'ranting berkayu', 'akar serabut'],
+              a: 'biji benih'
             },
             quiz: [
-              { q: 'Apakah empat bahagian utama tumbuhan?', options: ['Bunga, daun, batang dan akar', 'Mata, telinga, kulit dan hidung', 'Kepak, paruh, ekor dan kaki', 'Pasir, batu, tanah dan air'], a: 'Bunga, daun, batang dan akar' },
-              { q: 'Pokok bunga ros berakar tunjang, manakala pokok pandan berakar:', options: ['Serabut', 'Tunjang', 'Berkayu', 'Jejala'], a: 'Serabut' },
+              { q: 'Apakah empat bahagian utama yang terdapat pada tumbuhan?', options: ['Bunga, daun, batang dan akar', 'Mata, hidung, telinga dan mulut', 'Kepak, paruh, ekor dan kaki', 'Batu, pasir, air dan tanah'], a: 'Bunga, daun, batang dan akar' },
+              { q: 'Dua jenis urat daun yang dipelajari ialah urat daun jejala dan urat daun ______.', options: ['bulat', 'selari', 'tunjang', 'berkayu'], a: 'selari' },
+              { q: 'Pokok bunga ros mempunyai akar tunjang manakala pokok pandan mempunyai akar serabut.', options: ['Benar', 'Palsu'], a: 'Benar' },
               { q: 'Pokok durian mempunyai batang berkayu manakala pokok betik mempunyai batang:', options: ['Tidak berkayu', 'Berkayu', 'Berduri tajam', 'Batu'], a: 'Tidak berkayu' },
-              { q: 'Ketika angin kencang, pokok rambutan tidak tumbang kerana peranannya:', options: ['Akar mencengkam tanah dengan kuat untuk sokongan', 'Bunga menolak angin', 'Daun menjadi keras', 'Buah memegang dahan'], a: 'Akar mencengkam tanah dengan kuat untuk sokongan' }
+              { q: 'Pokok paku pakis ialah contoh tumbuhan yang tidak berbunga.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Apakah fungsi utama daun kepada sebatang pokok?', options: ['Menyerap air dari tanah', 'Membuat makanan untuk tumbuhan', 'Menjadi buah yang manis', 'Memegang tanah supaya tidak runtuh'], a: 'Membuat makanan untuk tumbuhan' },
+              { q: 'Batang tumbuhan berfungsi untuk mengangkut ______ dari daun ke bahagian lain dan mengangkut ______ dari akar ke daun.', options: ['makanan, air dan nutrien', 'tanah, batu', 'udara, pasir', 'buah, biji benih'], a: 'makanan, air dan nutrien' },
+              { q: 'Apakah persamaan ciri bahagian antara pokok bunga raya dengan pokok bunga ros?', options: ['Kedua-duanya tidak berbunga dan berakar serabut', 'Kedua-duanya berbunga, berdaun urat jejala, berbatang berkayu dan berakar tunjang', 'Kedua-duanya berdaun urat selari', 'Kedua-duanya berbatang tidak berkayu'], a: 'Kedua-duanya berbunga, berdaun urat jejala, berbatang berkayu dan berakar tunjang' },
+              { q: 'Tumbuhan berdaun urat selari seperti pokok jagung dan rumput biasanya mempunyai akar serabut.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Pokok kemuncup dan pokok lalang mempunyai ciri yang serupa iaitu mempunyai daun berurat...', options: ['Jejala', 'Selari', 'Melengkung', 'Bulat'], a: 'Selari' },
+              { q: 'Ketika angin kencang bertiup, pokok rambutan tidak mudah tumbang kerana peranan:', options: ['Akar mencengkam tanah dengan kuat untuk memberi sokongan teguh', 'Akar menghasilkan buah berat', 'Akar membuat makanan dengan cepat', 'Akar menutup daun supaya tidak basah'], a: 'Akar mencengkam tanah dengan kuat untuk memberi sokongan teguh' },
+              { q: 'Semua daun pada sebatang pokok keembung dimakan ulat sehingga botak. Apakah kesan kepada pokok tersebut jika daun baharu tidak tumbuh?', options: ['Pokok akan terus membesar lebih cepat', 'Pokok tidak dapat membuat makanan dan akhirnya akan layu serta mati', 'Pokok akan menghasilkan lebih banyak bunga', 'Batang pokok akan bertukar menjadi akar'], a: 'Pokok tidak dapat membuat makanan dan akhirnya akan layu serta mati' },
+              { q: 'Seorang murid menemui tumbuhan dengan ciri: [Berbunga, Urat daun jejala, Batang berkayu, Akar tunjang]. Tumbuhan manakah sepadan?', options: ['Pokok teratai', 'Pokok terung / tomato', 'Pokok jagung', 'Pokok paku pakis'], a: 'Pokok terung / tomato' }
             ]
           },
           {
@@ -354,23 +376,32 @@
             desc: 'Bentuk, kutub & kekuatan magnet',
             icon: '🧲',
             note: {
-              heading: 'Sifat & Tindakan Magnet',
-              body: '• 6 Bentuk: Bar, Silinder, Ladam, Bentuk U, Butang, Cincin.\n• Magnet menarik objek besi/logam (bahan magnet).\n• 2 Kutub: Kutub Utara (U) dan Kutub Selatan (S).\n• Kutub BERLAINAN menarik; Kutub SAMA menolak.\n• Magnet lebih kuat menarik lebih banyak klip kertas dari jarak lebih jauh.'
+              heading: 'Sifat & Bentuk Magnet',
+              body: '• 6 Bentuk Magnet: Bar, Silinder, Ladam, Bentuk U, Butang, Cincin.\n• Magnet menarik objek besi/logam (bahan magnet).\n• Kutub Sama MENOLAK; Kutub Berlainan MENARIK.\n• Magnet yang lebih kuat boleh menarik lebih banyak klip kertas dan bertindak dari jarak lebih jauh.'
             },
             example: {
-              q: 'Apakah yang terjadi jika Kutub Utara didekatkan dengan Kutub Selatan?',
-              explanation: 'Kutub berlainan jenis akan saling menarik dan melekat bersama.'
+              q: 'Mengapa magnet ladam mempunyai bentuk U yang rapat?',
+              explanation: 'Bentuknya disesuaikan untuk menghasilkan daya tarikan kutub yang berdekatan.'
             },
             practice: {
-              q: 'Objek manakah yang BOLEH ditarik oleh magnet?',
-              options: ['Paku besi', 'Pemadam getah', 'Pembaris plastik', 'Kayu aiskrim'],
-              a: 'Paku besi'
+              q: 'Pintu peti sejuk dipasang ______ supaya boleh ditutup rapat secara kemas.',
+              options: ['magnet', 'paku', 'tali', 'gam'],
+              a: 'magnet'
             },
             quiz: [
-              { q: 'Antara berikut, yang manakah BUKAN bentuk magnet?', options: ['Magnet segi tiga', 'Magnet bar', 'Magnet ladam', 'Magnet butang'], a: 'Magnet segi tiga' },
-              { q: 'Pintu peti sejuk boleh ditutup rapat kerana dipasang:', options: ['Magnet', 'Paku', 'Gam gajah', 'Tali'], a: 'Magnet' },
-              { q: 'Apakah tindakan apabila dua kutub magnet yang SAMA didekatkan?', options: ['Menolak', 'Menarik', 'Melekat kuat', 'Berdengung'], a: 'Menolak' },
-              { q: 'Bagaimanakah cara pantas mengasingkan klip kertas daripada semangkuk serbuk bedak?', options: ['Gunakan magnet untuk menarik klip kertas keluar', 'Tapis dengan air panas', 'Tiup sampai bedak habis', 'Kutip satu persatu'], a: 'Gunakan magnet untuk menarik klip kertas keluar' }
+              { q: 'Antara berikut, yang manakah BUKAN bentuk magnet yang dipelajari?', options: ['Magnet bar', 'Magnet ladam', 'Magnet silinder', 'Magnet segi tiga'], a: 'Magnet segi tiga' },
+              { q: 'Objek manakah yang BOLEH ditarik oleh magnet?', options: ['Paku besi', 'Pemadam getah', 'Pembaris plastik', 'Kayu aiskrim'], a: 'Paku besi' },
+              { q: 'Setiap batang magnet mempunyai dua kutub iaitu Kutub Utara (U) dan Kutub Selatan (S).', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Magnet boleh menarik semua objek yang ada di dunia termasuk kaca dan kayu.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Apakah yang akan berlaku jika dua kutub magnet yang BERLAINAN (Utara dan Selatan) didekatkan?', options: ['Kedua-dua magnet akan menarik antara satu sama lain', 'Kedua-dua magnet akan menolak antara satu sama lain', 'Kedua-dua magnet akan pecah', 'Tiada apa-apa yang berlaku'], a: 'Kedua-dua magnet akan menarik antara satu sama lain' },
+              { q: 'Apakah tindakan magnet apabila Kutub Utara didekatkan dengan satu lagi Kutub Utara?', options: ['Menolak', 'Menarik', 'Melekat', 'Berdengung'], a: 'Menolak' },
+              { q: 'Magnet A berjaya menarik 10 klip kertas manakala Magnet B hanya menarik 3 klip kertas. Ini membuktikan:', options: ['Magnet A lebih kuat daripada Magnet B', 'Magnet B lebih kuat daripada Magnet A', 'Kedua-dua magnet mempunyai kekuatan yang sama', 'Magnet A rosak'], a: 'Magnet A lebih kuat daripada Magnet B' },
+              { q: 'Pemutar skru bermagnet berguna untuk:', options: ['Memegang skru besi supaya tidak jatuh', 'Menebuk lubang dinding', 'Mengukir kayu', 'Mengetuk paku'], a: 'Memegang skru besi supaya tidak jatuh' },
+              { q: 'Magnet yang lebih kuat boleh menarik klip kertas dari jarak kedudukan yang lebih jauh.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Antara kumpulan objek berikut, kumpulan manakah yang KESEMUANYA dapat ditarik oleh magnet?', options: ['Pin baju, Skru dan Penutup botol logam', 'Guli, Pembaris plastik dan Skru', 'Kayu aiskrim, Butang plastik dan Duit syiling', 'Pemadam, Kertas dan Daun'], a: 'Pin baju, Skru dan Penutup botol logam' },
+              { q: 'Hafiz tertumpahkan klip kertas besi ke dalam mangkuk serbuk bedak. Cara paling mudah mengasingkannya ialah:', options: ['Menggunakan sebatang magnet untuk menarik klip kertas keluar', 'Menapis campuran itu menggunakan air panas', 'Meniup serbuk bedak sehingga habis', 'Mengutip klip kertas satu demi satu menggunakan forsep'], a: 'Menggunakan sebatang magnet untuk menarik klip kertas keluar' },
+              { q: 'Mengapakah pengilang menghasilkan magnet dalam pelbagai bentuk seperti cincin, ladam dan butang?', options: ['Supaya magnet boleh dimakan', 'Untuk disesuaikan dengan pelbagai kegunaan dan reka bentuk alat harian', 'Supaya warna magnet kelihatan berbeza', 'Untuk mengurangkan berat magnet'], a: 'Untuk disesuaikan dengan pelbagai kegunaan dan reka bentuk alat harian' },
+              { q: 'Dua kutub berlainan menarik. Jika dua kutub yang sama didekatkan, apakah yang berlaku?', options: ['Kedua-duanya akan menolak antara satu sama lain', 'Kedua-duanya akan melekat lebih kuat', 'Magnet akan bertukar warna', 'Tiada tindak balas'], a: 'Kedua-duanya akan menolak antara satu sama lain' }
             ]
           },
           {
@@ -379,23 +410,31 @@
             desc: 'Objek menyerap air & kalis air',
             icon: '🧽',
             note: {
-              heading: 'Bahan Menyerap & Tidak Menyerap Air',
-              body: '• Objek Menyerap Air: Tisu dapur, tuala kain, kapas, kertas surat khabar, kain lap.\n• Objek Tidak Menyerap Air (Kalis Air): Plastik, kaca, getah, logam.\n• Urutan keupayaan serap air: Kad manila < Kertas surat khabar < Kain lap < Tisu dapur.'
+              heading: 'Keupayaan Menyerap Air',
+              body: '• Objek Menyerap Air: Tisu dapur, kain lap, kapas, surat khabar, span.\n• Objek Tidak Menyerap Air (Kalis Air): Kaca, getah, plastik, logam.\n• Kepentingan Kalis Air: Payung & baju hujan halang kita basah.\n• Susunan serap air menaik: Kad manila -> Surat khabar -> Kain lap -> Tisu dapur.'
             },
             example: {
-              q: 'Mengapa baju hujan diperbuat daripada plastik?',
-              explanation: 'Plastik tidak menyerap air, jadi ia menghalang air hujan daripada membasahi badan.'
+              q: 'Mengapakah tuala digunakan untuk mengeringkan badan selepas mandi?',
+              explanation: 'Tuala diperbuat daripada fabrik kain yang mempunyai keupayaan menyerap air yang sangat baik.'
             },
             practice: {
-              q: 'Antara bahan berikut, yang manakah menyerap air paling BANYAK?',
-              options: ['Tisu dapur', 'Kertas surat khabar', 'Kad manila', 'Klip kertas'],
-              a: 'Tisu dapur'
+              q: 'Selepas mandi, kita menggunakan ______ kain untuk mengelap dan mengeringkan badan basah.',
+              options: ['tuala', 'kepingan kaca', 'beg plastik', 'sudu logam'],
+              a: 'tuala'
             },
             quiz: [
               { q: 'Antara objek berikut, yang manakah BOLEH menyerap air?', options: ['Tisu dapur', 'Duit syiling', 'Gelas kaca', 'Pembaris plastik'], a: 'Tisu dapur' },
-              { q: 'Payung plastik dan kasut getah digunakan semasa hujan kerana sifatnya:', options: ['Tidak menyerap air', 'Menyerap air', 'Boleh terapung', 'Mudah koyak'], a: 'Tidak menyerap air' },
-              { q: 'Susun bahan mengikut keupayaan menyerap air secara MENAIK:', options: ['Kad manila -> Surat khabar -> Kain lap', 'Kain lap -> Surat khabar -> Kad manila', 'Surat khabar -> Kad manila -> Kain lap', 'Kain lap -> Kad manila -> Surat khabar'], a: 'Kad manila -> Surat khabar -> Kain lap' },
-              { q: 'Air sirap tertumpah banyak di atas lantai. Alat manakah paling pantas menyerap tumpahan?', options: ['Mop bertali kain', 'Plastik sampah', 'Pembaris kayu', 'Duit syiling'], a: 'Mop bertali kain' }
+              { q: 'Apakah yang berlaku kepada titisan air apabila dititiskan ke atas pemadam getah atau mainan plastik?', options: ['Air diserap sepenuhnya dan hilang', 'Titisan air kekal berada di atas permukaan objek', 'Objek itu koyak', 'Objek bertukar menjadi cecair'], a: 'Titisan air kekal berada di atas permukaan objek' },
+              { q: 'Payung plastik digunakan semasa hari hujan kerana ia diperbuat daripada bahan yang tidak menyerap air.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Kasut getah menyerap semua air becak supaya kaki kita menjadi basah.', options: ['Benar', 'Palsu'], a: 'Palsu' },
+              { q: 'Antara bahan berikut, yang manakah menyerap air paling BANYAK?', options: ['Tisu dapur', 'Kertas surat khabar', 'Kad manila', 'Klip kertas'], a: 'Tisu dapur' },
+              { q: 'Susun bahan berikut mengikut keupayaan menyerap air secara MENAIK (paling sedikit kepada paling banyak):', options: ['Kad manila -> Kertas surat khabar -> Kain lap', 'Kain lap -> Kertas surat khabar -> Kad manila', 'Kertas surat khabar -> Kad manila -> Kain lap', 'Kad manila -> Kain lap -> Kertas surat khabar'], a: 'Kad manila -> Kertas surat khabar -> Kain lap' },
+              { q: 'Mengapakah bebola kapas digunakan untuk mencuci dan mengelap luka berdarah?', options: ['Kerana kapas boleh menyerap cecair ubat dan darah', 'Kerana kapas sangat keras', 'Kerana kapas tidak menyerap air', 'Kerana kapas berbau wangi'], a: 'Kerana kapas boleh menyerap cecair ubat dan darah' },
+              { q: 'Cermin kaca pada kenderaan dibuat daripada bahan tidak menyerap air supaya...', options: ['Air hujan tidak masuk dan pemandu boleh melihat jalan', 'Air hujan dapat meresap ke dalam enjin', 'Kereta menjadi lebih sejuk', 'Cermin bertukar menjadi tuala'], a: 'Air hujan tidak masuk dan pemandu boleh melihat jalan' },
+              { q: 'Semasa potongan kain, tisu dapur dan surat khabar dicelup ke dalam air berwarna, aras air berwarna naik paling tinggi pada tisu dapur.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Air sirap tertumpah dengan banyak di atas lantai. Alat manakah paling berkesan untuk membersihkan tumpahan dengan pantas?', options: ['Mop bertali kain', 'Plastik sampah', 'Pembaris kayu', 'Duit syiling'], a: 'Mop bertali kain' },
+              { q: 'Murid diminta mereka bentuk baju hujan untuk anak patung. Antara bahan berikut, gabungan bahan manakah yang paling TEPAT digunakan?', options: ['Plastik lut sinar dan getah', 'Kertas surat khabar dan tisu dapur', 'Kain kapas dan kad manila', 'Bulu ayam dan benang'], a: 'Plastik lut sinar dan getah' },
+              { q: 'Untuk menguji keupayaan menyerap air antara kain dan tisu secara adil, apakah perkara yang MESTI dipastikan sama?', options: ['Saiz dan ketebalan potongan bahan yang diuji', 'Warna bahan', 'Kedai tempat membeli bahan', 'Bentuk gunting yang digunakan'], a: 'Saiz dan ketebalan potongan bahan yang diuji' }
             ]
           },
           {
@@ -404,23 +443,32 @@
             desc: 'Bentuk muka bumi & jenis tanah',
             icon: '🌍',
             note: {
-              heading: 'Bentuk Muka Bumi & Tanah',
-              body: '• 8 Bentuk Muka Bumi: Gunung, Bukit, Lembah, Sungai, Kolam, Tasik, Laut, Pantai.\n• 3 Jenis Tanah:\n  1. Tanah Kebun: Butir pasir, batu kecil, reputan daun & haiwan (subur untuk sayur).\n  2. Tanah Liat: Butiran sangat halus, kedap air (sesuai untuk padi).\n  3. Pasir: Butir pasir kasar & batu kecil (pantai/gurun).'
+              heading: 'Bumi & Ciri Tanah',
+              body: '• 8 Bentuk Muka Bumi: Gunung, Bukit, Lembah, Sungai, Kolam, Tasik, Laut, Pantai.\n• 3 Jenis Tanah:\n  1. Tanah Kebun: Butir pasir, batu kecil, reputan tumbuhan & haiwan (sesuai untuk kebun sayur).\n  2. Tanah Liat: Butir sangat halus, menakung air (sesuai untuk sawah padi).\n  3. Pasir: Butir pasir kasar & batu kecil (tepi pantai & gurun).'
             },
             example: {
-              q: 'Apakah jenis tanah yang terdapat di sawah padi?',
-              explanation: 'Tanah liat, kerana ia mempunyai butiran halus yang dapat menakung air.'
+              q: 'Di manakah kita biasa menjumpai tanah liat?',
+              explanation: 'Tanah liat biasa dijumpai di kawasan sawah padi kerana ia menakung air dengan baik.'
             },
             practice: {
-              q: 'Kawasan tanah rendah di kiri kanan sungai atau kaki bukit dipanggil...',
-              options: ['Lembah', 'Gunung', 'Pantai', 'Laut'],
-              a: 'Lembah'
+              q: 'Jasad air tawar yang luas dan dikelilingi oleh daratan dikenali sebagai ______.',
+              options: ['tasik', 'pantai', 'gunung', 'lembah'],
+              a: 'tasik'
             },
             quiz: [
-              { q: 'Berapakah jenis bentuk muka bumi yang dipelajari dalam buku teks?', options: ['8', '3', '5', '10'], a: '8' },
-              { q: 'Tiga jenis tanah utama di permukaan Bumi ialah pasir, tanah liat dan:', options: ['Tanah kebun', 'Batu bata', 'Simen', 'Emas'], a: 'Tanah kebun' },
-              { q: 'Tanah yang mengandungi reputan daun dan haiwan sesuai untuk pertanian ialah:', options: ['Tanah kebun', 'Pasir laut', 'Tanah liat', 'Batu kerikil'], a: 'Tanah kebun' },
-              { q: 'Pesawah padi menanam padi di tanah liat kerana sifatnya yang:', options: ['Mempunyai butir halus & menakung air dengan baik', 'Berwarna merah', 'Kasar dan berpasir', 'Mudah ditiup angin'], a: 'Mempunyai butir halus & menakung air dengan baik' }
+              { q: 'Berapakah jenis bentuk muka bumi yang dipelajari dalam buku teks Sains Tahun 1?', options: ['3', '5', '8', '12'], a: '8' },
+              { q: 'Kawasan berpasir yang terletak di tepi laut dipanggil...', options: ['Pantai', 'Gunung', 'Lembah', 'Tasik'], a: 'Pantai' },
+              { q: 'Tiga jenis tanah utama di permukaan Bumi ialah tanah kebun, tanah liat dan ______.', options: ['pasir', 'batu bata', 'emas', 'simen'], a: 'pasir' },
+              { q: 'Tanah liat mengandungi butir-butir tanah yang sangat halus.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Lembah ialah kawasan tanah rendah yang berada di kiri kanan sungai atau di kaki bukit.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Antara berikut, yang manakah TERDAPAT di dalam tanah kebun?', options: ['Ranting kayu, daun kering, batu kecil, butir pasir dan haiwan reput', 'Hanya butiran kaca', 'Hanya air sirap', 'Plastik dan tin kosong'], a: 'Ranting kayu, daun kering, batu kecil, butir pasir dan haiwan reput' },
+              { q: 'Sampel pasir yang diambil dari tepi pantai terutamanya mengandungi...', options: ['Butir-butir pasir dan batu-batu kecil', 'Daun-daun basah yang lebat', 'Baja kimia', 'Tanah liat merah yang melekit'], a: 'Butir-butir pasir dan batu-batu kecil' },
+              { q: 'Antara gunung dan bukit, bentuk muka bumi yang manakah LEBIH TINGGI?', options: ['Gunung', 'Bukit', 'Kedua-duanya sama tinggi', 'Lembah'], a: 'Gunung' },
+              { q: 'Sungai ialah laluan aliran air tawar semula jadi yang mengalir menuju ke laut atau tasik.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Apakah alat yang sesuai digunakan untuk mengasingkan ranting kayu dan haiwan kecil daripada sampel tanah?', options: ['Forsep dan kanta pembesar', 'Gunting dan pembaris', 'Magnet bar', 'Cermin mata hitam'], a: 'Forsep dan kanta pembesar' },
+              { q: 'Pak Ali ingin menanam pokok tomato di belakang rumahnya. Apakah jenis tanah yang paling subur dan sesuai dipilih?', options: ['Tanah kebun kerana ada nutrien daripada reputan daun dan haiwan', 'Pasir pantai yang masin', 'Tanah liat yang padat dan kedap air', 'Batu kerikil sungai'], a: 'Tanah kebun kerana ada nutrien daripada reputan daun dan haiwan' },
+              { q: 'Mengapakah pesawah padi menanam pokok padi di kawasan bertanah liat berbanding tanah berpasir?', options: ['Tanah liat mempunyai butir yang sangat halus dan dapat menakung air dengan baik', 'Tanah liat berwarna merah menarik', 'Pasir terlalu mahal', 'Tanah liat boleh terbang'], a: 'Tanah liat mempunyai butir yang sangat halus dan dapat menakung air dengan baik' },
+              { q: 'Aliran air di celah dua bukit tanah liat yang mengalir ke kawasan berair biru luas menggambarkan bentuk:', options: ['Lembah/sungai yang mengalir ke laut', 'Gunung dan tasik', 'Kolam dan pantai', 'Pasir dan kebun'], a: 'Lembah/sungai yang mengalir ke laut' }
             ]
           },
           {
@@ -430,22 +478,30 @@
             icon: '🧱',
             note: {
               heading: 'Bentuk Asas & Bongkah Binaan',
-              body: '• 4 Bentuk Asas 2D: Segi tiga, Segi empat sama, Segi empat tepat, Bulatan.\n• 7 Bongkah Bentuk Asas 3D: Kubus, Kuboid, Piramid, Prisma, Kon, Silinder, Sfera.\n• Kepentingan bentuk: Sfera mudah bergolek (bola), Kuboid stabil (jam meja/kotak simpanan), Prisma memudahkan air mengalir (bumbung).'
+              body: '• 4 Bentuk Asas 2D: Segi tiga, Segi empat sama, Segi empat tepat, Bulatan.\n• 7 Bongkah 3D: Kubus, Kuboid, Piramid, Prisma, Kon, Silinder, Sfera.\n• Kubus mempunyai 6 muka segi empat sama.\n• Bentuk sfera mudah bergolek (bola), kuboid stabil dan kemas untuk menyimpan barang (kotak buku).'
             },
             example: {
-              q: 'Berapakah bentuk segi empat sama yang membentuk sebuah kubus?',
-              explanation: 'Sebuah kubus dibina daripada 6 bentuk segi empat sama yang sama saiz.'
+              q: 'Mengapakah bola sukan dibuat berbentuk sfera?',
+              explanation: 'Bentuk sfera tidak mempunyai bucu dan membolehkan bola bergolek ke semua arah dengan licin.'
             },
             practice: {
-              q: 'Apakah bentuk asas dua dimensi bagi sehelai wang kertas RM1?',
-              options: ['Segi empat tepat', 'Bulatan', 'Segi tiga', 'Sfera'],
-              a: 'Segi empat tepat'
+              q: 'Topi hari jadi kanak-kanak berbentuk ______ manakala tin minuman berbentuk ______.',
+              options: ['kon, silinder', 'kubus, sfera', 'piramid, prisma', 'bulatan, segi tiga'],
+              a: 'kon, silinder'
             },
             quiz: [
-              { q: 'Apakah 4 bentuk asas yang dipelajari?', options: ['Segi tiga, Segi empat sama, Segi empat tepat, Bulatan', 'Kubus, Kuboid, Kon, Sfera', 'Bulat dan Bujur sahaja', 'Dadu dan Kotak'], a: 'Segi tiga, Segi empat sama, Segi empat tepat, Bulatan' },
-              { q: 'Dadu permainan merupakan contoh bagi bongkah bentuk:', options: ['Kubus', 'Kuboid', 'Silinder', 'Kon'], a: 'Kubus' },
-              { q: 'Bola sukan dibuat dalam bentuk sfera supaya:', options: ['Mudah bergolek dengan lancar apabila disepak', 'Sukar bergerak', 'Boleh disusun bertingkat', 'Tidak basah'], a: 'Mudah bergolek dengan lancar apabila disepak' },
-              { q: 'Kotak berbentuk KUBOID lebih sesuai menyimpan buku berbanding bentuk sfera kerana:', options: ['Mempunyai tapak rata & ruang sudut kemas untuk susunan buku', 'Boleh bergolek sendiri', 'Buku berbentuk sfera', 'Kotak kuboid tidak boleh diangkat'], a: 'Mempunyai tapak rata & ruang sudut kemas untuk susunan buku' }
+              { q: 'Berapakah jenis bentuk asas dua dimensi (2D) yang dipelajari?', options: ['4 (Segi tiga, segi empat sama, segi empat tepat, bulatan)', '2 (Bulat dan bujur)', '7 (Semua bongkah)', '10'], a: '4 (Segi tiga, segi empat sama, segi empat tepat, bulatan)' },
+              { q: 'Apakah bentuk asas bagi sehelai wang kertas RM1?', options: ['Segi empat tepat', 'Bulatan', 'Segi tiga', 'Sfera'], a: 'Segi empat tepat' },
+              { q: 'Sebuah bola sepak merupakan contoh bagi bongkah bentuk sfera.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Pembaris sesiku mempunyai bentuk asas segi tiga.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Berapakah bilangan bentuk segi empat sama yang diperlukan untuk membentuk sebuah bongkah kubus yang lengkap?', options: ['4', '6', '8', '12'], a: '6' },
+              { q: 'Mengapakah bola sukan (seperti bola sepak) dibuat dalam bentuk sfera?', options: ['Supaya sukar bergerak', 'Supaya mudah bergolek dengan lancar apabila disepak', 'Supaya boleh disusun bertingkat-tingkat', 'Supaya tidak basah'], a: 'Supaya mudah bergolek dengan lancar apabila disepak' },
+              { q: 'Bumbung rumah yang dibuat berbentuk prisma bertujuan untuk:', options: ['Memudahkan air hujan mengalir turun ke bawah', 'Menyimpan barang di atasnya', 'Menjadikan rumah bergolek', 'Menyerap air hujan ke dalam rumah'], a: 'Memudahkan air hujan mengalir turun ke bawah' },
+              { q: 'Bongkah prisma mempunyai muka keratan rentas segi tiga dan sisi segi empat tepat.', options: ['Benar', 'Palsu'], a: 'Benar' },
+              { q: 'Antara berikut, yang manakah senarai LENGKAP bagi 7 jenis bongkah bentuk asas?', options: ['Kubus, Kuboid, Piramid, Prisma, Kon, Silinder dan Sfera', 'Segi tiga, Segi empat sama, Bulatan dan Bujur', 'Batu, Tanah, Air, Udara dan Pokok', 'Dadu, Bola, Kotak dan Pensel'], a: 'Kubus, Kuboid, Piramid, Prisma, Kon, Silinder dan Sfera' },
+              { q: 'Zaki ingin menyimpan buku lamanya secara kemas ke dalam stor. Antara kotak kuboid dan kotak sfera, yang mana lebih sesuai?', options: ['Kotak kuboid, kerana ada tapak rata dan ruang sudut luas menyusun buku', 'Kotak sfera, kerana ia boleh bergolek sendiri ke stor', 'Kotak sfera, kerana buku berbentuk bulat', 'Kedua-duanya tidak sesuai'], a: 'Kotak kuboid, kerana ada tapak rata dan ruang sudut luas menyusun buku' },
+              { q: 'Aina membina model roket: 1 kon di atas, 1 silinder di badan, dan 3 prisma di sayap. Berapakah jumlah bongkah yang digunakan?', options: ['5 bongkah', '3 bongkah', '7 bongkah', '10 bongkah'], a: '5 bongkah' },
+              { q: 'Apakah yang akan terjadi sekiranya roda sebuah basikal dicipta dalam bentuk KUBUS dan bukannya bentuk SILINDER / BULAT?', options: ['Basikal tidak bergerak lancar kerana bucu kubus tersangkut di jalan', 'Basikal akan bergerak terlalu laju', 'Basikal akan terapung di udara', 'Tiada apa-apa perbezaan'], a: 'Basikal tidak bergerak lancar kerana bucu kubus tersangkut di jalan' }
             ]
           }
         ]
@@ -459,7 +515,7 @@
             icon: '✖️',
             note: {
               heading: 'Darab Ialah Tambah Berulang',
-              body: 'Konsep 3 × 4 bermaksud ada 3 kumpulan, setiap kumpulan ada 4 objek (4 + 4 + 4 = 12). Menghafal sifir 2, 3, 4, 5, dan 10 membolehkan pengiraan pantas.'
+              body: 'Konsep 3 × 4 bermaksud ada 3 kumpulan, setiap kumpulan ada 4 objek (4 + 4 + 4 = 12).'
             },
             example: {
               q: '5 × 3 = ?',
@@ -472,89 +528,13 @@
             },
             quiz: [
               { q: '6 × 5 = ?', options: ['30', '25', '35', '40'], a: '30' },
-              { q: 'Ada 4 buah basikal. Setiap basikal ada 2 roda. Berapakah jumlah roda?', options: ['8', '6', '10', '12'], a: '8' },
-              { q: '10 × 7 = ?', options: ['70', '60', '80', '17'], a: '70' }
+              { q: 'Ada 4 buah basikal. Setiap basikal ada 2 roda. Berapakah jumlah roda?', options: ['8', '6', '10', '12'], a: '8' }
             ]
           }
         ],
-        bm: [
-          {
-            id: 'bm2_1',
-            title: 'Penjodoh Bilangan',
-            desc: 'Bilah, kaki, ekor, helai & biji',
-            icon: '📏',
-            note: {
-              heading: 'Membilang Objek Dengan Tepat',
-              body: 'Penjodoh bilangan digunakan sebelum kata nama. Contoh: Sebatang penyapu, sebilah pisau, sekaki payung, sehelai kertas.'
-            },
-            example: {
-              q: 'Ibu menggunakan se____ gunting yang tajam.',
-              explanation: 'Gunting ialah objek tajam, jadi penjodoh bilangannya ialah "bilah".'
-            },
-            practice: {
-              q: 'Pilih penjodoh bilangan bagi "payung":',
-              options: ['kaki', 'batang', 'buah', 'helai'],
-              a: 'kaki'
-            },
-            quiz: [
-              { q: 'Pak Samad membeli dua ____ durian di gerai.', options: ['biji', 'keping', 'pucuk', 'utas'], a: 'biji' },
-              { q: 'Se____ benang diletakkan di dalam laci.', options: ['buku', 'pintu', 'batang', 'potong'], a: 'buku' },
-              { q: 'Kakak menyidai tiga ____ baju basah di ampaian.', options: ['helai', 'kaki', 'pasang', 'buah'], a: 'helai' }
-            ]
-          }
-        ],
-        bi: [
-          {
-            id: 'bi2_1',
-            title: 'Action Verbs & Tenses',
-            desc: 'Present continuous tense (-ing)',
-            icon: '⚡',
-            note: {
-              heading: 'Actions Happening Now',
-              body: 'When someone is doing something right now, we use am/is/are + verb-ing. Example: He is reading a book. They are running.'
-            },
-            example: {
-              q: 'The children ____ (play) in the park right now.',
-              explanation: 'Children is plural, so we use "are playing".'
-            },
-            practice: {
-              q: 'Choose the correct sentence:',
-              options: ['Mother is cooking in the kitchen.', 'Mother cooking in kitchen.', 'Mother are cooking now.', 'Mother is cook now.'],
-              a: 'Mother is cooking in the kitchen.'
-            },
-            quiz: [
-              { q: 'Look! The cat is ____ after the mouse.', options: ['running', 'runs', 'ran', 'run'], a: 'running' },
-              { q: 'They ____ watching a movie at the cinema.', options: ['are', 'is', 'am', 'was'], a: 'are' },
-              { q: 'I ____ writing my homework.', options: ['am', 'is', 'are', 'were'], a: 'am' }
-            ]
-          }
-        ],
-        science: [
-          {
-            id: 'sci2_1',
-            title: 'Deria & Organ Manusia',
-            desc: '5 deria utama & fungsinya',
-            icon: '👁️',
-            note: {
-              heading: '5 Deria Anugerah Tuhan',
-              body: '1. Penglihatan (Mata)\n2. Pendengaran (Telinga)\n3. Bau (Hidung)\n4. Rasa (Lidah)\n5. Sentuhan (Kulit)'
-            },
-            example: {
-              q: 'Apakah organ yang digunakan untuk merasa manis dan masin?',
-              explanation: 'Organ yang mempunyai tunas rasa ialah Lidah.'
-            },
-            practice: {
-              q: 'Deria pendengaran dihubungkan kepada organ:',
-              options: ['Telinga', 'Mata', 'Kulit', 'Hidung'],
-              a: 'Telinga'
-            },
-            quiz: [
-              { q: 'Kulit membantu kita mengesan:', options: ['Suhu panas dan sejuk', 'Warna pelangi', 'Bunyi wisel', 'Bau wangi sabun'], a: 'Suhu panas dan sejuk' },
-              { q: 'Organ yang mengesan bau asap ialah:', options: ['Hidung', 'Lidah', 'Mata', 'Telinga'], a: 'Hidung' },
-              { q: 'Mata kita membolehkan kita melihat ciri objek seperti:', options: ['Bentuk dan warna', 'Rasa manis', 'Kelantangan bunyi', 'Bau busuk'], a: 'Bentuk dan warna' }
-            ]
-          }
-        ]
+        bm: [],
+        bi: [],
+        science: []
       },
       3: {
         math: [
@@ -565,11 +545,11 @@
             icon: '➗',
             note: {
               heading: 'Bahagi Ialah Songsangan Darab',
-              body: 'Membahagi bermaksud membahagikan sesuatu jumlah kepada kumpulan yang sama banyak. Contoh: 24 ÷ 6 = 4 kerana 4 × 6 = 24.'
+              body: 'Membahagi bermaksud membahagikan sesuatu jumlah kepada kumpulan yang sama banyak.'
             },
             example: {
               q: '36 ÷ 4 = ?',
-              explanation: 'Fikirkan sifir 4: Berapakah didarab dengan 4 menghasilkan 36? Jawapannya ialah 9.'
+              explanation: 'Fikirkan sifir 4: 9 × 4 = 36. Jawapannya ialah 9.'
             },
             practice: {
               q: 'Kira: 45 ÷ 5 = ?',
@@ -577,90 +557,13 @@
               a: '9'
             },
             quiz: [
-              { q: '56 ÷ 7 = ?', options: ['8', '7', '9', '6'], a: '8' },
-              { q: 'Cikgu ada 30 batang pensel untuk diagihkan sama rata kepada 6 orang murid. Berapa batang setiap orang dapat?', options: ['5', '6', '4', '8'], a: '5' },
-              { q: '81 ÷ 9 = ?', options: ['9', '8', '7', '10'], a: '9' }
+              { q: '56 ÷ 7 = ?', options: ['8', '7', '9', '6'], a: '8' }
             ]
           }
         ],
-        bm: [
-          {
-            id: 'bm3_1',
-            title: 'Simpulan Bahasa & Kiasan',
-            desc: 'Ungkapan indah warisan Melayu',
-            icon: '💡',
-            note: {
-              heading: 'Maksud Tersirat Simpulan Bahasa',
-              body: 'Simpulan bahasa terdiri daripada dua perkataan yang membawa makna khas. Contoh: "Ringan tulang" bermaksud orang yang rajin bekerja, "Ulat buku" ialah orang yang gemar membaca.'
-            },
-            example: {
-              q: 'Apakah maksud "Kaki bangku"?',
-              explanation: '"Kaki bangku" merujuk kepada orang yang tidak pandai bermain bola sepak.'
-            },
-            practice: {
-              q: 'Seseorang yang bersikap sombong digelar:',
-              options: ['Hidung tinggi', 'Telinga kuali', 'Panjang tangan', 'Hati batu'],
-              a: 'Hidung tinggi'
-            },
-            quiz: [
-              { q: 'Afif seorang yang rajin membantu ibunya di dapur. Dia seorang yang:', options: ['ringan tulang', 'berat tulang', 'kaki ayam', 'mandi kerbau'], a: 'ringan tulang' },
-              { q: 'Maksud simpulan bahasa "anak emas" ialah:', options: ['Anak yang sangat disayangi', 'Anak yang memakai rantai emas', 'Anak yang pandai melukis', 'Anak tunggal'], a: 'Anak yang sangat disayangi' },
-              { q: 'Pemberian ikhlas yang dibawa ketika menziarahi orang dinamakan:', options: ['buah tangan', 'buah mulut', 'kaki bangku', 'ambil angin'], a: 'buah tangan' }
-            ]
-          }
-        ],
-        bi: [
-          {
-            id: 'bi3_1',
-            title: 'Adjectives & Comparisons',
-            desc: 'Bigger, Smaller & Superlatives',
-            icon: '🐘',
-            note: {
-              heading: 'Comparing Two or More Objects',
-              body: 'Add -er when comparing 2 items (The horse is faster than the goat). Add -est when comparing 3 or more (The cheetah is the fastest).'
-            },
-            example: {
-              q: 'An elephant is ____ than a rabbit.',
-              explanation: 'Comparing two animals, so we use "bigger".'
-            },
-            practice: {
-              q: 'The blue whale is the ____ animal in the ocean.',
-              options: ['largest', 'larger', 'large', 'more large'],
-              a: 'largest'
-            },
-            quiz: [
-              { q: 'A plane travels ____ than a train.', options: ['faster', 'fastest', 'fast', 'more fast'], a: 'faster' },
-              { q: 'Mount Everest is the ____ mountain in the world.', options: ['highest', 'higher', 'high', 'most high'], a: 'highest' },
-              { q: 'Which is the correct opposite of "Bright"?', options: ['Dark', 'Shiny', 'Clean', 'Hot'], a: 'Dark' }
-            ]
-          }
-        ],
-        science: [
-          {
-            id: 'sci3_1',
-            title: 'Haiwan & Tabiat Pemakanan',
-            desc: 'Herbivor, Karnivor & Omnivor',
-            icon: '🦁',
-            note: {
-              heading: 'Pengelasan Makanan Haiwan',
-              body: '1. Herbivor: Makan tumbuhan sahaja (Cth: Lembu, Kambing, Arnab)\n2. Karnivor: Makan daging sahaja (Cth: Singa, Harimau, Buaya)\n3. Omnivor: Makan tumbuhan dan haiwan lain (Cth: Ayam, Monyet, Beruang)'
-            },
-            example: {
-              q: 'Harimau mempunyai gigi taring yang tajam untuk:',
-              explanation: 'Gigi taring berfungsi untuk mengoyak daging mangsanya.'
-            },
-            practice: {
-              q: 'Manakah antara haiwan berikut ialah Herbivor?',
-              options: ['Gajah', 'Serigala', 'Burung helang', 'Kucing'],
-              a: 'Gajah'
-            },
-            quiz: [
-              { q: 'Haiwan omnivor memakan:', options: ['Tumbuhan dan haiwan lain', 'Tumbuhan sahaja', 'Daging sahaja', 'Kayu reput sahaja'], a: 'Tumbuhan dan haiwan lain' },
-              { q: 'Gigi kacip manusia dan haiwan berfungsi untuk:', options: ['Memotong makanan', 'Mengoyak daging liat', 'Melumatkan makanan', 'Menghisap darah'], a: 'Memotong makanan' },
-              { q: 'Haiwan manakah yang mempunyai tabiat makan karnivor?', options: ['Ikan jerung', 'Kuda belang', 'Kura-kura darat', 'Rama-rama'], a: 'Ikan jerung' }
-            ]
-          }
-        ]
+        bm: [],
+        bi: [],
+        science: []
       }
     };
 
@@ -671,24 +574,23 @@
       { id: 'math_master', name: 'Math Master', icon: '🔢', desc: 'Kuasai 3 topik Matematik', reqType: 'mathMastery', reqVal: 3 },
       { id: 'bm_champion', name: 'BM Champion', icon: '🇲🇾', desc: 'Kuasai 2 topik Bahasa Melayu', reqType: 'bmMastery', reqVal: 2 },
       { id: 'english_star', name: 'English Star', icon: '🇬🇧', desc: 'Kuasai 2 topik English Ace', reqType: 'biMastery', reqVal: 2 },
-      { id: 'little_sci', name: 'Little Scientist', icon: '🔬', desc: 'Kuasai 3 topik Sains Eksplorasi', reqType: 'sciMastery', reqVal: 3 },
+      { id: 'little_sci', name: 'Little Scientist', icon: '🔬', desc: 'Kuasai 5 unit Sains', reqType: 'sciMastery', reqVal: 5 },
       { id: 'bookworm', name: 'Bookworm', icon: '📚', desc: 'Kumpul 500 XP pembelajaran', reqType: 'xp', reqVal: 500 },
-      { id: 'edubox_master', name: 'Edu Pintar Master', icon: '🏆', desc: 'Kumpul 1,500 XP & tamat 8 topik', reqType: 'xp', reqVal: 1500 }
+      { id: 'edubox_master', name: 'Edu Pintar Master', icon: '🏆', desc: 'Kumpul 1,500 XP & tamat 10 topik', reqType: 'xp', reqVal: 1500 }
     ];
 
     // Subjek Meta
     const SUBJECT_META = {
+      science: { title: 'Sains', icon: '🔬', color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
       math: { title: 'Matematik', icon: '🔢', color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50 border-amber-200 text-amber-700' },
       bm: { title: 'Bahasa Melayu', icon: '📖', color: 'from-rose-500 to-red-600', bg: 'bg-rose-50 border-rose-200 text-rose-700' },
-      bi: { title: 'English Ace', icon: '🔤', color: 'from-blue-500 to-indigo-600', bg: 'bg-blue-50 border-blue-200 text-blue-700' },
-      science: { title: 'Sains', icon: '🔬', color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50 border-emerald-200 text-emerald-700' }
+      bi: { title: 'English Ace', icon: '🔤', color: 'from-blue-500 to-indigo-600', bg: 'bg-blue-50 border-blue-200 text-blue-700' }
     };
 
     // ==========================================
     // KOMPONEN UTAMA (Edu Pintar App)
     // ==========================================
     function App() {
-      // 1. LocalStorage States
       const [xp, setXp] = useState(() => parseInt(localStorage.getItem('edubox_xp') || '120'));
       const [streak, setStreak] = useState(() => parseInt(localStorage.getItem('edubox_streak') || '1'));
       const [completedTopics, setCompletedTopics] = useState(() => {
@@ -700,13 +602,12 @@
         return saved ? JSON.parse(saved) : ['first_lesson'];
       });
 
-      // 2. Navigation States
       const [view, setView] = useState('dashboard');
       const [selectedYear, setSelectedYear] = useState(1);
       const [selectedSubject, setSelectedSubject] = useState('science');
       const [activeTopic, setActiveTopic] = useState(null);
 
-      // 3. Learning Flow States (0: NOTA, 1: CONTOH, 2: LATIHAN, 3: KUIZ, 4: MASTERED)
+      // Learning Flow States
       const [learnStep, setLearnStep] = useState(0);
       const [practiceSelected, setPracticeSelected] = useState(null);
       const [practiceFeedback, setPracticeFeedback] = useState(null);
@@ -1031,7 +932,7 @@
                             {isDone && <span className="text-[9px] bg-emerald-100 text-emerald-700 font-extrabold px-1.5 py-0.5 rounded">Dikuasai</span>}
                           </div>
                           <h4 className="font-black text-slate-800 text-xs truncate">{t.title.split(':')[1] || t.title}</h4>
-                          <p className="text-[10px] font-bold text-slate-600">{t.desc}</p>
+                          <p className="text-[10px] font-bold text-slate-600">{t.quiz ? t.quiz.length + 2 : 3} Soalan Penilaian</p>
                         </div>
                       </div>
 
@@ -1253,7 +1154,7 @@
                     practiceFeedback ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-slate-200 text-slate-600 cursor-not-allowed'
                   }`}
                 >
-                  Masuk Ke Kuiz Penilaian →
+                  Masuk Ke Kuiz Penilaian ({activeTopic.quiz.length} Soalan) →
                 </button>
               )}
               {learnStep === 4 && (
@@ -1261,7 +1162,7 @@
                   onClick={() => { playSound('click'); setView('syllabus'); }}
                   className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs shadow-lg shadow-emerald-200 active:scale-95 transition"
                 >
-                  Selesai & Pilih Topik Lain ✓
+                  Selesai & Pilih Unit Lain ✓
                 </button>
               )}
             </div>
@@ -1387,7 +1288,7 @@
                 <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-3xl">
                   <h4 className="text-xs font-black text-indigo-900 mb-1">💡 Tips Belajar</h4>
                   <p className="text-[11px] font-bold text-indigo-700 leading-relaxed">
-                    Selesaikan sekurang-kurangnya 1 topik setiap hari untuk mengekalkan Streak Harian dan mengumpul lencana khas!
+                    Selesaikan kesemua 10 unit Sains untuk menjadi Little Scientist dan meraih lencana Edu Pintar Master!
                   </p>
                 </div>
               </div>
